@@ -137,7 +137,6 @@
         .death-text-oldage { color: #B0B0B0; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         .death-text-plague { color: #8FBC8F; text-shadow: 0 0 15px rgba(143,188,143,0.6); }
         
-        /* 年表用スタイル */
         .chronology-list {
             max-height: 120px;
             overflow-y: auto;
@@ -191,9 +190,15 @@
                 <button id="start-btn" type="button" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white border border-[#A32020] py-4 text-xl font-bold active:scale-95 transition-all shadow-[0_0_20px_rgba(139,0,0,0.5)] tracking-[0.25em] rounded-sm">
                     乱世に堕ちる
                 </button>
-                <button id="history-btn" type="button" class="action-button-main w-full bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
-                    輪廻の回想
-                </button>
+                <div class="flex gap-2">
+                    <button id="history-btn" type="button" class="action-button-main flex-1 bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-3 text-xs font-bold tracking-widest rounded-sm transition-all">
+                        輪廻の回想
+                    </button>
+                    <!-- ★NEW: 記録の初期化（リセット）ボタン -->
+                    <button id="reset-data-btn" type="button" class="action-button-main flex-1 bg-black/50 text-red-500 hover:text-red-400 border border-[#3A322A] py-3 text-xs font-bold tracking-widest rounded-sm transition-all">
+                        記録の初期化
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -294,10 +299,7 @@
                     </div>
                 </div>
 
-                <!-- 生涯年表 (通常死亡用) -->
-                <div class="chronology-list" id="go-chronology-list">
-                    <!-- 年表アイテムがここに挿入される -->
-                </div>
+                <div class="chronology-list" id="go-chronology-list"></div>
             </div>
 
             <div class="w-full max-w-sm mb-3">
@@ -347,9 +349,7 @@
                         <div>銭<br><span id="premium-money" class="text-gold font-bold">0</span></div>
                     </div>
                     
-                    <!-- 生涯年表 (大往生用) -->
-                    <div class="chronology-list text-left" id="premium-chronology-list">
-                    </div>
+                    <div class="chronology-list text-left" id="premium-chronology-list"></div>
                 </div>
 
                 <div id="premium-heirloom-notice" class="hidden anim-slide-up mb-3 border border-gold bg-yellow-950/40 px-5 py-1.5 rounded-sm" style="animation-delay: 3.6s;">
@@ -412,14 +412,12 @@
 
         const WIFE_NAMES = ['千代', 'まつ', '寧々', 'お市', '濃姫', '小松', '妙玖', '早川殿', '甲斐姫', 'お田鶴'];
 
-        // ★NEW: 年表用の配列 `chronology` を状態に追加
         let state = {
             age: 15, health: 100, money: 0,
             classInfo: null, faction: null,
             isAlive: true, lastDamageEvent: '', deathCause: '',
             valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0,
-            mode: 'normal', flags: {},
-            chronology: []
+            mode: 'normal', flags: {}, chronology: []
         };
 
         let autoPlayTimer = null;
@@ -463,7 +461,6 @@
             if (autoPlayTimer) { clearTimeout(autoPlayTimer); autoPlayTimer = null; }
         }
 
-        // 年表に記録を追加する関数
         function recordChronology(text) {
             state.chronology.push({ age: state.age, text: text });
         }
@@ -930,44 +927,50 @@
             }, delay);
         }
 
-        window.manualAdvance = function() {
+        window.manualAdvance = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
             if (!state.isAlive || isWaitingForChoice || isProcessing) return;
             stopAutoPlay();
             advanceOneYear();
         };
 
+        // ★NEW: 進行フラグが固着しないよう try-finally で囲む
         function advanceOneYear() {
             if (!state.isAlive || isWaitingForChoice || isProcessing) return;
             isProcessing = true;
 
-            state.age++;
+            try {
+                state.age++;
 
-            const isMilestone = (state.age % 5 === 0);
-            const isRandomEvent = Math.random() < 0.25;
+                const isMilestone = (state.age % 5 === 0);
+                const isRandomEvent = Math.random() < 0.25;
 
-            if (isMilestone || isRandomEvent) {
-                let pool = EVENTS.filter(e => e.mode.includes(state.mode) && e.condition(state));
-                if (pool.length === 0) pool = [EVENTS[0]];
+                if (isMilestone || isRandomEvent) {
+                    let pool = EVENTS.filter(e => e.mode.includes(state.mode) && e.condition(state));
+                    if (pool.length === 0) pool = [EVENTS[0]];
 
-                const totalW = pool.reduce((s, e) => s + e.weight, 0);
-                let r = Math.random() * totalW;
-                let ev = pool[0];
-                for (let e of pool) {
-                    r -= e.weight;
-                    if (r <= 0) { ev = e; break; }
+                    const totalW = pool.reduce((s, e) => s + e.weight, 0);
+                    let r = Math.random() * totalW;
+                    let ev = pool[0];
+                    for (let e of pool) {
+                        r -= e.weight;
+                        if (r <= 0) { ev = e; break; }
+                    }
+
+                    presentEventChoices(ev);
+                } else {
+                    handleNormalYear();
+                    updateUI();
+                    checkSurvival();
+
+                    if (state.isAlive && !isWaitingForChoice) {
+                        scheduleNextAutoPlay(850);
+                    }
                 }
-
-                presentEventChoices(ev);
+            } catch (err) {
+                console.error("Yearly advance error:", err);
+            } finally {
                 isProcessing = false;
-            } else {
-                handleNormalYear();
-                updateUI();
-                checkSurvival();
-                isProcessing = false;
-
-                if (state.isAlive && !isWaitingForChoice) {
-                    scheduleNextAutoPlay(850);
-                }
             }
         }
 
@@ -1139,47 +1142,52 @@
             });
         }
 
+        // ★NEW: executeChoice 内のエラーによる進行停止を防止
         function executeChoice(choice) {
             if (!state.isAlive) return;
+
+            isWaitingForChoice = false;
 
             choicesContainer.classList.add('hidden');
             choicesContainer.classList.remove('flex');
             choicesContainer.innerHTML = '';
 
-            const res = choice.effect(state);
-            const hpChg = res.hp || 0;
-            const moneyChg = res.money || 0;
+            try {
+                const res = choice.effect(state);
+                const hpChg = res.hp || 0;
+                const moneyChg = res.money || 0;
 
-            state.health += hpChg;
-            state.money += moneyChg;
-            if (state.health > 150) state.health = 150;
+                state.health += hpChg;
+                state.money += moneyChg;
+                if (state.health > 150) state.health = 150;
 
-            if (state.money < 0) {
-                state.money = 0;
-                state.health -= 25;
-                state.lastDamageEvent = '極度の困窮';
-                state.deathCause = 'starvation';
-            } else if (hpChg < 0) {
-                state.lastDamageEvent = state.flags.currentEventTitle || '重傷';
-                if (!state.deathCause) state.deathCause = state.mode === 'battle' ? 'battle' : 'oldage';
-            }
+                if (state.money < 0) {
+                    state.money = 0;
+                    state.health -= 25;
+                    state.lastDamageEvent = '極度の困窮';
+                    state.deathCause = 'starvation';
+                } else if (hpChg < 0) {
+                    state.lastDamageEvent = state.flags.currentEventTitle || '重傷';
+                    if (!state.deathCause) state.deathCause = state.mode === 'battle' ? 'battle' : 'oldage';
+                }
 
-            let tags = [];
-            if (hpChg !== 0) tags.push(`体力${hpChg > 0 ? '+' : ''}${hpChg}`);
-            if (moneyChg !== 0) tags.push(`銭${moneyChg > 0 ? '+' : ''}${moneyChg}`);
-            const statTag = tags.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tags.join(', ')})</span>` : '';
+                let tags = [];
+                if (hpChg !== 0) tags.push(`体力${hpChg > 0 ? '+' : ''}${hpChg}`);
+                if (moneyChg !== 0) tags.push(`銭${moneyChg > 0 ? '+' : ''}${moneyChg}`);
+                const statTag = tags.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tags.join(', ')})</span>` : '';
 
-            addLog(`<span class="font-bold text-gray-500 mr-1">┗ 決断:</span><em class="text-gray-300">${choice.text.replace(/【.*?】/g, '')}</em><br>${res.log}${statTag}`, hpChg <= -25);
+                addLog(`<span class="font-bold text-gray-500 mr-1">┗ 決断:</span><em class="text-gray-300">${choice.text.replace(/【.*?】/g, '')}</em><br>${res.log}${statTag}`, hpChg <= -25);
 
-            if (hpChg < 0 && appContainer) {
-                appContainer.classList.remove('damage-flash');
-                void appContainer.offsetWidth;
-                appContainer.classList.add('damage-flash');
+                if (hpChg < 0 && appContainer) {
+                    appContainer.classList.remove('damage-flash');
+                    void appContainer.offsetWidth;
+                    appContainer.classList.add('damage-flash');
+                }
+            } catch (err) {
+                console.error("Choice effect error:", err);
             }
 
             updateUI();
-            isWaitingForChoice = false;
-
             checkSurvival();
 
             if (state.isAlive) {
@@ -1239,7 +1247,7 @@
             }
         }
 
-        // 年表のHTMLリストを生成して要素に流し込む関数
+        // ★NEW: 年表リストを画面に描画する
         function renderChronologyToList(containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -1260,6 +1268,17 @@
                 row.className = "chronology-item";
                 row.innerHTML = `<span class="chronology-age">${item.age}歳</span><span class="chronology-text">${item.text}</span>`;
                 container.appendChild(row);
+            });
+        }
+
+        function addLog(html, isHeavy = false) {
+            if (!logContainer) return;
+            const div = document.createElement('div');
+            div.className = `log-entry ${isHeavy ? 'font-bold text-blood' : ''}`;
+            div.innerHTML = html;
+            logContainer.appendChild(div);
+            requestAnimationFrame(() => {
+                if (logContainer) logContainer.scrollTop = logContainer.scrollHeight;
             });
         }
 
@@ -1315,7 +1334,7 @@
                         valor: state.valor, karma: state.karma, luck: state.luck, money: state.money,
                         strategy: state.strategy, virtue: state.virtue,
                         timestamp: Date.now(),
-                        chronology: state.chronology // ★年表データも保存
+                        chronology: state.chronology
                     });
                     localStorage.setItem('sengoku_past_lives', JSON.stringify(past.slice(0, 30)));
                 } catch (e) {
@@ -1382,7 +1401,6 @@
             document.getElementById('go-money').innerText = state.money;
             document.getElementById('go-reason').innerText = reason;
 
-            // ★NEW: 死亡画面に生涯年表を描画
             renderChronologyToList('go-chronology-list');
 
             const hlNotice = document.getElementById('new-heirloom-notice');
@@ -1427,7 +1445,6 @@
             document.getElementById('premium-virtue').innerText = state.virtue;
             document.getElementById('premium-money').innerText = state.money;
 
-            // ★NEW: プレミアム画面に生涯年表を描画
             renderChronologyToList('premium-chronology-list');
 
             const hlNotice = document.getElementById('premium-heirloom-notice');
@@ -1513,6 +1530,20 @@
             if (startScreen) startScreen.classList.remove('hidden');
         };
 
+        // ★NEW: 記録の初期化機能
+        window.resetSaveData = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            if (confirm("これまでの輪廻の記録と獲得した家宝をすべて消去します。\nよろしいですか？")) {
+                localStorage.removeItem('sengoku_rinne_count');
+                localStorage.removeItem('sengoku_heirloom');
+                localStorage.removeItem('sengoku_past_lives');
+                window.currentReincarnationCount = 0;
+                window.activeHeirloom = null;
+                window.updateStartScreenUI();
+                alert("すべての記録を初期化しました。");
+            }
+        };
+
         window.openHistory = async function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
             historyScreen.classList.remove('hidden');
@@ -1544,7 +1575,6 @@
                 card.className = 'bg-[#181513] border border-[#3A322A] p-3 rounded-sm relative shadow';
                 const ojBadge = item.age >= 60 ? '<span class="absolute top-2 right-2 text-[10px] bg-yellow-800 text-yellow-100 px-1.5 py-0.5 rounded-sm border border-yellow-600 font-bold">大往生</span>' : '';
 
-                // 年表履歴の生成
                 let chronoHtml = '';
                 if (item.chronology && item.chronology.length > 0) {
                     chronoHtml = '<div class="mt-2 pt-2 border-t border-[#3A322A] text-left">';
@@ -1593,6 +1623,7 @@
             bindButton('start-btn', window.startGame);
             bindButton('advance-btn', window.manualAdvance);
             bindButton('history-btn', window.openHistory);
+            bindButton('reset-data-btn', window.resetSaveData);
             bindButton('close-history-btn', window.closeHistory);
             bindButton('rinne-btn', window.resetGame);
             bindButton('premium-rinne-btn', window.resetGame);
@@ -1673,7 +1704,7 @@
                             luck: finalState.luck, money: finalState.money,
                             strategy: finalState.strategy, virtue: finalState.virtue,
                             timestamp: Date.now(),
-                            chronology: finalState.chronology // ★ここでも年表をDBに保存
+                            chronology: finalState.chronology
                         }).catch(() => {});
                     } catch (e) {
                         console.warn("Firebase save skipped:", e);
