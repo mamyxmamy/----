@@ -167,37 +167,38 @@
                     <div class="text-3xl font-black text-white"><span id="ui-reincarnations">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
                 </div>
 
-                <!-- 家宝表示エリア (複数装備対応版) -->
+                <!-- 家宝表示エリア -->
                 <div id="heirloom-display" onclick="window.openHeirloomStorage()" class="bg-[#211C18] border border-gold/40 p-3 rounded-sm text-left shadow-lg mt-3 w-full cursor-pointer transition-colors hover:bg-[#2A231D]">
                     <span class="text-[11px] text-gold font-bold block mb-1.5 flex justify-between border-b border-gold/20 pb-1">
                         <span>【継承家宝】 <span class="text-gray-400 font-normal">(枠: <span id="hl-slots-count">0/1</span>)</span></span>
                         <span class="text-gray-500 font-normal hover:text-gold">変更 ▶</span>
                     </span>
                     <div id="hl-equipped-list" class="space-y-1.5">
-                        <span class="text-gray-400 text-xs block">装備なし（クリックして蔵を開く）</span>
+                        <span class="text-gray-400 text-xs block py-1">装備なし（クリックして蔵を開く）</span>
                     </div>
                 </div>
             </div>
 
             <div class="w-full space-y-2 z-10">
-                <button id="start-btn" type="button" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white border border-[#A32020] py-4 text-xl font-bold active:scale-95 transition-all shadow-[0_0_20px_rgba(139,0,0,0.5)] tracking-[0.25em] rounded-sm mb-1">
+                <!-- 直接onclickを指定し確実な動作を保証 -->
+                <button type="button" onclick="window.startGame(event)" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white border border-[#A32020] py-4 text-xl font-bold active:scale-95 transition-all shadow-[0_0_20px_rgba(139,0,0,0.5)] tracking-[0.25em] rounded-sm mb-1">
                     乱世に堕ちる
                 </button>
                 <div class="grid grid-cols-2 gap-2 w-full">
-                    <button id="heirloom-select-btn" type="button" class="action-button-main col-span-2 bg-black/50 text-gold hover:text-white border border-gold/50 py-3 text-xs font-bold tracking-widest rounded-sm transition-all shadow-[0_0_10px_rgba(197,160,89,0.15)]">
+                    <button type="button" onclick="window.openHeirloomStorage(event)" class="action-button-main col-span-2 bg-black/50 text-gold hover:text-white border border-gold/50 py-3 text-xs font-bold tracking-widest rounded-sm transition-all shadow-[0_0_10px_rgba(197,160,89,0.15)]">
                         家宝蔵（装備変更）
                     </button>
-                    <button id="history-btn" type="button" class="action-button-main bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
+                    <button type="button" onclick="window.openHistory(event)" class="action-button-main bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
                         輪廻の回想
                     </button>
-                    <button id="reset-data-btn" type="button" class="action-button-main bg-black/50 text-red-500 hover:text-red-400 border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
+                    <button type="button" onclick="window.resetSaveData(event)" class="action-button-main bg-black/50 text-red-500 hover:text-red-400 border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
                         記録の初期化
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- ================= 1.5. ルーレット（運命選択）画面 ================= -->
+        <!-- ================= 1.5. ルーレット画面 ================= -->
         <div id="roulette-screen" class="hidden absolute inset-0 z-40 bg-[#090807] flex flex-col items-center justify-center pointer-events-none">
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,0,0,0.2)_0%,rgba(0,0,0,0.9)_80%)]"></div>
             <div class="z-10 text-center w-full px-4">
@@ -273,7 +274,7 @@
                 <div id="choices-container" class="hidden flex-col gap-2 w-full max-h-[190px] overflow-y-auto pr-0.5"></div>
                 
                 <div id="advance-container" class="w-full">
-                    <button id="advance-btn" type="button" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white py-3.5 px-4 text-base font-bold border border-[#8B0000] rounded-sm active:scale-98 transition-all tracking-widest shadow-md flex items-center justify-center">
+                    <button id="advance-btn" type="button" onclick="window.manualAdvance(event)" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white py-3.5 px-4 text-base font-bold border border-[#8B0000] rounded-sm active:scale-98 transition-all tracking-widest shadow-md flex items-center justify-center">
                         <span id="advance-btn-text">歳 月 を 進 め る</span>
                     </button>
                 </div>
@@ -322,12 +323,12 @@
                 <span id="new-heirloom-text" class="text-white text-[11px] font-bold"></span>
             </div>
 
-            <button id="rinne-btn" type="button" class="action-button-main w-full max-w-sm border-2 border-red-700 bg-red-950/80 hover:bg-red-900 text-white py-3.5 text-base font-bold tracking-widest rounded-sm transition-all active:scale-95 shadow-[0_0_15px_rgba(139,0,0,0.6)] z-50">
+            <button type="button" onclick="window.resetGame(event)" class="action-button-main w-full max-w-sm border-2 border-red-700 bg-red-950/80 hover:bg-red-900 text-white py-3.5 text-base font-bold tracking-widest rounded-sm transition-all active:scale-95 shadow-[0_0_15px_rgba(139,0,0,0.6)] z-50">
                 次なる輪廻へ
             </button>
         </div>
 
-        <!-- ================= 4. 60歳以上 大往生プレミアム画面 ================= -->
+        <!-- ================= 4. 大往生プレミアム画面 ================= -->
         <div id="premium-screen" class="hidden absolute inset-0 z-50 premium-bg flex flex-col items-center justify-center text-center overflow-hidden pointer-events-auto">
             <canvas id="particle-canvas" class="absolute inset-0 z-0 pointer-events-none"></canvas>
             <div id="freeze-overlay" class="freeze-overlay"></div>
@@ -367,7 +368,7 @@
                     <span class="text-[11px] text-gold font-bold block">名家宝を授与: <span id="premium-heirloom-text" class="text-white"></span></span>
                 </div>
 
-                <button id="premium-rinne-btn" type="button" class="action-button-main w-full max-w-sm anim-slide-up border-2 border-gold bg-black text-gold hover:bg-gold hover:text-black py-3 text-base font-bold tracking-widest rounded-sm shadow-[0_0_20px_rgba(197,160,89,0.5)] active:scale-95 transition-all z-30" style="animation-delay: 4.0s;">
+                <button type="button" onclick="window.resetGame(event)" class="action-button-main w-full max-w-sm anim-slide-up border-2 border-gold bg-black text-gold hover:bg-gold hover:text-black py-3 text-base font-bold tracking-widest rounded-sm shadow-[0_0_20px_rgba(197,160,89,0.5)] active:scale-95 transition-all z-30" style="animation-delay: 4.0s;">
                     新時代へ輪廻する
                 </button>
             </div>
@@ -377,7 +378,7 @@
         <div id="history-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
                 <h2 class="text-base font-bold text-white tracking-widest">輪廻の回想</h2>
-                <button id="close-history-btn" type="button" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
+                <button type="button" onclick="window.closeHistory(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
             <div id="history-loading" class="flex-grow flex items-center justify-center text-gray-500 text-xs tracking-widest">記録を紐解いています...</div>
             <div id="history-list" class="flex-grow overflow-y-auto p-4 hidden space-y-3 pb-8"></div>
@@ -390,7 +391,7 @@
                     <h2 class="text-base font-bold text-gold tracking-widest">家宝蔵</h2>
                     <p class="text-[10px] text-gray-400 mt-1">次回の輪廻に持ち込む家宝を選んでください。</p>
                 </div>
-                <button id="close-heirloom-btn" type="button" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
+                <button type="button" onclick="window.closeHeirloomStorage(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
             <div class="bg-[#1A1613] p-2 border-b border-[#3A322A] flex justify-between items-center">
                 <span class="text-xs text-gray-300">装備可能な枠数:</span>
@@ -406,10 +407,9 @@
     (function() {
         window.currentReincarnationCount = 0;
         window.unlockedHeirlooms = [];
-        window.activeHeirlooms = []; // ★NEW: 複数装備用の配列
+        window.activeHeirlooms = [];
         window.__currentUser = null;
 
-        // ★装備可能枠数の計算ロジック
         window.getMaxHeirloomSlots = function() {
             if (window.currentReincarnationCount >= 30) return 3;
             if (window.currentReincarnationCount >= 10) return 2;
@@ -427,12 +427,10 @@
                 window.unlockedHeirlooms = [];
             }
 
-            // 装備中家宝のロード処理
             const savedEquipped = localStorage.getItem('sengoku_equipped_heirlooms');
             if (savedEquipped) {
                 window.activeHeirlooms = JSON.parse(savedEquipped);
             } else {
-                // 旧バージョン（単体保存）からの移行処理
                 const oldHeirloom = localStorage.getItem('sengoku_heirloom');
                 if (oldHeirloom) {
                     const parsed = JSON.parse(oldHeirloom);
@@ -447,7 +445,6 @@
                 }
             }
             
-            // 枠数を超えて装備していたら切り詰める（データ異常防止）
             const maxSlots = window.getMaxHeirloomSlots();
             if (window.activeHeirlooms.length > maxSlots) {
                 window.activeHeirlooms = window.activeHeirlooms.slice(0, maxSlots);
@@ -498,7 +495,7 @@
 
         let appContainer, startScreen, gameScreen, gameoverScreen, premiumScreen, historyScreen;
         let rouletteScreen, rouletteClass, rouletteFaction;
-        let startBtn, historyBtn, advanceBtn, advanceBtnText, choicesContainer, logContainer;
+        let advanceBtn, advanceBtnText, choicesContainer, logContainer;
         let uiAge, uiClass, uiHealth, uiMoney, uiFaction, modeBadge;
         let uiValor, uiKarma, uiStrategy, uiVirtue, uiLuck;
 
@@ -513,8 +510,6 @@
             rouletteClass = document.getElementById('roulette-class');
             rouletteFaction = document.getElementById('roulette-faction');
             
-            startBtn = document.getElementById('start-btn');
-            historyBtn = document.getElementById('history-btn');
             advanceBtn = document.getElementById('advance-btn');
             advanceBtnText = document.getElementById('advance-btn-text');
             choicesContainer = document.getElementById('choices-container');
@@ -666,7 +661,7 @@
             },
             {
                 id: 'plague', mode: ['normal', 'fugitive'], weight: 25, condition: () => true,
-                title: '【疫病】死の病魔', text: '不吉な黒雲が空を覆う中、村々を「死の病魔」が舐め尽くしている。昨日まで笑っていた隣人が突如として黒い血を吐いて倒れ、そのまま二度と動かなくなる。死体を焼く異臭が風に乗って漂い、ついにあなたの体にも焼けるような高熱と激しい悪寒が走り始めた。見えざる死神が、すぐ背後に立っている。',
+                title: '【疫病】死の病魔', text: '不吉な黒雲が空を覆う中、村々を「死の病魔」が舐め尽くしている。昨日まで笑っていた隣人が突突として黒い血を吐いて倒れ、そのまま二度と動かなくなる。死体を焼く異臭が風に乗って漂い、ついにあなたの体にも焼けるような高熱と激しい悪寒が走り始めた。見えざる死神が、すぐ背後に立っている。',
                 choices: [
                     { text: '【銭100文】高価な南蛮の秘薬をすがる思いで買い求める', condition: (s) => s.money >= 100, hint: '安全に回復', effect: (s) => { return { money: -100, hp: 10, log: '莫大な金を支払い、怪しげな宣教師から南蛮由来の特効薬を手に入れた。数日後には嘘のように熱が引き、九死に一生を得た。' }; } },
                     { text: '【人徳30】寺社に籠り、病に苦しむ民と共に不眠の祈祷を行う', condition: (s) => s.virtue >= 30, hint: '人徳上昇・被害軽減', effect: (s) => { s.virtue += 20; return { hp: -10, log: '激しい熱病にうなされながらも、不眠不休で祈り続けた。奇跡的に病魔は去り、民からの信仰はより強固なものとなった。' }; } },
@@ -899,11 +894,9 @@
             return "名もなき草奔";
         }
 
-        // ★NEW: ドロップする家宝を大幅に追加（条件を満たしたものからランダムに1つドロップ）
         function determineHeirloom(s) {
             let candidates = [];
             
-            // 伝説級 (ステータス100以上 or 特殊条件)
             if (s.valor >= 100) candidates.push({ id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", type: "valor", value: 35, desc: "初期武功 +35" });
             if (s.strategy >= 100) candidates.push({ id: 'hl_rikutou', name: "六韜三略の秘伝", type: "strategy", value: 35, desc: "初期知略 +35" });
             if (s.virtue >= 100) candidates.push({ id: 'hl_ranjyatai', name: "名香・蘭奢待", type: "virtue", value: 35, desc: "初期人徳 +35" });
@@ -911,7 +904,6 @@
             if (s.money >= 3000) candidates.push({ id: 'hl_tsukumo', name: "九十九髪茄子", type: "money", value: 600, desc: "初期所持金 +600文" });
             if (s.age >= 70) candidates.push({ id: 'hl_nanbandou', name: "南蛮胴具足", type: "health", value: 50, desc: "初期体力 +50" });
 
-            // 名品級 (ステータス80以上)
             if (s.valor >= 80) {
                 candidates.push({ id: 'hl_mikazuki', name: "天下五剣・三日月宗近", type: "valor", value: 20, desc: "初期武功 +20" });
                 candidates.push({ id: 'hl_hasebe', name: "へし切長谷部", type: "valor", value: 20, desc: "初期武功 +20" });
@@ -933,12 +925,10 @@
                 candidates.push({ id: 'hl_furo', name: "南蛮不老薬", type: "health", value: 30, desc: "初期体力 +30" });
             }
             
-            // 希少級 (ステータス60以上)
             if (s.luck >= 60) candidates.push({ id: 'hl_yohen', name: "曜変天目茶碗", type: "luck", value: 20, desc: "初期運 +20" });
             if (s.luck >= 40) candidates.push({ id: 'hl_aoi', name: "四葉の葵紋", type: "luck", value: 10, desc: "初期運 +10" });
             
             if (candidates.length > 0) {
-                // 条件を満たした中からランダムで1つドロップ
                 return candidates[Math.floor(Math.random() * candidates.length)];
             }
             return null;
@@ -974,7 +964,8 @@
             } catch(e) {}
         };
 
-        window.openHeirloomStorage = function() {
+        window.openHeirloomStorage = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
             const hScreen = document.getElementById('heirloom-screen');
             const hList = document.getElementById('heirloom-list');
             
@@ -988,6 +979,16 @@
                 hList.innerHTML = '<div class="text-center text-gray-500 mt-10 text-xs">蔵にはまだ何もありません。<br>偉業を成し遂げ、家宝を獲得してください。</div>';
                 return;
             }
+
+            const noneCard = document.createElement('div');
+            noneCard.className = `border p-3 rounded-sm cursor-pointer transition-all ${window.activeHeirlooms.length === 0 ? 'bg-yellow-900/30 border-gold' : 'bg-[#181513] border-[#3A322A] hover:border-gray-500'}`;
+            noneCard.innerHTML = `<div class="font-bold text-white text-sm flex justify-between"><span>全装備解除</span></div><div class="text-xs text-gray-400 mt-1">己の身一つで乱世に挑む</div>`;
+            noneCard.onclick = () => {
+                window.activeHeirlooms = [];
+                window.updateStartScreenUI();
+                window.closeHeirloomStorage();
+            };
+            hList.appendChild(noneCard);
 
             window.unlockedHeirlooms.forEach(item => {
                 const isActive = window.activeHeirlooms.find(h => h.id === item.id);
@@ -1013,13 +1014,14 @@
                         }
                     }
                     window.updateStartScreenUI();
-                    window.openHeirloomStorage(); // 再描画
+                    window.openHeirloomStorage(); 
                 };
                 hList.appendChild(card);
             });
         };
 
-        window.closeHeirloomStorage = function() {
+        window.closeHeirloomStorage = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
             document.getElementById('heirloom-screen').classList.add('hidden');
         };
 
@@ -1040,7 +1042,10 @@
             if (historyScreen) historyScreen.classList.add('hidden');
             if (rouletteScreen) rouletteScreen.classList.add('hidden');
 
-            if (logContainer) logContainer.innerHTML = '';
+            if (logContainer) {
+                logContainer.innerHTML = '';
+                logContainer.scrollTop = 0;
+            }
             if (choicesContainer) {
                 choicesContainer.innerHTML = '';
                 choicesContainer.classList.add('hidden');
@@ -1056,7 +1061,21 @@
             if (modeBadge) modeBadge.classList.add('hidden');
         }
 
-        window.startGame = function() {
+        // ★NEW: リトライ処理を堅牢化
+        window.resetGame = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            resetAllStateAndUI();
+            window.updateStartScreenUI();
+            
+            if (gameoverScreen) gameoverScreen.classList.add('hidden');
+            if (premiumScreen) premiumScreen.classList.add('hidden');
+            if (startScreen) startScreen.classList.remove('hidden');
+        };
+
+        window.startGame = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            if (isProcessing) return; // 二重起動防止
+
             resetAllStateAndUI();
 
             const baseClasses = CLASSES.filter(c => c.weight > 0);
@@ -1081,7 +1100,6 @@
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
 
-            // ★NEW: 複数の家宝効果をすべて適用する
             if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
                 window.activeHeirlooms.forEach(hl => {
                     if (hl.type === 'money') state.money += hl.value;
@@ -1670,12 +1688,6 @@
             if (gameScreen) gameScreen.classList.add('hidden');
             if (gameoverScreen) {
                 gameoverScreen.classList.remove('hidden');
-                gameoverScreen.style.pointerEvents = 'auto';
-            }
-            const rinneBtn = document.getElementById('rinne-btn');
-            if (rinneBtn) {
-                rinneBtn.disabled = false;
-                rinneBtn.style.pointerEvents = 'auto';
             }
         }
 
@@ -1685,7 +1697,6 @@
             const content = document.getElementById('premium-content');
 
             screen.classList.remove('hidden');
-            screen.style.pointerEvents = 'auto';
             content.classList.remove('opacity-100');
             content.classList.add('opacity-0');
 
@@ -1719,12 +1730,6 @@
                 if (content) {
                     content.classList.remove('opacity-0');
                     content.classList.add('opacity-100');
-                    content.style.pointerEvents = 'auto';
-                }
-                const pBtn = document.getElementById('premium-rinne-btn');
-                if (pBtn) {
-                    pBtn.disabled = false;
-                    pBtn.style.pointerEvents = 'auto';
                 }
                 startSakuraParticles();
             }, 3000);
@@ -1857,29 +1862,9 @@
             historyScreen.classList.add('hidden');
         };
 
-        function bindButton(id, handler) {
-            const btn = document.getElementById(id);
-            if (!btn) return;
-            btn.onclick = handler;
-            btn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                handler(e);
-            }, { passive: false });
-        }
-
         function initApp() {
             cacheElements();
             window.updateStartScreenUI();
-
-            bindButton('start-btn', window.startGame);
-            bindButton('advance-btn', window.manualAdvance);
-            bindButton('history-btn', window.openHistory);
-            bindButton('close-history-btn', window.closeHistory);
-            bindButton('heirloom-select-btn', window.openHeirloomStorage);
-            bindButton('close-heirloom-btn', window.closeHeirloomStorage);
-            bindButton('reset-data-btn', window.resetSaveData);
-            bindButton('rinne-btn', window.resetGame);
-            bindButton('premium-rinne-btn', window.resetGame);
         }
 
         if (document.readyState === 'loading') {
