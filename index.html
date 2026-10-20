@@ -211,6 +211,11 @@
             </div>
 
             <div class="w-full space-y-2 z-10">
+                <!-- ★NEW: 名前入力フォーム -->
+                <div class="w-full px-1 mb-2">
+                    <input type="text" id="player-name-input" placeholder="御主の名（最大8文字）" maxlength="8" class="w-full bg-[#0D0B0A] border border-[#3A322A] text-white text-center py-2.5 rounded-sm focus:outline-none focus:border-gold transition-colors placeholder-gray-600 font-bold tracking-[0.2em] shadow-inner text-sm">
+                </div>
+
                 <button id="resume-btn" type="button" onclick="window.resumeGame(event)" class="hidden action-button-main w-full bg-[#1A331A] hover:bg-[#204020] text-green-200 border border-green-800 py-3 text-sm sm:text-base font-bold active:scale-95 transition-all shadow-[0_0_15px_rgba(0,100,0,0.4)] tracking-[0.2em] rounded-sm mb-2">
                     続きから遊ぶ
                 </button>
@@ -266,6 +271,8 @@
             <header class="shrink-0 bg-[#14110F] border-b border-[#3A322A] p-3 z-20 shadow-md transition-colors duration-300">
                 <div class="flex justify-between items-end mb-2.5">
                     <div>
+                        <!-- ★NEW: プレイヤー名の表示 -->
+                        <div id="ui-player-name" class="text-[11px] text-gold font-bold mb-0.5 tracking-widest drop-shadow-md"></div>
                         <div class="flex items-center gap-1.5 mb-1">
                             <span id="ui-faction" class="text-[10px] font-bold px-2 py-0.5 rounded-sm border border-white/20 text-white bg-[#333] transition-colors duration-500">--</span>
                             <span id="ui-mode-badge" class="text-[10px] bg-red-950 text-red-200 border border-red-600 px-1.5 py-0.5 font-bold rounded-sm hidden">戦場</span>
@@ -333,11 +340,16 @@
             <p id="go-sub-title" class="text-[10px] text-gray-500 mb-2 tracking-widest">- 乱世の泡と消ゆ -</p>
 
             <div class="mb-3 w-full max-w-sm text-left border border-gray-800 p-3 bg-[#0D0B0A] shadow-2xl relative rounded-sm">
-                <div class="flex justify-between items-end border-b border-gray-800 pb-1.5">
+                <!-- ★NEW: 死亡画面のプレイヤー名表示 -->
+                <div class="text-center mb-2 pb-2 border-b border-gray-800">
+                    <span id="go-player-name" class="text-sm font-bold text-gray-300 tracking-[0.2em]"></span>
+                </div>
+
+                <div class="flex justify-between items-end mb-1.5">
                     <span class="text-xs text-gray-400">享年</span>
                     <span class="text-3xl font-black text-white"><span id="go-age">--</span><span class="text-sm font-normal text-gray-400 ml-1">歳</span></span>
                 </div>
-                <div class="flex justify-between items-end mt-1.5 mb-1">
+                <div class="flex justify-between items-end mb-1">
                     <span class="text-xs text-gray-400">身分</span>
                     <span class="text-base font-bold text-white"><span id="go-faction" class="text-xs text-gray-400 mr-1.5"></span><span id="go-class">--</span></span>
                 </div>
@@ -369,6 +381,11 @@
                 <p id="go-reason" class="text-[11px] leading-relaxed text-gray-300 text-left border-l-2 border-red-900 pl-2.5 py-1"></p>
             </div>
 
+            <div id="lost-heirloom-notice" class="hidden mb-3 w-full max-w-sm border border-red-800 bg-red-950/40 p-1.5 text-center rounded-sm shadow-md">
+                <span class="text-[10px] text-red-500 font-bold block mb-0.5">【家宝喪失】無念…</span>
+                <span id="lost-heirloom-text" class="text-gray-300 text-[11px]"></span>
+            </div>
+
             <div id="new-heirloom-notice" class="hidden mb-3 w-full max-w-sm border border-gold/60 bg-yellow-950/20 p-1.5 text-center rounded-sm">
                 <span class="text-[10px] text-gold font-bold mb-0.5">【次世への家宝】を感得！</span>
                 <span id="new-heirloom-text" class="text-white text-[11px] font-bold"></span>
@@ -389,6 +406,12 @@
                 <h2 class="text-5xl sm:text-6xl font-black text-golden mb-2 tracking-widest anim-slide-up" style="animation-delay: 2.6s;">大往生</h2>
 
                 <div class="w-full max-w-sm border-y border-gold/70 py-3 px-4 mb-3 bg-black/80 anim-slide-up backdrop-blur-md" style="animation-delay: 3.2s;">
+                    
+                    <!-- ★NEW: 大往生画面のプレイヤー名表示 -->
+                    <div class="text-center mb-2 pb-1.5 border-b border-gray-700">
+                        <span id="premium-player-name" class="text-sm font-bold text-gray-200 tracking-[0.2em]"></span>
+                    </div>
+
                     <p class="text-gold text-[11px] mb-1 font-bold tracking-widest" id="premium-title">【称号】</p>
                     <p class="text-gray-400 text-[9px] mb-2">六十年の過酷なる乱世を完遂せし英傑</p>
 
@@ -523,9 +546,9 @@
                     </ul>
                 </section>
                 <section>
-                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 引き継ぎ要素</h3>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 引き継ぎ要素とロスト</h3>
                     <ul class="list-disc pl-4 space-y-1">
-                        <li><span class="text-gold font-bold">家宝</span>: 特定の条件を満たして死亡すると「家宝」を獲得します。家宝は「家宝蔵」で装備することで、次回のプレイに初期ステータスボーナスをもたらします。（輪廻回数に応じて装備枠が増加）</li>
+                        <li><span class="text-gold font-bold">家宝</span>: 特定の条件を満たして死亡すると「家宝」を獲得します。家宝蔵で装備することで初期ステータスボーナスを得ますが、<span class="text-red-400 font-bold">大往生（60歳到達）できずに死亡すると、装備していた家宝は戦火に消え、完全にロスト（喪失）します。</span></li>
                         <li><span class="text-purple-400 font-bold">冥銭・道具</span>: 生き抜いた年数や獲得した能力値に応じて、死後に「冥銭」を獲得します。冥府の商人で「持込道具」と交換し、1回使い切りの強力な効果を得られます。</li>
                     </ul>
                 </section>
@@ -537,8 +560,7 @@
         </div>
 
     </div>
-
-<!-- ================= ゲームロジック ================= -->
+    <!-- ================= ゲームロジック ================= -->
     <script>
     (function() {
         window.currentReincarnationCount = 0;
@@ -667,6 +689,7 @@
         const WIFE_NAMES = ['千代', 'まつ', '寧々', 'お市', '濃姫', '小松', '妙玖', '早川殿', '甲斐姫', 'お田鶴'];
 
         let state = {
+            playerName: '名無し',
             age: 15, health: 100, money: 0,
             classInfo: null, faction: null,
             isAlive: true, lastDamageEvent: '', deathCause: '',
@@ -683,9 +706,9 @@
         let rouletteScreen, rouletteClass, rouletteFaction;
         let introScreen, introText, introPrompt;
         let advanceBtn, advanceBtnText, choicesContainer, logContainer;
-        let uiAge, uiClass, uiHealth, uiMoney, uiFaction, modeBadge;
+        let uiAge, uiClass, uiHealth, uiMoney, uiFaction, modeBadge, uiPlayerName;
         let uiValor, uiKarma, uiStrategy, uiVirtue, uiLuck, uiMaxHealth;
-        let uiMeisen;
+        let uiMeisen, playerNameInput;
 
         function cacheElements() {
             appContainer = document.getElementById('app-container');
@@ -711,6 +734,8 @@
             uiMoney = document.getElementById('ui-money');
             uiFaction = document.getElementById('ui-faction');
             modeBadge = document.getElementById('ui-mode-badge');
+            uiPlayerName = document.getElementById('ui-player-name');
+            playerNameInput = document.getElementById('player-name-input');
             
             uiValor = document.getElementById('ui-valor');
             uiKarma = document.getElementById('ui-karma');
@@ -898,7 +923,7 @@
             },
             {
                 id: 'plague', mode: ['normal', 'fugitive'], weight: 25, condition: () => true,
-                title: '【疫病】死の病魔', text: '不吉な黒雲が空を覆う中、村々を「死の病魔」が舐め尽くしている。昨日まで笑っていた隣人が突突如として黒い血を吐いて倒れ、そのまま二度と動かなくなる。死体を焼く異臭が風に乗って漂い、ついにあなたの体にも焼けるような高熱と激しい悪寒が走り始めた。見えざる死神が、すぐ背後に立っている。',
+                title: '【疫病】死の病魔', text: '不吉な黒雲が空を覆う中、村々を「死の病魔」が舐め尽くしている。昨日まで笑っていた隣人が突如として黒い血を吐いて倒れ、そのまま二度と動かなくなる。死体を焼く異臭が風に乗って漂い、ついにあなたの体にも焼けるような高熱と激しい悪寒が走り始めた。見えざる死神が、すぐ背後に立っている。',
                 choices: [
                     { text: '【銭100文】高価な南蛮の秘薬をすがる思いで買い求める', condition: (s) => s.money >= 100, hint: '安全に回復', effect: (s) => { return { money: -100, hp: 10, log: '莫大な金を支払い、怪しげな宣教師から南蛮由来の特効薬を手に入れた。数日後には嘘のように熱が引き、九死に一生を得た。' }; } },
                     { text: '【人徳30】寺社に籠り、病に苦しむ民と共に不眠の祈祷を行う', condition: (s) => s.virtue >= 30, hint: '人徳上昇・被害軽減', effect: (s) => { s.virtue += 20; return { hp: -10, log: '激しい熱病にうなされながらも、不眠不休で祈り続けた。奇跡的に病魔は去り、民からの信仰はより強固なものとなった。' }; } },
@@ -1461,6 +1486,7 @@
             if (document.getElementById('shop-screen')) document.getElementById('shop-screen').classList.add('hidden');
             if (document.getElementById('item-screen')) document.getElementById('item-screen').classList.add('hidden');
             if (document.getElementById('help-screen')) document.getElementById('help-screen').classList.add('hidden');
+            if (document.getElementById('lost-heirloom-notice')) document.getElementById('lost-heirloom-notice').classList.add('hidden');
 
             if (logContainer) { logContainer.innerHTML = ''; logContainer.scrollTop = 0; }
             if (choicesContainer) { choicesContainer.innerHTML = ''; choicesContainer.classList.add('hidden'); choicesContainer.classList.remove('flex'); }
@@ -1495,6 +1521,11 @@
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (isProcessing) return;
 
+            // ★NEW: 名前を保存
+            const nameInputVal = document.getElementById('player-name-input').value.trim();
+            const finalName = nameInputVal || '名無しの権兵衛';
+            localStorage.setItem('sengoku_player_name', finalName);
+
             resetAllStateAndUI(); localStorage.removeItem('sengoku_current_run');
 
             const baseClasses = CLASSES.filter(c => c.weight > 0);
@@ -1506,7 +1537,7 @@
             const spawnProbability = ((selectedClass.weight / totalWeight) * 100).toFixed(1);
             const selectedFaction = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];
 
-            state = { age: 15, health: selectedClass.initHealth, money: selectedClass.initMoney, classInfo: selectedClass, faction: selectedFaction, isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0, mode: 'normal', flags: {}, chronology: [] };
+            state = { playerName: finalName, age: 15, health: selectedClass.initHealth, money: selectedClass.initMoney, classInfo: selectedClass, faction: selectedFaction, isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0, mode: 'normal', flags: {}, chronology: [] };
 
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
@@ -1590,7 +1621,7 @@
             
             introText.innerHTML = `
                 <p>時は乱世。</p><p>果てなき戦乱が続き、<br>人命は草芥のごとく散りゆく時代。</p>
-                <p class="mt-6 text-yellow-500">あなたは今、${faction.name}の領内で<br>「<span class="text-xl">${cls.name}</span>」として新たな生を受けた。</p>
+                <p class="mt-6 text-yellow-500">【${state.playerName}】よ。<br>あなたは今、${faction.name}の領内で<br>「<span class="text-xl">${cls.name}</span>」として新たな生を受けた。</p>
                 <div class="inline-block border border-gray-700 bg-black/50 px-3 py-1.5 mt-3 rounded-sm shadow-lg">
                     <p class="text-[10px] text-gray-400 font-normal">降誕確率: 約 <span class="text-white font-bold text-sm">${prob}%</span></p>
                     <p class="text-[8px] text-gray-500 mt-0.5">※戦国時代の推計人口比率に基づく独自算出</p>
@@ -1751,6 +1782,9 @@
 
         function updateUI() {
             if (!uiAge) return;
+            // ★NEW: UIにプレイヤー名を反映
+            if (uiPlayerName) uiPlayerName.innerText = `【 ${state.playerName} 】`;
+            
             uiAge.innerText = state.age; uiClass.innerText = state.classInfo ? state.classInfo.name : '--'; uiHealth.innerText = Math.max(0, state.health); uiMoney.innerText = state.money;
             const maxHp = 150 + window.currentReincarnationCount;
             if (uiMaxHealth) uiMaxHealth.innerText = `/ ${maxHp}`;
@@ -1813,6 +1847,13 @@
                 else if (state.deathCause === 'plague') reason = "恐ろしい疫病に身体を蝕まれ、高熱と苦痛の中で黒い血を吐いて死んだ。";
                 else reason = `${state.lastDamageEvent}により深い手傷を負い、無念のまま命を落とした。`;
 
+                let lostHeirlooms = [];
+                if (state.age < 60 && window.activeHeirlooms.length > 0) {
+                    lostHeirlooms = [...window.activeHeirlooms];
+                    window.unlockedHeirlooms = window.unlockedHeirlooms.filter(u => !lostHeirlooms.some(l => l.id === u.id));
+                    window.activeHeirlooms = []; 
+                }
+
                 const finalTitle = calculateTitle(state); const nextHeirloom = determineHeirloom(state);
                 window.currentReincarnationCount = (window.currentReincarnationCount || 0) + 1;
 
@@ -1825,7 +1866,8 @@
 
                 try {
                     const past = JSON.parse(localStorage.getItem('sengoku_past_lives') || '[]');
-                    past.unshift({ age: state.age, className: state.classInfo ? state.classInfo.name : '不明', faction: state.faction ? state.faction.name : '不明', title: finalTitle, reason: reason, valor: state.valor, karma: state.karma, luck: state.luck, money: state.money, strategy: state.strategy, virtue: state.virtue, timestamp: Date.now(), chronology: state.chronology });
+                    // ★NEW: pastLivesにも名前を保存
+                    past.unshift({ playerName: state.playerName, age: state.age, className: state.classInfo ? state.classInfo.name : '不明', faction: state.faction ? state.faction.name : '不明', title: finalTitle, reason: reason, valor: state.valor, karma: state.karma, luck: state.luck, money: state.money, strategy: state.strategy, virtue: state.virtue, timestamp: Date.now(), chronology: state.chronology });
                     localStorage.setItem('sengoku_past_lives', JSON.stringify(past.slice(0, 30)));
                 } catch (e) {}
 
@@ -1834,11 +1876,11 @@
                 }
 
                 if (state.age >= 60) setTimeout(() => showPremiumEnding(finalTitle, nextHeirloom, earnedMeisen), 400);
-                else setTimeout(() => showGameOver(reason, finalTitle, nextHeirloom, state.deathCause, earnedMeisen), 400);
+                else setTimeout(() => showGameOver(reason, finalTitle, nextHeirloom, state.deathCause, earnedMeisen, lostHeirlooms), 400);
             }
         }
 
-        function showGameOver(reason, title, nextHeirloom, deathCause, earnedMeisen) {
+        function showGameOver(reason, title, nextHeirloom, deathCause, earnedMeisen, lostHeirlooms = []) {
             const screen = document.getElementById('gameover-screen'); const mainTitle = document.getElementById('go-main-title'); const subTitle = document.getElementById('go-sub-title');
             screen.className = 'hidden absolute inset-0 z-50 flex flex-col items-center justify-center p-5 text-white text-center backdrop-blur-md overflow-y-auto pointer-events-auto transition-colors duration-700'; mainTitle.className = 'text-5xl sm:text-6xl font-black mb-1 mt-2 tracking-[0.25em]';
 
@@ -1848,10 +1890,22 @@
             else if (deathCause === 'plague') { screen.classList.add('death-bg-plague'); mainTitle.classList.add('death-text-plague'); mainTitle.innerText = '病死'; subTitle.innerText = '- 疫病に蝕まれ、志半ばで倒る -'; }
             else { screen.classList.add('death-bg-battle'); mainTitle.classList.add('death-text-battle'); mainTitle.innerText = '討死'; subTitle.innerText = '- 乱世の泡と消ゆ -'; }
 
+            // ★NEW: 死亡画面にプレイヤー名を反映
+            const goNameEl = document.getElementById('go-player-name');
+            if(goNameEl) goNameEl.innerText = state.playerName || '名無しの権兵衛';
+
             document.getElementById('go-age').innerText = state.age; document.getElementById('go-class').innerText = state.classInfo ? state.classInfo.name : '--'; document.getElementById('go-faction').innerText = state.faction ? `[${state.faction.name}]` : ''; document.getElementById('go-title').innerText = title;
             document.getElementById('go-valor').innerText = state.valor; document.getElementById('go-karma').innerText = state.karma; document.getElementById('go-luck').innerText = state.luck; document.getElementById('go-strategy').innerText = state.strategy; document.getElementById('go-virtue').innerText = state.virtue; document.getElementById('go-money').innerText = state.money; document.getElementById('go-reason').innerText = reason;
             const goMeisen = document.getElementById('go-meisen'); if (goMeisen) goMeisen.innerText = `+${earnedMeisen}`;
             renderChronologyToList('go-chronology-list');
+
+            const lostNotice = document.getElementById('lost-heirloom-notice');
+            if (lostHeirlooms && lostHeirlooms.length > 0) {
+                if (lostNotice) lostNotice.classList.remove('hidden');
+                document.getElementById('lost-heirloom-text').innerText = lostHeirlooms.map(h => h.name).join('、') + " を失った";
+            } else {
+                if (lostNotice) lostNotice.classList.add('hidden');
+            }
 
             const hlNotice = document.getElementById('new-heirloom-notice');
             if (nextHeirloom) { hlNotice.classList.remove('hidden'); document.getElementById('new-heirloom-text').innerText = nextHeirloom.name; } else { hlNotice.classList.add('hidden'); }
@@ -1863,6 +1917,10 @@
             if (gameScreen) gameScreen.classList.add('hidden');
             const screen = document.getElementById('premium-screen'); const content = document.getElementById('premium-content');
             screen.classList.remove('hidden'); content.classList.remove('opacity-100'); content.classList.add('opacity-0');
+
+            // ★NEW: プレミアム画面にプレイヤー名を反映
+            const premNameEl = document.getElementById('premium-player-name');
+            if(premNameEl) premNameEl.innerText = state.playerName || '名無しの権兵衛';
 
             document.getElementById('premium-title').innerText = `【称号: ${title}】`; document.getElementById('premium-age').innerText = state.age; document.getElementById('premium-class').innerText = state.classInfo ? state.classInfo.name : '--'; document.getElementById('premium-faction').innerText = state.faction ? `[${state.faction.name}]` : '';
             document.getElementById('premium-valor').innerText = state.valor; document.getElementById('premium-karma').innerText = state.karma; document.getElementById('premium-luck').innerText = state.luck; document.getElementById('premium-strategy').innerText = state.strategy; document.getElementById('premium-virtue').innerText = state.virtue; document.getElementById('premium-money').innerText = state.money;
@@ -1897,6 +1955,7 @@
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (confirm("これまでの輪廻の記録と獲得した家宝蔵をすべて完全に消去します。\nよろしいですか？")) {
                 localStorage.removeItem('sengoku_rinne_count'); localStorage.removeItem('sengoku_heirloom'); localStorage.removeItem('sengoku_equipped_heirlooms'); localStorage.removeItem('sengoku_unlocked_heirlooms'); localStorage.removeItem('sengoku_unlocked_deaths'); localStorage.removeItem('sengoku_past_lives'); localStorage.removeItem('sengoku_current_run'); localStorage.removeItem('sengoku_meisen'); localStorage.removeItem('sengoku_inventory'); localStorage.removeItem('sengoku_active_consumable');
+                // プレイヤー名は消さないでおく（消したい場合はここに追加）
                 window.currentReincarnationCount = 0; window.unlockedHeirlooms = []; window.activeHeirlooms = []; window.unlockedDeaths = []; window.meisen = 0; window.inventory = {}; window.activeConsumable = null;
                 window.updateStartScreenUI(); alert("すべての記録を初期化しました。");
             }
@@ -1919,17 +1978,35 @@
                 const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleDateString('ja-JP') : '';
                 const card = document.createElement('div'); card.className = 'bg-[#181513] border border-[#3A322A] p-3 rounded-sm relative shadow';
                 const ojBadge = item.age >= 60 ? '<span class="absolute top-2 right-2 text-[10px] bg-yellow-800 text-yellow-100 px-1.5 py-0.5 rounded-sm border border-yellow-600 font-bold">大往生</span>' : '';
+                
                 let chronoHtml = '';
                 if (item.chronology && item.chronology.length > 0) {
                     chronoHtml = '<div class="mt-2 pt-2 border-t border-[#3A322A] text-left">';
                     item.chronology.forEach(c => { chronoHtml += `<div class="flex gap-2 text-[9px] mb-0.5"><span class="text-gold font-bold min-w-[2rem]">${c.age}歳</span><span class="text-gray-400">${c.text}</span></div>`; });
                     chronoHtml += '</div>';
                 }
+                
+                // ★NEW: 回想にもプレイヤー名を表示するように変更
+                const dispName = item.playerName || '名無し';
+                
                 card.innerHTML = `
                     ${ojBadge}
-                    <div class="text-[10px] text-gray-500 mb-1">${dateStr}</div>
+                    <div class="flex justify-between items-end mb-1">
+                        <div class="text-[10px] text-gray-500">${dateStr}</div>
+                        <div class="text-[10px] text-gray-400 font-bold tracking-wider">【${dispName}】</div>
+                    </div>
                     <div class="text-sm font-bold text-gold mb-1">${item.title || '名もなき武者'}</div>
                     <div class="flex items-baseline gap-3 text-xs text-gray-300 mb-2"><span>享年 <strong class="text-lg text-blood">${item.age}</strong> 歳</span><span class="text-gray-400">[${item.faction || '浪人'}] ${item.className}</span></div>
+                    
+                    <div class="grid grid-cols-6 gap-1 text-center text-gray-400 text-[8px] sm:text-[9px] bg-black/40 p-1.5 rounded-sm border border-[#3A322A] mb-2">
+                        <div>武功<br><span class="text-white font-bold">${item.valor || 0}</span></div>
+                        <div>悪逆<br><span class="text-white font-bold">${item.karma || 0}</span></div>
+                        <div>知略<br><span class="text-white font-bold">${item.strategy || 0}</span></div>
+                        <div>人徳<br><span class="text-white font-bold">${item.virtue || 0}</span></div>
+                        <div>運<br><span class="text-white font-bold">${item.luck || 0}</span></div>
+                        <div>銭<br><span class="text-gold font-bold">${item.money || 0}</span></div>
+                    </div>
+
                     <div class="text-xs text-gray-400 bg-black/60 p-2 rounded-sm border border-gray-800 leading-relaxed">死因: ${item.reason}</div>
                     ${chronoHtml}
                 `;
@@ -1938,7 +2015,16 @@
         };
         window.closeHistory = function(e) { if (e) { e.preventDefault(); e.stopPropagation(); } historyScreen.classList.add('hidden'); };
 
-        function initApp() { cacheElements(); window.updateStartScreenUI(); }
+        function initApp() { 
+            cacheElements(); 
+            // ★NEW: 起動時に保存された名前を復元
+            const savedName = localStorage.getItem('sengoku_player_name');
+            if (savedName && playerNameInput) {
+                playerNameInput.value = savedName;
+            }
+            window.updateStartScreenUI(); 
+        }
+        
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initApp); else initApp();
     })();
     </script>
@@ -1970,7 +2056,7 @@
             const appId = 'sengoku-life-app';
 
             auth.signInAnonymously().catch(function(err) {
-                alert("【原因判明①】ログイン失敗\n" + err.message);
+                console.warn("ログインスキップ");
             });
 
             const globalStatsRef = db.collection('artifacts').doc(appId).collection('global_stats').doc('summary');
@@ -1984,7 +2070,6 @@
                     }
                 }
             }, function(err) {
-                // セキュリティルールのエラーは画面の見た目を壊さないようにコンソールのみに出力するよう変更
                 console.warn("Global stats read error:", err);
             });
 
@@ -1999,8 +2084,9 @@
                     const countRef = db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('stats').doc('reincarnation');
                     await countRef.set({ count: window.currentReincarnationCount, equippedHeirlooms: window.activeHeirlooms }, { merge: true });
 
+                    // ★NEW: オンラインデータベース（Firebase）にもプレイヤー名を保存
                     const pastLivesRef = db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('past_lives');
-                    await pastLivesRef.add({ age: age, className: className, faction: factionName, title: title, reason: reason, valor: finalState.valor, karma: finalState.karma, luck: finalState.luck, money: finalState.money, strategy: finalState.strategy, virtue: finalState.virtue, timestamp: Date.now(), chronology: finalState.chronology });
+                    await pastLivesRef.add({ playerName: finalState.playerName || '名無し', age: age, className: className, faction: factionName, title: title, reason: reason, valor: finalState.valor, karma: finalState.karma, luck: finalState.luck, money: finalState.money, strategy: finalState.strategy, virtue: finalState.virtue, timestamp: Date.now(), chronology: finalState.chronology });
 
                     await globalStatsRef.set({
                         totalReincarnations: firebase.firestore.FieldValue.increment(1)
