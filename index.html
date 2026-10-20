@@ -161,21 +161,39 @@
             <div class="flex-grow flex items-center justify-center relative w-full">
                 <div class="absolute inset-0 flex items-center justify-center opacity-10 text-[10rem] font-black text-red-700 pointer-events-none select-none">輪</div>
                 <h1 class="vertical-rl text-5xl sm:text-6xl font-black text-white tracking-[0.35em] drop-shadow-[0_0_20px_rgba(200,0,0,0.6)] z-10">乱世の輪廻</h1>
+                
+                <!-- ★NEW: 冥銭表示 -->
+                <div class="absolute top-0 right-0 bg-black/60 border border-gray-700 px-3 py-1.5 rounded-sm shadow-md flex items-center gap-2">
+                    <span class="text-[10px] text-gray-400">所持冥銭</span>
+                    <span class="text-sm font-bold text-gray-200"><span id="ui-meisen">0</span></span>
+                </div>
             </div>
 
-            <div class="w-full text-center my-3">
-                <div class="border-y border-[#3A322A] py-3 bg-black/45 rounded-sm">
-                    <span class="text-gray-400 text-xs font-bold block mb-1">輪廻の巡り</span>
-                    <div class="text-3xl font-black text-white"><span id="ui-reincarnations">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
+            <div class="w-full text-center my-2 space-y-2">
+                <div class="border-y border-[#3A322A] py-2 bg-black/45 rounded-sm">
+                    <span class="text-gray-400 text-xs font-bold block mb-0.5">輪廻の巡り</span>
+                    <div class="text-2xl font-black text-white"><span id="ui-reincarnations">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
                 </div>
 
-                <div id="heirloom-display" onclick="window.openHeirloomStorage()" class="bg-[#211C18] border border-gold/40 p-3 rounded-sm text-left shadow-lg mt-3 w-full cursor-pointer transition-colors hover:bg-[#2A231D]">
+                <!-- 家宝表示エリア -->
+                <div onclick="window.openHeirloomStorage()" class="bg-[#211C18] border border-gold/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#2A231D]">
                     <span class="text-[11px] text-gold font-bold block mb-1.5 flex justify-between border-b border-gold/20 pb-1">
                         <span>【継承家宝】 <span class="text-gray-400 font-normal">(枠: <span id="hl-slots-count">0/1</span>)</span></span>
                         <span class="text-gray-500 font-normal hover:text-gold">変更 ▶</span>
                     </span>
-                    <div id="hl-equipped-list" class="space-y-1.5">
-                        <span class="text-gray-400 text-xs block py-1">装備なし（クリックして蔵を開く）</span>
+                    <div id="hl-equipped-list" class="space-y-1">
+                        <span class="text-gray-400 text-xs block py-0.5">装備なし（クリックして蔵を開く）</span>
+                    </div>
+                </div>
+                
+                <!-- ★NEW: 持込道具エリア -->
+                <div onclick="window.openItemStorage()" class="bg-[#1A1821] border border-purple-900/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#23202C]">
+                    <span class="text-[11px] text-purple-300 font-bold block mb-1.5 flex justify-between border-b border-purple-900/40 pb-1">
+                        <span>【持込道具】 <span class="text-gray-400 font-normal">(1回使い切り)</span></span>
+                        <span class="text-gray-500 font-normal hover:text-purple-300">変更 ▶</span>
+                    </span>
+                    <div id="item-equipped-list">
+                        <span class="text-gray-400 text-xs block py-0.5">道具なし（クリックして手持ちから選ぶ）</span>
                     </div>
                 </div>
             </div>
@@ -184,22 +202,19 @@
                 <button id="resume-btn" type="button" onclick="window.resumeGame(event)" class="hidden action-button-main w-full bg-[#1A331A] hover:bg-[#204020] text-green-200 border border-green-800 py-3 text-sm sm:text-base font-bold active:scale-95 transition-all shadow-[0_0_15px_rgba(0,100,0,0.4)] tracking-[0.2em] rounded-sm mb-2">
                     続きから遊ぶ
                 </button>
-                <button id="start-btn" type="button" onclick="window.startGame(event)" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white border border-[#A32020] py-4 text-xl font-bold active:scale-95 transition-all shadow-[0_0_20px_rgba(139,0,0,0.5)] tracking-[0.25em] rounded-sm mb-1">
+                <button id="start-btn" type="button" onclick="window.startGame(event)" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white border border-[#A32020] py-3.5 text-xl font-bold active:scale-95 transition-all shadow-[0_0_20px_rgba(139,0,0,0.5)] tracking-[0.25em] rounded-sm mb-1">
                     乱世に堕ちる
                 </button>
                 
                 <div class="grid grid-cols-2 gap-2 w-full">
-                    <button type="button" onclick="window.openHeirloomStorage(event)" class="action-button-main col-span-2 bg-black/50 text-gold hover:text-white border border-gold/50 py-3 text-xs font-bold tracking-widest rounded-sm transition-all shadow-[0_0_10px_rgba(197,160,89,0.15)]">
-                        家宝蔵（装備変更）
+                    <button type="button" onclick="window.openShop(event)" class="action-button-main col-span-2 bg-[#120F16] text-purple-300 hover:text-white border border-purple-900/60 py-3 text-xs font-bold tracking-widest rounded-sm transition-all shadow-md">
+                        冥府の商人（道具屋）
                     </button>
                     <button type="button" onclick="window.openEncyclopedia(event)" class="action-button-main bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
                         絵巻図鑑
                     </button>
                     <button type="button" onclick="window.openHistory(event)" class="action-button-main bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
                         輪廻の回想
-                    </button>
-                    <button type="button" onclick="window.resetSaveData(event)" class="action-button-main col-span-2 bg-black/50 text-red-900 hover:text-red-500 border border-red-900/50 py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all mt-2">
-                        すべての記録を初期化
                     </button>
                 </div>
             </div>
@@ -326,6 +341,12 @@
                         <div>銭: <span id="go-money" class="font-bold text-gold">0</span></div>
                     </div>
                 </div>
+                
+                <!-- ★NEW: 獲得冥銭の表示 -->
+                <div class="flex justify-between items-end border-t border-gray-800 pt-1.5 mt-2">
+                    <span class="text-[10px] text-gray-400">獲得冥銭</span>
+                    <span class="text-sm font-bold text-purple-300"><span id="go-meisen">+0</span></span>
+                </div>
 
                 <div class="chronology-list" id="go-chronology-list"></div>
             </div>
@@ -377,6 +398,11 @@
                         <div>銭<br><span id="premium-money" class="text-gold font-bold">0</span></div>
                     </div>
                     
+                    <div class="flex justify-between items-end border-t border-gray-800 pt-1.5 mt-2 text-left">
+                        <span class="text-[10px] text-gray-400">獲得冥銭</span>
+                        <span class="text-sm font-bold text-purple-300"><span id="premium-meisen">+0</span></span>
+                    </div>
+
                     <div class="chronology-list text-left" id="premium-chronology-list"></div>
                 </div>
 
@@ -430,6 +456,34 @@
             </div>
         </div>
 
+        <!-- ================= 8. NEW: 冥府の商人（ショップ）モーダル ================= -->
+        <div id="shop-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
+            <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
+                <div>
+                    <h2 class="text-base font-bold text-purple-400 tracking-widest">冥府の商人</h2>
+                    <p class="text-[10px] text-gray-400 mt-1">死して残るは業ばかり。冥銭と引き換えに道具を授けよう。</p>
+                </div>
+                <button type="button" onclick="window.closeShop(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
+            </div>
+            <div class="bg-[#181522] p-3 border-b border-[#2A1833] flex justify-between items-center shadow-md">
+                <span class="text-xs text-gray-300">所持冥銭:</span>
+                <span class="text-lg font-bold text-purple-300" id="shop-meisen">0</span>
+            </div>
+            <div id="shop-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
+        </div>
+
+        <!-- ================= 9. NEW: 道具（持ち込み）選択モーダル ================= -->
+        <div id="item-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
+            <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
+                <div>
+                    <h2 class="text-base font-bold text-purple-400 tracking-widest">持込道具</h2>
+                    <p class="text-[10px] text-gray-400 mt-1">次回の輪廻に持ち込む道具（1回使い切り）を選んでください。</p>
+                </div>
+                <button type="button" onclick="window.closeItemStorage(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
+            </div>
+            <div id="item-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
+        </div>
+
     </div>
 
     <!-- ================= ゲームロジック ================= -->
@@ -439,6 +493,12 @@
         window.unlockedHeirlooms = [];
         window.activeHeirlooms = [];
         window.unlockedDeaths = [];
+        
+        // ★NEW: 冥銭とアイテムの変数
+        window.meisen = 0;
+        window.inventory = {}; // { 'item_id': 数量 }
+        window.activeConsumable = null;
+
         window.__currentUser = null;
 
         window.getMaxHeirloomSlots = function() {
@@ -449,18 +509,22 @@
 
         function saveCurrentRun() {
             if (state && state.isAlive) {
-                try {
-                    localStorage.setItem('sengoku_current_run', JSON.stringify(state));
-                } catch(e){}
+                try { localStorage.setItem('sengoku_current_run', JSON.stringify(state)); } catch(e){}
             }
         }
 
-        function loadCurrentRun() {
+        function saveMetaProgress() {
             try {
-                const saved = localStorage.getItem('sengoku_current_run');
-                if (saved) return JSON.parse(saved);
+                localStorage.setItem('sengoku_rinne_count', window.currentReincarnationCount);
+                localStorage.setItem('sengoku_unlocked_heirlooms', JSON.stringify(window.unlockedHeirlooms));
+                localStorage.setItem('sengoku_equipped_heirlooms', JSON.stringify(window.activeHeirlooms));
+                localStorage.setItem('sengoku_unlocked_deaths', JSON.stringify(window.unlockedDeaths));
+                // ★NEW
+                localStorage.setItem('sengoku_meisen', window.meisen);
+                localStorage.setItem('sengoku_inventory', JSON.stringify(window.inventory));
+                if (window.activeConsumable) localStorage.setItem('sengoku_active_consumable', JSON.stringify(window.activeConsumable));
+                else localStorage.removeItem('sengoku_active_consumable');
             } catch(e) {}
-            return null;
         }
 
         try {
@@ -473,26 +537,20 @@
             const savedEquipped = localStorage.getItem('sengoku_equipped_heirlooms');
             if (savedEquipped) {
                 window.activeHeirlooms = JSON.parse(savedEquipped);
-            } else {
-                const oldHeirloom = localStorage.getItem('sengoku_heirloom');
-                if (oldHeirloom) {
-                    const parsed = JSON.parse(oldHeirloom);
-                    if(!parsed.id) parsed.id = 'hl_' + parsed.type;
-                    if (!window.unlockedHeirlooms.find(h => h.id === parsed.id)) window.unlockedHeirlooms.push(parsed);
-                    window.activeHeirlooms = [parsed];
-                    localStorage.removeItem('sengoku_heirloom');
-                    localStorage.setItem('sengoku_unlocked_heirlooms', JSON.stringify(window.unlockedHeirlooms));
-                    localStorage.setItem('sengoku_equipped_heirlooms', JSON.stringify(window.activeHeirlooms));
-                }
             }
-            
             const maxSlots = window.getMaxHeirloomSlots();
-            if (window.activeHeirlooms.length > maxSlots) {
-                window.activeHeirlooms = window.activeHeirlooms.slice(0, maxSlots);
-            }
+            if (window.activeHeirlooms.length > maxSlots) window.activeHeirlooms = window.activeHeirlooms.slice(0, maxSlots);
 
             const savedDeaths = localStorage.getItem('sengoku_unlocked_deaths');
             if (savedDeaths) window.unlockedDeaths = JSON.parse(savedDeaths);
+
+            // ★NEW: ロード
+            const savedMeisen = localStorage.getItem('sengoku_meisen');
+            if (savedMeisen) window.meisen = parseInt(savedMeisen, 10) || 0;
+            const savedInv = localStorage.getItem('sengoku_inventory');
+            if (savedInv) window.inventory = JSON.parse(savedInv);
+            const savedCons = localStorage.getItem('sengoku_active_consumable');
+            if (savedCons) window.activeConsumable = JSON.parse(savedCons);
 
         } catch (e) {
             console.warn("Storage restricted:", e);
@@ -520,7 +578,17 @@
             { id: 'shimazu', name: '島津家', color: '#556B2F' }
         ];
 
-        const HEIRLOOMS_DB = [
+        // ★NEW: 使い切りアイテムDB
+        const CONSUMABLES_DB = [
+            { id: 'migawari', name: '身代わり地蔵', price: 50, desc: '致死ダメージを受けた際、自動で消費されてHP1で生き残る最強の保険。', type: 'migawari' },
+            { id: 'tegata', name: '豪商の紹介状', price: 30, desc: '初期所持金 +150文 でスタート。', type: 'money', value: 150 },
+            { id: 'ganyaku', name: '鬼神の丸薬', price: 30, desc: '初期武功 +30 でスタート。', type: 'valor', value: 30 },
+            { id: 'heihou', name: '稀代の兵法書', price: 30, desc: '初期知略 +30 でスタート。', type: 'strategy', value: 30 },
+            { id: 'inori', name: '聖女の祈り', price: 30, desc: '初期人徳 +30 でスタート。', type: 'virtue', value: 30 },
+            { id: 'shippo', name: '妖狐の尻尾', price: 30, desc: '初期運 +30 でスタート。', type: 'luck', value: 30 }
+        ];
+
+        const HEIRLOOMS_DB = [ /* ...省略... */ 
             { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" },
             { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
             { id: 'hl_ranjyatai', name: "名香・蘭奢待", hint: "天下の万民から敬愛されし者が賜る" },
@@ -568,8 +636,8 @@
         let introScreen, introText, introPrompt;
         let advanceBtn, advanceBtnText, choicesContainer, logContainer;
         let uiAge, uiClass, uiHealth, uiMoney, uiFaction, modeBadge;
-        let uiValor, uiKarma, uiStrategy, uiVirtue, uiLuck;
-        let uiMaxHealth;
+        let uiValor, uiKarma, uiStrategy, uiVirtue, uiLuck, uiMaxHealth;
+        let uiMeisen;
 
         function cacheElements() {
             appContainer = document.getElementById('app-container');
@@ -602,6 +670,7 @@
             uiVirtue = document.getElementById('ui-virtue');
             uiLuck = document.getElementById('ui-luck');
             uiMaxHealth = document.getElementById('ui-max-health');
+            uiMeisen = document.getElementById('ui-meisen');
         }
 
         function stopAutoPlay() {
@@ -612,9 +681,7 @@
             state.chronology.push({ age: state.age, text: text });
         }
 
-        // ================= ★NEW: モード矛盾解消版 イベント定義 =================
         const EVENTS = [
-            // ★NEW: 合戦終了イベント (戦場から日常へ戻る)
             {
                 id: 'battle_end', mode: ['battle'], weight: 45, condition: () => true,
                 title: '【帰陣】合戦の終わり', text: '長く血生臭い戦いがついに終わりを告げた。両軍は兵を引き、生き残った者たちはそれぞれの故郷や陣所へと帰還する。生存を分かち合う論功行賞の刻だ。',
@@ -678,7 +745,7 @@
                     } },
                     { text: '城を脱出し、浪人に身をやつす', condition: () => true, hint: '浪人へ転落・カルマ増', effect: (s) => { 
                         s.classInfo = CLASSES.find(c=>c.id==='ronin'); s.karma += 20; 
-                        s.mode = 'normal'; // ★NEW: モードを強制的に日常に戻す
+                        s.mode = 'normal';
                         recordChronology("主君の暗殺の手から逃れ、浪人へと身をやつす");
                         return { hp: -10, log: '「ここで死ぬわけにはいかぬ」と迫りくる刺客の手を逃れ、夜陰に紛れて出奔した。地位も名誉もすべてを捨て、また一介の「浪人」に戻る。' }; 
                     } },
@@ -764,7 +831,7 @@
             },
             {
                 id: 'famine', mode: ['normal', 'fugitive'], weight: 20, condition: () => true,
-                title: '【飢饉】天変地異の飢餓', text: '残酷なまでの日照りと狂ったような長雨が続き、今年の作物は完全に根腐れを起こした。市場の米価は天井知らずに跳ね上がり、通りには骨と皮だけになった者たちが虚ろな目で泥を啜っている。飢餓という名の見えない魔物が、領民たちの命と理性を容赦なく食い荒らし始めていた。',
+                title: '【飢饉】天変地異の飢餓', text: '残酷なまでの日照りと狂ったような長雨が続き、今年の作物は完全に根腐れを起こした。市場の米価は天井知らずに跳ね上がり、通りには骨と皮だけになった者たちが虚ろな目で泥を啜っている。飢餓という名の見えない魔物的、領民たちの命と理性を容赦なく食い荒らし始めていた。',
                 choices: [
                     { text: '【銭120文】私財を投げ打ち、大量の粥を民に施す', condition: (s) => s.money >= 120, hint: '人徳特大アップ', effect: (s) => { 
                         s.virtue += 45; recordChronology("大飢饉において私財を投じて施しを行い、生き神として崇められる");
@@ -1079,6 +1146,8 @@
         window.updateStartScreenUI = function() {
             const rinneElem = document.getElementById('ui-reincarnations');
             if (rinneElem) rinneElem.innerText = window.currentReincarnationCount || 0;
+            
+            if (uiMeisen) uiMeisen.innerText = window.meisen;
 
             const maxSlots = window.getMaxHeirloomSlots();
             const slotsCountEl = document.getElementById('hl-slots-count');
@@ -1088,16 +1157,29 @@
             if(listDiv) {
                 listDiv.innerHTML = '';
                 if (window.activeHeirlooms.length === 0) {
-                    listDiv.innerHTML = '<span class="text-gray-400 text-xs block py-1">装備なし（クリックして蔵を開く）</span>';
+                    listDiv.innerHTML = '<span class="text-gray-400 text-xs block py-0.5">装備なし（クリックして蔵を開く）</span>';
                 } else {
                     window.activeHeirlooms.forEach(hl => {
                         listDiv.innerHTML += `
                             <div class="bg-black/30 p-1.5 rounded border border-gold/30">
                                 <strong class="text-gold text-xs block">${hl.name}</strong>
-                                <span class="text-gray-400 text-[10px] block">${hl.desc}</span>
                             </div>
                         `;
                     });
+                }
+            }
+
+            // ★NEW: 持ち込み道具のUI更新
+            const itemDiv = document.getElementById('item-equipped-list');
+            if(itemDiv) {
+                if (!window.activeConsumable) {
+                    itemDiv.innerHTML = '<span class="text-gray-400 text-xs block py-0.5">道具なし（クリックして手持ちから選ぶ）</span>';
+                } else {
+                    itemDiv.innerHTML = `
+                        <div class="bg-black/30 p-1.5 rounded border border-purple-900/50">
+                            <strong class="text-purple-300 text-xs block">${window.activeConsumable.name}</strong>
+                        </div>
+                    `;
                 }
             }
 
@@ -1119,9 +1201,7 @@
                 resumeBtn.classList.add('hidden');
             }
 
-            try {
-                localStorage.setItem('sengoku_equipped_heirlooms', JSON.stringify(window.activeHeirlooms));
-            } catch(e) {}
+            saveMetaProgress();
         };
 
         window.openHeirloomStorage = function(e) {
@@ -1183,6 +1263,108 @@
         window.closeHeirloomStorage = function(e) {
             if(e){ e.preventDefault(); e.stopPropagation(); }
             document.getElementById('heirloom-screen').classList.add('hidden');
+        };
+
+        // ★NEW: 冥府の商人（ショップ）の表示
+        window.openShop = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            const sScreen = document.getElementById('shop-screen');
+            const sList = document.getElementById('shop-list');
+            document.getElementById('shop-meisen').innerText = window.meisen;
+            
+            sScreen.classList.remove('hidden');
+            sList.innerHTML = '';
+
+            CONSUMABLES_DB.forEach(item => {
+                const count = window.inventory[item.id] || 0;
+                const canAfford = window.meisen >= item.price;
+                const card = document.createElement('div');
+                card.className = `border p-3 rounded-sm transition-all bg-[#1A1622] border-[#3A2A44]`;
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-1">
+                        <div>
+                            <div class="font-bold text-purple-300 text-sm">${item.name} <span class="text-[10px] text-gray-400 ml-1">所持: ${count}</span></div>
+                            <div class="text-xs text-gray-400 mt-1 pr-2">${item.desc}</div>
+                        </div>
+                        <button class="shrink-0 bg-${canAfford ? 'purple-900 hover:bg-purple-700' : 'gray-800 text-gray-500'} text-white border border-${canAfford ? 'purple-500' : 'gray-700'} px-3 py-1.5 rounded text-xs font-bold transition-colors" ${!canAfford ? 'disabled' : ''}>
+                            ${item.price} 冥銭
+                        </button>
+                    </div>
+                `;
+                
+                const btn = card.querySelector('button');
+                btn.onclick = () => {
+                    if (window.meisen >= item.price) {
+                        window.meisen -= item.price;
+                        window.inventory[item.id] = (window.inventory[item.id] || 0) + 1;
+                        saveMetaProgress();
+                        window.updateStartScreenUI();
+                        window.openShop(); // 再描画
+                    }
+                };
+                sList.appendChild(card);
+            });
+        };
+
+        window.closeShop = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('shop-screen').classList.add('hidden');
+        };
+
+        // ★NEW: 持込道具の選択画面
+        window.openItemStorage = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            const iScreen = document.getElementById('item-screen');
+            const iList = document.getElementById('item-list');
+            
+            iScreen.classList.remove('hidden');
+            iList.innerHTML = '';
+
+            const hasItems = Object.values(window.inventory).some(count => count > 0);
+
+            if (!hasItems) {
+                iList.innerHTML = '<div class="text-center text-gray-500 mt-10 text-xs">手持ちの道具がありません。<br>冥府の商人から購入してください。</div>';
+                return;
+            }
+
+            const noneCard = document.createElement('div');
+            noneCard.className = `border p-3 rounded-sm cursor-pointer transition-all ${!window.activeConsumable ? 'bg-purple-900/30 border-purple-500' : 'bg-[#181513] border-[#3A322A] hover:border-gray-500'}`;
+            noneCard.innerHTML = `<div class="font-bold text-white text-sm flex justify-between"><span>持込なし</span></div>`;
+            noneCard.onclick = () => {
+                window.activeConsumable = null;
+                window.updateStartScreenUI();
+                window.closeItemStorage();
+            };
+            iList.appendChild(noneCard);
+
+            CONSUMABLES_DB.forEach(item => {
+                const count = window.inventory[item.id] || 0;
+                if (count > 0) {
+                    const isActive = window.activeConsumable && window.activeConsumable.id === item.id;
+                    const card = document.createElement('div');
+                    card.className = `border p-3 rounded-sm cursor-pointer transition-all ${isActive ? 'bg-purple-900/40 border-purple-400' : 'bg-[#1A1622] border-[#3A2A44] hover:border-purple-500/50'}`;
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center mb-1">
+                            <div class="font-bold ${isActive ? 'text-purple-300' : 'text-gray-200'} text-sm">${item.name} <span class="text-[10px] text-gray-400 ml-1">所持: ${count}</span></div>
+                            ${isActive ? '<span class="text-[9px] bg-purple-600 text-white px-1.5 py-0.5 font-bold rounded">選択中</span>' : '<span class="text-[9px] text-gray-500 border border-gray-600 px-1.5 py-0.5 rounded">持ち込む</span>'}
+                        </div>
+                        <div class="text-xs text-gray-400">${item.desc}</div>
+                    `;
+                    
+                    card.onclick = () => {
+                        window.activeConsumable = item;
+                        window.updateStartScreenUI();
+                        window.closeItemStorage(); 
+                    };
+                    iList.appendChild(card);
+                }
+            });
+        };
+
+        window.closeItemStorage = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('item-screen').classList.add('hidden');
         };
 
         window.openEncyclopedia = function(e) {
@@ -1279,6 +1461,10 @@
             if (historyScreen) historyScreen.classList.add('hidden');
             if (rouletteScreen) rouletteScreen.classList.add('hidden');
             if (introScreen) introScreen.classList.add('hidden');
+            const shopScreen = document.getElementById('shop-screen');
+            if (shopScreen) shopScreen.classList.add('hidden');
+            const itemScreen = document.getElementById('item-screen');
+            if (itemScreen) itemScreen.classList.add('hidden');
 
             if (logContainer) {
                 logContainer.innerHTML = '';
@@ -1304,8 +1490,6 @@
             resetAllStateAndUI();
             window.updateStartScreenUI();
             
-            if (gameoverScreen) gameoverScreen.classList.add('hidden');
-            if (premiumScreen) premiumScreen.classList.add('hidden');
             if (startScreen) startScreen.classList.remove('hidden');
         };
 
@@ -1367,6 +1551,7 @@
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
 
+            // 家宝の適用
             if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
                 window.activeHeirlooms.forEach(hl => {
                     if (hl.type === 'money') state.money += hl.value;
@@ -1377,6 +1562,28 @@
                     if (hl.type === 'virtue') state.virtue += hl.value;
                     if (hl.type === 'health') state.health += hl.value;
                 });
+            }
+
+            // ★NEW: 持ち込み道具（使い切り）の適用と消費
+            if (window.activeConsumable) {
+                const cons = window.activeConsumable;
+                if (cons.type === 'migawari') {
+                    state.flags.migawari = true;
+                } else if (cons.type === 'money') state.money += cons.value;
+                else if (cons.type === 'valor') state.valor += cons.value;
+                else if (cons.type === 'luck') state.luck += cons.value;
+                else if (cons.type === 'strategy') state.strategy += cons.value;
+                else if (cons.type === 'virtue') state.virtue += cons.value;
+
+                // インベントリから消費
+                if (window.inventory[cons.id] > 0) {
+                    window.inventory[cons.id] -= 1;
+                }
+                state.flags.consumedItemName = cons.name;
+                
+                // 消費したので選択を解除
+                window.activeConsumable = null;
+                saveMetaProgress();
             }
 
             const maxHp = 150 + window.currentReincarnationCount;
@@ -1442,6 +1649,10 @@
             if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
                 const hlNames = window.activeHeirlooms.map(h => h.name).join('、');
                 hlText = `<p class="text-gold mt-6 text-[11px]">家宝「${hlNames}」の加護を携え、<br>宿命の旅が始まる。</p>`;
+            }
+            // ★NEW: 道具のテキスト
+            if (state.flags.consumedItemName) {
+                hlText += `<p class="text-purple-300 mt-2 text-[10px]">冥府の道具「${state.flags.consumedItemName}」の力を身に宿した。</p>`;
             }
             
             introText.innerHTML = `
@@ -1889,6 +2100,16 @@
                 addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた老躯が限界を迎え、静かに眠りについた。</span>`);
             }
 
+            // ★NEW: 身代わり地蔵の消費ロジック
+            if (state.health <= 0 && state.flags.migawari) {
+                state.health = 1;
+                state.flags.migawari = false;
+                state.deathCause = '';
+                addLog(`<span class="text-purple-300 font-bold">【身代わり地蔵】懐に忍ばせていた地蔵が砕け散った！冥府の力により、死の淵から奇跡的に生還する……！</span>`);
+                updateUI();
+                return; // 死亡処理をキャンセル
+            }
+
             if (state.health <= 0) {
                 state.isAlive = false;
                 stopAutoPlay();
@@ -1899,9 +2120,12 @@
                 
                 localStorage.removeItem('sengoku_current_run');
 
+                // ★NEW: 冥銭の獲得計算
+                const earnedMeisen = Math.floor((state.age + state.valor + state.karma + state.luck + state.strategy + state.virtue) / 10);
+                window.meisen += earnedMeisen;
+
                 if (!window.unlockedDeaths.includes(state.deathCause)) {
                     window.unlockedDeaths.push(state.deathCause);
-                    try { localStorage.setItem('sengoku_unlocked_deaths', JSON.stringify(window.unlockedDeaths)); } catch(e){}
                 }
 
                 let reason = "戦国の風雲に呑まれ、血の海に沈んで息絶えた。";
@@ -1920,17 +2144,12 @@
                 if (nextHeirloom) {
                     if (!window.unlockedHeirlooms) window.unlockedHeirlooms = [];
                     const exists = window.unlockedHeirlooms.find(h => h.id === nextHeirloom.id);
-                    if (!exists) {
-                        window.unlockedHeirlooms.push(nextHeirloom);
-                        try {
-                            localStorage.setItem('sengoku_unlocked_heirlooms', JSON.stringify(window.unlockedHeirlooms));
-                        } catch (e) { console.warn("Heirloom save failed:", e); }
-                    }
+                    if (!exists) window.unlockedHeirlooms.push(nextHeirloom);
                 }
 
+                saveMetaProgress();
+
                 try {
-                    localStorage.setItem('sengoku_rinne_count', window.currentReincarnationCount);
-                    
                     const past = JSON.parse(localStorage.getItem('sengoku_past_lives') || '[]');
                     past.unshift({
                         age: state.age,
@@ -1944,23 +2163,22 @@
                         chronology: state.chronology
                     });
                     localStorage.setItem('sengoku_past_lives', JSON.stringify(past.slice(0, 30)));
-                } catch (e) {
-                    console.warn("Save local failed:", e);
-                }
+                } catch (e) {}
 
                 if (typeof window.__saveDeathData === 'function') {
                     window.__saveDeathData(state.age, state.classInfo ? state.classInfo.name : '', state.faction ? state.faction.name : '', finalTitle, reason, state, nextHeirloom);
                 }
 
                 if (state.age >= 60) {
-                    setTimeout(() => showPremiumEnding(finalTitle, nextHeirloom), 400);
+                    setTimeout(() => showPremiumEnding(finalTitle, nextHeirloom, earnedMeisen), 400);
                 } else {
-                    setTimeout(() => showGameOver(reason, finalTitle, nextHeirloom, state.deathCause), 400);
+                    setTimeout(() => showGameOver(reason, finalTitle, nextHeirloom, state.deathCause, earnedMeisen), 400);
                 }
             }
         }
 
-        function showGameOver(reason, title, nextHeirloom, deathCause) {
+        // ★引数に earnedMeisen を追加
+        function showGameOver(reason, title, nextHeirloom, deathCause, earnedMeisen) {
             const screen = document.getElementById('gameover-screen');
             const mainTitle = document.getElementById('go-main-title');
             const subTitle = document.getElementById('go-sub-title');
@@ -2007,6 +2225,10 @@
             document.getElementById('go-virtue').innerText = state.virtue;
             document.getElementById('go-money').innerText = state.money;
             document.getElementById('go-reason').innerText = reason;
+            
+            // ★獲得冥銭の表示
+            const goMeisen = document.getElementById('go-meisen');
+            if (goMeisen) goMeisen.innerText = `+${earnedMeisen}`;
 
             renderChronologyToList('go-chronology-list');
 
@@ -2024,7 +2246,8 @@
             }
         }
 
-        function showPremiumEnding(title, nextHeirloom) {
+        // ★引数に earnedMeisen を追加
+        function showPremiumEnding(title, nextHeirloom, earnedMeisen) {
             if (gameScreen) gameScreen.classList.add('hidden');
             const screen = document.getElementById('premium-screen');
             const content = document.getElementById('premium-content');
@@ -2044,6 +2267,10 @@
             document.getElementById('premium-strategy').innerText = state.strategy;
             document.getElementById('premium-virtue').innerText = state.virtue;
             document.getElementById('premium-money').innerText = state.money;
+            
+            // ★獲得冥銭の表示
+            const premMeisen = document.getElementById('premium-meisen');
+            if (premMeisen) premMeisen.innerText = `+${earnedMeisen} 冥銭`;
 
             renderChronologyToList('premium-chronology-list');
 
@@ -2127,10 +2354,16 @@
                 localStorage.removeItem('sengoku_unlocked_deaths');
                 localStorage.removeItem('sengoku_past_lives');
                 localStorage.removeItem('sengoku_current_run');
+                localStorage.removeItem('sengoku_meisen');
+                localStorage.removeItem('sengoku_inventory');
+                localStorage.removeItem('sengoku_active_consumable');
                 window.currentReincarnationCount = 0;
                 window.unlockedHeirlooms = [];
                 window.activeHeirlooms = [];
                 window.unlockedDeaths = [];
+                window.meisen = 0;
+                window.inventory = {};
+                window.activeConsumable = null;
                 window.updateStartScreenUI();
                 alert("すべての記録を初期化しました。");
             }
