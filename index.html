@@ -176,11 +176,10 @@
                 </div>
 
                 <!-- ★天下の総輪廻数表示枠 -->
-<div class="text-center mt-1 mb-2">
-    <span class="text-[10px] text-gray-500 tracking-widest">天下の総輪廻数</span>
-    <div class="text-sm font-bold text-gold"><span id="ui-global-reincarnations">---</span><span class="text-[10px] text-gray-500 font-normal ml-1">回</span></div>
-</div>
-
+                <div class="text-center mt-1 mb-2">
+                    <span class="text-[10px] text-gray-500 tracking-widest">天下の総輪廻数</span>
+                    <div class="text-sm font-bold text-gold"><span id="ui-global-reincarnations">---</span><span class="text-[10px] text-gray-500 font-normal ml-1">回</span></div>
+                </div>
 
                 <!-- 家宝表示エリア -->
                 <div onclick="window.openHeirloomStorage()" class="bg-[#211C18] border border-gold/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#2A231D]">
@@ -1148,41 +1147,22 @@
 
         function determineHeirloom(s) {
             let candidates = [];
-            
             if (s.valor >= 100) candidates.push({ id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", type: "valor", value: 35, desc: "初期武功 +35" });
             if (s.strategy >= 100) candidates.push({ id: 'hl_rikutou', name: "六韜三略の秘伝", type: "strategy", value: 35, desc: "初期知略 +35" });
             if (s.virtue >= 100) candidates.push({ id: 'hl_ranjyatai', name: "名香・蘭奢待", type: "virtue", value: 35, desc: "初期人徳 +35" });
             if (s.karma >= 100) candidates.push({ id: 'hl_hiragumo', name: "古天明平蜘蛛", type: "karma", value: 35, desc: "初期悪逆 +35" });
             if (s.money >= 3000) candidates.push({ id: 'hl_tsukumo', name: "九十九髪茄子", type: "money", value: 600, desc: "初期所持金 +600文" });
             if (s.age >= 70) candidates.push({ id: 'hl_nanbandou', name: "南蛮胴具足", type: "health", value: 50, desc: "初期体力 +50" });
-
-            if (s.valor >= 80) {
-                candidates.push({ id: 'hl_mikazuki', name: "天下五剣・三日月宗近", type: "valor", value: 20, desc: "初期武功 +20" });
-                candidates.push({ id: 'hl_hasebe', name: "へし切長谷部", type: "valor", value: 20, desc: "初期武功 +20" });
-            }
-            if (s.strategy >= 80) {
-                candidates.push({ id: 'hl_koyogunkan', name: "甲陽軍鑑", type: "strategy", value: 20, desc: "初期知略 +20" });
-                candidates.push({ id: 'hl_sonshi', name: "孫子の古伝書", type: "strategy", value: 20, desc: "初期知略 +20" });
-            }
-            if (s.virtue >= 80) {
-                candidates.push({ id: 'hl_matsukaze', name: "名馬・松風", type: "virtue", value: 20, desc: "初期人徳 +20" });
-            }
-            if (s.karma >= 80) {
-                candidates.push({ id: 'hl_muramasa', name: "妖刀・千子村正", type: "karma", value: 20, desc: "初期悪逆 +20" });
-            }
-            if (s.money >= 1500) {
-                candidates.push({ id: 'hl_chaki', name: "黄金の茶器", type: "money", value: 300, desc: "初期所持金 +300文" });
-            }
-            if (s.age >= 60) {
-                candidates.push({ id: 'hl_furo', name: "南蛮不老薬", type: "health", value: 30, desc: "初期体力 +30" });
-            }
-            
+            if (s.valor >= 80) { candidates.push({ id: 'hl_mikazuki', name: "天下五剣・三日月宗近", type: "valor", value: 20, desc: "初期武功 +20" }); candidates.push({ id: 'hl_hasebe', name: "へし切長谷部", type: "valor", value: 20, desc: "初期武功 +20" }); }
+            if (s.strategy >= 80) { candidates.push({ id: 'hl_koyogunkan', name: "甲陽軍鑑", type: "strategy", value: 20, desc: "初期知略 +20" }); candidates.push({ id: 'hl_sonshi', name: "孫子の古伝書", type: "strategy", value: 20, desc: "初期知略 +20" }); }
+            if (s.virtue >= 80) { candidates.push({ id: 'hl_matsukaze', name: "名馬・松風", type: "virtue", value: 20, desc: "初期人徳 +20" }); }
+            if (s.karma >= 80) { candidates.push({ id: 'hl_muramasa', name: "妖刀・千子村正", type: "karma", value: 20, desc: "初期悪逆 +20" }); }
+            if (s.money >= 1500) { candidates.push({ id: 'hl_chaki', name: "黄金の茶器", type: "money", value: 300, desc: "初期所持金 +300文" }); }
+            if (s.age >= 60) { candidates.push({ id: 'hl_furo', name: "南蛮不老薬", type: "health", value: 30, desc: "初期体力 +30" }); }
             if (s.luck >= 60) candidates.push({ id: 'hl_yohen', name: "曜変天目茶碗", type: "luck", value: 20, desc: "初期運 +20" });
             if (s.luck >= 40) candidates.push({ id: 'hl_aoi', name: "四葉の葵紋", type: "luck", value: 10, desc: "初期運 +10" });
             
-            if (candidates.length > 0) {
-                return candidates[Math.floor(Math.random() * candidates.length)];
-            }
+            if (candidates.length > 0) return candidates[Math.floor(Math.random() * candidates.length)];
             return null;
         }
 
@@ -1203,11 +1183,7 @@
                     listDiv.innerHTML = '<span class="text-gray-400 text-xs block py-0.5">装備なし（クリックして蔵を開く）</span>';
                 } else {
                     window.activeHeirlooms.forEach(hl => {
-                        listDiv.innerHTML += `
-                            <div class="bg-black/30 p-1.5 rounded border border-gold/30">
-                                <strong class="text-gold text-xs block">${hl.name}</strong>
-                            </div>
-                        `;
+                        listDiv.innerHTML += `<div class="bg-black/30 p-1.5 rounded border border-gold/30"><strong class="text-gold text-xs block">${hl.name}</strong></div>`;
                     });
                 }
             }
@@ -1217,11 +1193,7 @@
                 if (!window.activeConsumable) {
                     itemDiv.innerHTML = '<span class="text-gray-400 text-xs block py-0.5">道具なし（クリックして手持ちから選ぶ）</span>';
                 } else {
-                    itemDiv.innerHTML = `
-                        <div class="bg-black/30 p-1.5 rounded border border-purple-900/50">
-                            <strong class="text-purple-300 text-xs block">${window.activeConsumable.name}</strong>
-                        </div>
-                    `;
+                    itemDiv.innerHTML = `<div class="bg-black/30 p-1.5 rounded border border-purple-900/50"><strong class="text-purple-300 text-xs block">${window.activeConsumable.name}</strong></div>`;
                 }
             }
 
@@ -1233,15 +1205,9 @@
                     if (parsed && parsed.isAlive) {
                         resumeBtn.classList.remove('hidden');
                         resumeBtn.innerText = `続きから遊ぶ (${parsed.age}歳: ${parsed.classInfo.name})`;
-                    } else {
-                        resumeBtn.classList.add('hidden');
-                    }
-                } catch(e) {
-                    resumeBtn.classList.add('hidden');
-                }
-            } else if (resumeBtn) {
-                resumeBtn.classList.add('hidden');
-            }
+                    } else { resumeBtn.classList.add('hidden'); }
+                } catch(e) { resumeBtn.classList.add('hidden'); }
+            } else if (resumeBtn) { resumeBtn.classList.add('hidden'); }
 
             saveMetaProgress();
         };
@@ -1250,7 +1216,6 @@
             if(e){ e.preventDefault(); e.stopPropagation(); }
             const hScreen = document.getElementById('heirloom-screen');
             const hList = document.getElementById('heirloom-list');
-            
             const maxSlots = window.getMaxHeirloomSlots();
             document.getElementById('modal-slots-count').innerText = `${window.activeHeirlooms.length}/${maxSlots}`;
 
@@ -1265,11 +1230,7 @@
             const noneCard = document.createElement('div');
             noneCard.className = `border p-3 rounded-sm cursor-pointer transition-all ${window.activeHeirlooms.length === 0 ? 'bg-yellow-900/30 border-gold' : 'bg-[#181513] border-[#3A322A] hover:border-gray-500'}`;
             noneCard.innerHTML = `<div class="font-bold text-white text-sm flex justify-between"><span>全装備解除</span></div><div class="text-xs text-gray-400 mt-1">己の身一つで乱世に挑む</div>`;
-            noneCard.onclick = () => {
-                window.activeHeirlooms = [];
-                window.updateStartScreenUI();
-                window.closeHeirloomStorage();
-            };
+            noneCard.onclick = () => { window.activeHeirlooms = []; window.updateStartScreenUI(); window.closeHeirloomStorage(); };
             hList.appendChild(noneCard);
 
             window.unlockedHeirlooms.forEach(item => {
@@ -1283,17 +1244,11 @@
                     </div>
                     <div class="text-xs text-gray-400">${item.desc}</div>
                 `;
-                
                 card.onclick = () => {
-                    if (isActive) {
-                        window.activeHeirlooms = window.activeHeirlooms.filter(h => h.id !== item.id);
-                    } else {
-                        if (window.activeHeirlooms.length < maxSlots) {
-                            window.activeHeirlooms.push(item);
-                        } else {
-                            alert(`現在の輪廻回数(${window.currentReincarnationCount}回)では、家宝は ${maxSlots} つまでしか装備できません。`);
-                            return;
-                        }
+                    if (isActive) window.activeHeirlooms = window.activeHeirlooms.filter(h => h.id !== item.id);
+                    else {
+                        if (window.activeHeirlooms.length < maxSlots) window.activeHeirlooms.push(item);
+                        else { alert(`現在の輪廻回数(${window.currentReincarnationCount}回)では、家宝は ${maxSlots} つまでしか装備できません。`); return; }
                     }
                     window.updateStartScreenUI();
                     window.openHeirloomStorage(); 
@@ -1302,17 +1257,13 @@
             });
         };
 
-        window.closeHeirloomStorage = function(e) {
-            if(e){ e.preventDefault(); e.stopPropagation(); }
-            document.getElementById('heirloom-screen').classList.add('hidden');
-        };
+        window.closeHeirloomStorage = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('heirloom-screen').classList.add('hidden'); };
 
         window.openShop = function(e) {
             if(e){ e.preventDefault(); e.stopPropagation(); }
             const sScreen = document.getElementById('shop-screen');
             const sList = document.getElementById('shop-list');
             document.getElementById('shop-meisen').innerText = window.meisen;
-            
             sScreen.classList.remove('hidden');
             sList.innerHTML = '';
 
@@ -1321,7 +1272,6 @@
                 const canAfford = window.meisen >= item.price;
                 const card = document.createElement('div');
                 card.className = `border p-3 rounded-sm transition-all bg-[#1A1622] border-[#3A2A44]`;
-                
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-1">
                         <div>
@@ -1333,36 +1283,28 @@
                         </button>
                     </div>
                 `;
-                
                 const btn = card.querySelector('button');
                 btn.onclick = () => {
                     if (window.meisen >= item.price) {
                         window.meisen -= item.price;
                         window.inventory[item.id] = (window.inventory[item.id] || 0) + 1;
-                        saveMetaProgress();
-                        window.updateStartScreenUI();
-                        window.openShop(); 
+                        saveMetaProgress(); window.updateStartScreenUI(); window.openShop(); 
                     }
                 };
                 sList.appendChild(card);
             });
         };
 
-        window.closeShop = function(e) {
-            if(e){ e.preventDefault(); e.stopPropagation(); }
-            document.getElementById('shop-screen').classList.add('hidden');
-        };
+        window.closeShop = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('shop-screen').classList.add('hidden'); };
 
         window.openItemStorage = function(e) {
             if(e){ e.preventDefault(); e.stopPropagation(); }
             const iScreen = document.getElementById('item-screen');
             const iList = document.getElementById('item-list');
-            
             iScreen.classList.remove('hidden');
             iList.innerHTML = '';
 
             const hasItems = Object.values(window.inventory).some(count => count > 0);
-
             if (!hasItems) {
                 iList.innerHTML = '<div class="text-center text-gray-500 mt-10 text-xs">手持ちの道具がありません。<br>冥府の商人から購入してください。</div>';
                 return;
@@ -1371,11 +1313,7 @@
             const noneCard = document.createElement('div');
             noneCard.className = `border p-3 rounded-sm cursor-pointer transition-all ${!window.activeConsumable ? 'bg-purple-900/30 border-purple-500' : 'bg-[#181513] border-[#3A322A] hover:border-gray-500'}`;
             noneCard.innerHTML = `<div class="font-bold text-white text-sm flex justify-between"><span>持込なし</span></div>`;
-            noneCard.onclick = () => {
-                window.activeConsumable = null;
-                window.updateStartScreenUI();
-                window.closeItemStorage();
-            };
+            noneCard.onclick = () => { window.activeConsumable = null; window.updateStartScreenUI(); window.closeItemStorage(); };
             iList.appendChild(noneCard);
 
             CONSUMABLES_DB.forEach(item => {
@@ -1391,32 +1329,16 @@
                         </div>
                         <div class="text-xs text-gray-400">${item.desc}</div>
                     `;
-                    
-                    card.onclick = () => {
-                        window.activeConsumable = item;
-                        window.updateStartScreenUI();
-                        window.closeItemStorage(); 
-                    };
+                    card.onclick = () => { window.activeConsumable = item; window.updateStartScreenUI(); window.closeItemStorage(); };
                     iList.appendChild(card);
                 }
             });
         };
 
-        window.closeItemStorage = function(e) {
-            if(e){ e.preventDefault(); e.stopPropagation(); }
-            document.getElementById('item-screen').classList.add('hidden');
-        };
+        window.closeItemStorage = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('item-screen').classList.add('hidden'); };
 
-        window.openEncyclopedia = function(e) {
-            if(e){ e.preventDefault(); e.stopPropagation(); }
-            document.getElementById('encyclopedia-screen').classList.remove('hidden');
-            window.switchEncycTab('heirloom');
-        };
-
-        window.closeEncyclopedia = function(e) {
-            if(e){ e.preventDefault(); e.stopPropagation(); }
-            document.getElementById('encyclopedia-screen').classList.add('hidden');
-        };
+        window.openEncyclopedia = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('encyclopedia-screen').classList.remove('hidden'); window.switchEncycTab('heirloom'); };
+        window.closeEncyclopedia = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('encyclopedia-screen').classList.add('hidden'); };
 
         window.switchEncycTab = function(tabName) {
             const tabH = document.getElementById('tab-heirloom');
@@ -1452,7 +1374,6 @@
                     }
                 });
                 content.innerHTML = html;
-                
             } else {
                 tabH.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
                 tabD.className = "flex-1 py-3 text-xs font-bold text-red-500 border-b-2 border-red-500 transition-colors";
@@ -1484,22 +1405,11 @@
             }
         };
 
-        window.openHelp = function(e) {
-            if(e){ e.preventDefault(); e.stopPropagation(); }
-            document.getElementById('help-screen').classList.remove('hidden');
-        };
-
-        window.closeHelp = function(e) {
-            if(e){ e.preventDefault(); e.stopPropagation(); }
-            document.getElementById('help-screen').classList.add('hidden');
-        };
+        window.openHelp = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('help-screen').classList.remove('hidden'); };
+        window.closeHelp = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('help-screen').classList.add('hidden'); };
 
         function resetAllStateAndUI() {
-            stopAutoPlay();
-            isWaitingForChoice = false;
-            isProcessing = false;
-            state.isAlive = false;
-
+            stopAutoPlay(); isWaitingForChoice = false; isProcessing = false; state.isAlive = false;
             if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
 
             const freeze = document.getElementById('freeze-overlay');
@@ -1511,67 +1421,36 @@
             if (historyScreen) historyScreen.classList.add('hidden');
             if (rouletteScreen) rouletteScreen.classList.add('hidden');
             if (introScreen) introScreen.classList.add('hidden');
-            
-            const shopScreen = document.getElementById('shop-screen');
-            if (shopScreen) shopScreen.classList.add('hidden');
-            
-            const itemScreen = document.getElementById('item-screen');
-            if (itemScreen) itemScreen.classList.add('hidden');
+            if (document.getElementById('shop-screen')) document.getElementById('shop-screen').classList.add('hidden');
+            if (document.getElementById('item-screen')) document.getElementById('item-screen').classList.add('hidden');
+            if (document.getElementById('help-screen')) document.getElementById('help-screen').classList.add('hidden');
 
-            const helpScreen = document.getElementById('help-screen');
-            if (helpScreen) helpScreen.classList.add('hidden');
-
-            if (logContainer) {
-                logContainer.innerHTML = '';
-                logContainer.scrollTop = 0;
-            }
-            if (choicesContainer) {
-                choicesContainer.innerHTML = '';
-                choicesContainer.classList.add('hidden');
-                choicesContainer.classList.remove('flex');
-            }
-            if (advanceBtn) {
-                advanceBtn.classList.remove('hidden');
-                if (advanceBtnText) advanceBtnText.innerText = "歳 月 を 進 め る";
-            }
-            if (appContainer) {
-                appContainer.classList.remove('mode-battle', 'mode-fugitive', 'damage-flash');
-            }
+            if (logContainer) { logContainer.innerHTML = ''; logContainer.scrollTop = 0; }
+            if (choicesContainer) { choicesContainer.innerHTML = ''; choicesContainer.classList.add('hidden'); choicesContainer.classList.remove('flex'); }
+            if (advanceBtn) { advanceBtn.classList.remove('hidden'); if (advanceBtnText) advanceBtnText.innerText = "歳 月 を 進 め る"; }
+            if (appContainer) appContainer.classList.remove('mode-battle', 'mode-fugitive', 'damage-flash');
             if (modeBadge) modeBadge.classList.add('hidden');
         }
 
         window.resetGame = function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
-            resetAllStateAndUI();
-            window.updateStartScreenUI();
-            
+            resetAllStateAndUI(); window.updateStartScreenUI();
             if (startScreen) startScreen.classList.remove('hidden');
         };
 
         window.resumeGame = function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (isProcessing) return;
-            
             const savedStateStr = localStorage.getItem('sengoku_current_run');
             if (!savedStateStr) return;
-            
-            try {
-                state = JSON.parse(savedStateStr);
-            } catch(err) {
-                return;
-            }
+            try { state = JSON.parse(savedStateStr); } catch(err) { return; }
 
-            resetAllStateAndUI();
-            state.isAlive = true;
-            isWaitingForChoice = false;
-            isProcessing = false;
-            
+            resetAllStateAndUI(); state.isAlive = true; isWaitingForChoice = false; isProcessing = false;
             if (startScreen) startScreen.classList.add('hidden');
             if (gameScreen) gameScreen.classList.remove('hidden');
             
             updateUI();
             addLog(`<div class="text-center py-2"><span class="text-[10px] text-green-300 font-bold border border-green-800 bg-green-950/30 px-3 py-1 rounded">—— 輪廻の狭間より、記憶が蘇る ——</span></div>`);
-            
             scheduleNextAutoPlay(800);
         };
 
@@ -1579,29 +1458,18 @@
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (isProcessing) return;
 
-            resetAllStateAndUI();
-            
-            localStorage.removeItem('sengoku_current_run');
+            resetAllStateAndUI(); localStorage.removeItem('sengoku_current_run');
 
             const baseClasses = CLASSES.filter(c => c.weight > 0);
             const totalWeight = baseClasses.reduce((sum, c) => sum + c.weight, 0);
             let rW = Math.random() * totalWeight;
             let selectedClass = baseClasses[0];
-            for (let c of baseClasses) {
-                rW -= c.weight;
-                if (rW <= 0) { selectedClass = c; break; }
-            }
+            for (let c of baseClasses) { rW -= c.weight; if (rW <= 0) { selectedClass = c; break; } }
             
             const spawnProbability = ((selectedClass.weight / totalWeight) * 100).toFixed(1);
             const selectedFaction = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];
 
-            state = {
-                age: 15, health: selectedClass.initHealth, money: selectedClass.initMoney,
-                classInfo: selectedClass, faction: selectedFaction,
-                isAlive: true, lastDamageEvent: '', deathCause: '',
-                valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0,
-                mode: 'normal', flags: {}, chronology: []
-            };
+            state = { age: 15, health: selectedClass.initHealth, money: selectedClass.initMoney, classInfo: selectedClass, faction: selectedFaction, isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0, mode: 'normal', flags: {}, chronology: [] };
 
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
@@ -1620,19 +1488,15 @@
 
             if (window.activeConsumable) {
                 const cons = window.activeConsumable;
-                if (cons.type === 'migawari') {
-                    state.flags.migawari = true;
-                } else if (cons.type === 'money') state.money += cons.value;
+                if (cons.type === 'migawari') state.flags.migawari = true;
+                else if (cons.type === 'money') state.money += cons.value;
                 else if (cons.type === 'valor') state.valor += cons.value;
                 else if (cons.type === 'luck') state.luck += cons.value;
                 else if (cons.type === 'strategy') state.strategy += cons.value;
                 else if (cons.type === 'virtue') state.virtue += cons.value;
 
-                if (window.inventory[cons.id] > 0) {
-                    window.inventory[cons.id] -= 1;
-                }
+                if (window.inventory[cons.id] > 0) window.inventory[cons.id] -= 1;
                 state.flags.consumedItemName = cons.name;
-                
                 window.activeConsumable = null;
                 saveMetaProgress();
             }
@@ -1641,7 +1505,6 @@
             if (state.health > maxHp) state.health = maxHp;
 
             recordChronology(`生を享ける（身分: ${state.classInfo.name}）`);
-
             if (startScreen) startScreen.classList.add('hidden');
             
             isProcessing = true;
@@ -1649,40 +1512,25 @@
             rouletteClass.classList.remove('roulette-impact');
             rouletteFaction.classList.remove('roulette-impact');
 
-            let spinCount = 0;
-            const maxSpins = 25;
-            let spinSpeed = 30;
-
+            let spinCount = 0; const maxSpins = 25; let spinSpeed = 30;
             function spin() {
                 if (!isProcessing) return;
-
                 if (spinCount < maxSpins) {
                     const randomC = CLASSES[Math.floor(Math.random() * CLASSES.length)];
                     const randomF = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];
-                    rouletteClass.innerText = randomC.name;
-                    rouletteFaction.innerText = randomF.name;
-                    
+                    rouletteClass.innerText = randomC.name; rouletteFaction.innerText = randomF.name;
                     spinCount++;
-                    if (spinCount > maxSpins * 0.7) {
-                        spinSpeed += 25;
-                    } else if (spinCount > maxSpins * 0.4) {
-                        spinSpeed += 10;
-                    }
+                    if (spinCount > maxSpins * 0.7) spinSpeed += 25;
+                    else if (spinCount > maxSpins * 0.4) spinSpeed += 10;
                     setTimeout(spin, spinSpeed);
                 } else {
-                    rouletteClass.innerText = selectedClass.name;
-                    rouletteFaction.innerText = selectedFaction.name;
-                    
-                    rouletteClass.classList.remove('roulette-impact');
-                    rouletteFaction.classList.remove('roulette-impact');
+                    rouletteClass.innerText = selectedClass.name; rouletteFaction.innerText = selectedFaction.name;
+                    rouletteClass.classList.remove('roulette-impact'); rouletteFaction.classList.remove('roulette-impact');
                     void rouletteClass.offsetWidth;
-                    rouletteClass.classList.add('roulette-impact');
-                    rouletteFaction.classList.add('roulette-impact');
-
+                    rouletteClass.classList.add('roulette-impact'); rouletteFaction.classList.add('roulette-impact');
                     setTimeout(() => {
                         if (!isProcessing) return;
-                        rouletteScreen.classList.add('hidden');
-                        window.showIntro(selectedClass, selectedFaction, spawnProbability);
+                        rouletteScreen.classList.add('hidden'); window.showIntro(selectedClass, selectedFaction, spawnProbability);
                     }, 1800);
                 }
             }
@@ -1691,10 +1539,8 @@
 
         window.showIntro = function(cls, faction, prob) {
             introScreen.classList.remove('hidden');
-            introText.classList.remove('opacity-100');
-            introText.classList.add('opacity-0');
-            introPrompt.classList.remove('opacity-100');
-            introPrompt.classList.add('opacity-0');
+            introText.classList.remove('opacity-100'); introText.classList.add('opacity-0');
+            introPrompt.classList.remove('opacity-100'); introPrompt.classList.add('opacity-0');
             
             let hlText = "";
             if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
@@ -1706,101 +1552,61 @@
             }
             
             introText.innerHTML = `
-                <p>時は乱世。</p>
-                <p>果てなき戦乱が続き、<br>人命は草芥のごとく散りゆく時代。</p>
+                <p>時は乱世。</p><p>果てなき戦乱が続き、<br>人命は草芥のごとく散りゆく時代。</p>
                 <p class="mt-6 text-yellow-500">あなたは今、${faction.name}の領内で<br>「<span class="text-xl">${cls.name}</span>」として新たな生を受けた。</p>
-                
                 <div class="inline-block border border-gray-700 bg-black/50 px-3 py-1.5 mt-3 rounded-sm shadow-lg">
                     <p class="text-[10px] text-gray-400 font-normal">降誕確率: 約 <span class="text-white font-bold text-sm">${prob}%</span></p>
                     <p class="text-[8px] text-gray-500 mt-0.5">※戦国時代の推計人口比率に基づく独自算出</p>
                 </div>
-                
                 <p class="text-xs text-gray-300 mt-5 leading-relaxed">${cls.intro}</p>
                 <p class="mt-6 text-red-500 font-black">己の才覚と運命のみを頼りに、<br>この過酷な時代を生き抜け。</p>
                 ${hlText}
             `;
             
-            setTimeout(() => {
-                introText.classList.remove('opacity-0');
-                introText.classList.add('opacity-100');
-            }, 100);
-            
-            setTimeout(() => {
-                introPrompt.classList.remove('opacity-0');
-                introPrompt.classList.add('opacity-100');
-                isProcessing = false;
-            }, 2500);
+            setTimeout(() => { introText.classList.remove('opacity-0'); introText.classList.add('opacity-100'); }, 100);
+            setTimeout(() => { introPrompt.classList.remove('opacity-0'); introPrompt.classList.add('opacity-100'); isProcessing = false; }, 2500);
         };
 
         window.finishIntro = function() {
             if (isProcessing) return;
-            
-            introScreen.classList.add('hidden');
-            gameScreen.classList.remove('hidden');
-            
-            updateUI();
-            addLog(`<span class="font-bold text-gold">【生誕】</span>${state.faction.name}の領内にて。`);
-            saveCurrentRun();
-            
-            scheduleNextAutoPlay(1000);
+            introScreen.classList.add('hidden'); gameScreen.classList.remove('hidden');
+            updateUI(); addLog(`<span class="font-bold text-gold">【生誕】</span>${state.faction.name}の領内にて。`);
+            saveCurrentRun(); scheduleNextAutoPlay(1000);
         };
 
         function scheduleNextAutoPlay(delay = 900) {
             stopAutoPlay();
             if (!state.isAlive || isWaitingForChoice) return;
-            autoPlayTimer = setTimeout(() => {
-                if (state.isAlive && !isWaitingForChoice && !isProcessing) {
-                    advanceOneYear();
-                }
-            }, delay);
+            autoPlayTimer = setTimeout(() => { if (state.isAlive && !isWaitingForChoice && !isProcessing) advanceOneYear(); }, delay);
         }
 
         window.manualAdvance = function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (!state.isAlive || isWaitingForChoice || isProcessing) return;
-            stopAutoPlay();
-            advanceOneYear();
+            stopAutoPlay(); advanceOneYear();
         };
 
         function advanceOneYear() {
             if (!state.isAlive || isWaitingForChoice || isProcessing) return;
             isProcessing = true;
-
             try {
                 state.age++;
-
                 const isMilestone = (state.age % 5 === 0);
                 const isRandomEvent = Math.random() < 0.25;
 
                 if (isMilestone || isRandomEvent) {
                     let pool = EVENTS.filter(e => e.mode.includes(state.mode));
-                    
-                    const availableEvents = pool.filter(e => {
-                        if (e.condition && !e.condition(state)) return false;
-                        return true;
-                    });
-                    
+                    const availableEvents = pool.filter(e => { if (e.condition && !e.condition(state)) return false; return true; });
                     if (availableEvents.length === 0) availableEvents.push(EVENTS[0]);
 
                     const totalW = availableEvents.reduce((s, e) => s + e.weight, 0);
                     let r = Math.random() * totalW;
                     let ev = availableEvents[0];
-                    for (let e of availableEvents) {
-                        r -= e.weight;
-                        if (r <= 0) { ev = e; break; }
-                    }
-
-                    presentEventChoices(ev);
-                    saveCurrentRun();
+                    for (let e of availableEvents) { r -= e.weight; if (r <= 0) { ev = e; break; } }
+                    presentEventChoices(ev); saveCurrentRun();
                 } else {
-                    handleNormalYear();
-                    updateUI();
-                    checkSurvival();
-
-                    if (state.isAlive && !isWaitingForChoice) {
-                        saveCurrentRun();
-                        scheduleNextAutoPlay(850);
-                    }
+                    handleNormalYear(); updateUI(); checkSurvival();
+                    if (state.isAlive && !isWaitingForChoice) { saveCurrentRun(); scheduleNextAutoPlay(850); }
                 }
             } catch (err) {
                 console.error("Yearly advance error:", err);
@@ -1811,104 +1617,30 @@
 
         function handleNormalYear() {
             let pool = [];
-            
             if (state.mode === 'normal') {
                 const cid = state.classInfo ? state.classInfo.id : 'peasant';
                 switch(cid) {
-                    case 'peasant':
-                        pool = [
-                            { text: '朝から晩まで泥にまみれて田畑を耕し、日々の糧を得た。腰が痛むが、生きているだけマシだ。', money: 2, hp: -1 },
-                            { text: '困窮して倒れそうになっていた見知らぬ旅の者に、なけなしの握り飯を分け与えた。', virtue: 2, hp: -2 },
-                            { text: '珍しく豊作に恵まれ、余った作物を町で高値で売り払って小銭を得た。', money: 5 }
-                        ];
-                        break;
-                    case 'ashigaru':
-                        pool = [
-                            { text: '道場で血を吐くような槍の稽古に励み、いざという時のための武芸の腕を磨いた。', valor: 2, hp: -2 },
-                            { text: '退屈な陣所の見回り任務を無事に終え、わずかな手当をもらった。', money: 3 },
-                            { text: '非番の日に同僚と博打をして小銭を稼いだが、後味が悪い。', money: 4, karma: 1 }
-                        ];
-                        break;
-                    case 'merchant':
-                        pool = [
-                            { text: '他国とのギリギリの交易で手広く商いを行い、大きな利益を出した。', money: 15, strategy: 1 },
-                            { text: '有力な武将に高価な貢物を贈り、今後の商いのためにがっちりと便宜を図ってもらった。', money: -10, strategy: 3, virtue: 1 },
-                            { text: '夜通しで入り組んだ帳簿の整理に追われ、寝不足でフラフラな日々を過ごした。', hp: -2, money: 5 }
-                        ];
-                        break;
-                    case 'bushou':
-                        pool = [
-                            { text: '泥臭く兵たちの鍛錬を直接視察し、大声で叱咤激励して軍の士気を限界まで高めた。', valor: 2, virtue: 1 },
-                            { text: '領地の新田開発を強引に推し進め、国の根幹たる財力と国力を着実に高めた。', money: 10, virtue: 2 },
-                            { text: '主君の張り詰めた評定に出席し、他国を出し抜くための冷徹な軍略を献策した。', strategy: 3 }
-                        ];
-                        break;
-                    case 'daimyo':
-                        pool = [
-                            { text: '他国の油断ならぬ大名と密かに書状を交わし、薄氷を踏むような同盟の腹を探り合った。', strategy: 3 },
-                            { text: '大勢の供を連れて鷹狩りに出かけ、領民たちに圧倒的な力と威光を見せつけた。', valor: 1, hp: 2 },
-                            { text: '金に糸目をつけず豪勢な茶会を開き、腹の読めない家臣たちとの結束を無理矢理固めた。', money: -20, virtue: 3 }
-                        ];
-                        break;
-                    case 'kuge':
-                        pool = [
-                            { text: '美しい庭園で花鳥風月を愛でて和歌を詠み、戦乱とは無縁の雅な一日を過ごした。', virtue: 2, hp: 2 },
-                            { text: '格式高い朝廷の儀式に重い装束で参列し、公卿としての体裁を必死に保った。', money: 5 },
-                            { text: '武家から胡散臭い献上品を受け取り、扇で顔を隠しながら優雅に微笑んだ。', money: 10, karma: 1 }
-                        ];
-                        break;
-                    case 'ninja':
-                        pool = [
-                            { text: '闇夜に紛れて屋根裏を這い、他国の危険な情勢を探り歩いた。', strategy: 4, hp: -2 },
-                            { text: '指から血が滲むほど手裏剣と体術の修行に明け暮れた。', valor: 3, hp: -3 },
-                            { text: '即効性のある新たな毒の調合を人体で試し、裏の知識を深めた。', strategy: 2, karma: 1 }
-                        ];
-                        break;
-                    case 'monk':
-                        pool = [
-                            { text: '破れた笠を被り、雨の日も風の日も諸国を托鉢して回って民の平穏を祈り続けた。', virtue: 5, money: 2 },
-                            { text: '悪臭漂う病に苦しむ者を熱心に看病し、涙を流して深く感謝された。', virtue: 4, hp: -2 },
-                            { text: '静寂の寺でただひたすらに経典を書き写し、己の波立つ心と向き合った。', strategy: 2, hp: 2 }
-                        ];
-                        break;
-                    case 'bandit':
-                        pool = [
-                            { text: '暗い街道を通りかかる丸腰の商人を容赦なく襲い、荷をすべて奪い取った。', money: 15, karma: 3, hp: -2 },
-                            { text: '血塗られた盗品を怪しげな闇市で売り捌き、手軽に日銭を得た。', money: 10, karma: 2 },
-                            { text: '薄暗いアジトで下品な手下たちと豪快に酒盛りをし、英気を養った。', hp: 5, money: -5 }
-                        ];
-                        break;
-                    case 'ronin':
-                        pool = [
-                            { text: '雨漏りのする長屋で傘張りなどのみすぼらしい内職をし、細々と日銭を稼いだ。', money: 3, hp: -1 },
-                            { text: '町道場の師範代として剣術を教え、幾ばくかのありがたい謝礼を得た。', money: 5, valor: 1 },
-                            { text: '町を荒らす辻斬りを一刀の元に退治し、奉行所から褒美をもらったが、返り血を浴びた。', money: 10, valor: 3, virtue: 2, hp: -5 }
-                        ];
-                        break;
-                    default:
-                        pool = [{ text: '特に何も起こらない、静かで平穏な一年だった。', money: 1 }];
+                    case 'peasant': pool = [ { text: '朝から晩まで泥にまみれて田畑を耕し、日々の糧を得た。腰が痛むが、生きているだけマシだ。', money: 2, hp: -1 }, { text: '困窮して倒れそうになっていた見知らぬ旅の者に、なけなしの握り飯を分け与えた。', virtue: 2, hp: -2 }, { text: '珍しく豊作に恵まれ、余った作物を町で高値で売り払って小銭を得た。', money: 5 } ]; break;
+                    case 'ashigaru': pool = [ { text: '道場で血を吐くような槍の稽古に励み、いざという時のための武芸の腕を磨いた。', valor: 2, hp: -2 }, { text: '退屈な陣所の見回り任務を無事に終え、わずかな手当をもらった。', money: 3 }, { text: '非番の日に同僚と博打をして小銭を稼いだが、後味が悪い。', money: 4, karma: 1 } ]; break;
+                    case 'merchant': pool = [ { text: '他国とのギリギリの交易で手広く商いを行い、大きな利益を出した。', money: 15, strategy: 1 }, { text: '有力な武将に高価な貢物を贈り、今後の商いのためにがっちりと便宜を図ってもらった。', money: -10, strategy: 3, virtue: 1 }, { text: '夜通しで入り組んだ帳簿の整理に追われ、寝不足でフラフラな日々を過ごした。', hp: -2, money: 5 } ]; break;
+                    case 'bushou': pool = [ { text: '泥臭く兵たちの鍛錬を直接視察し、大声で叱咤激励して軍の士気を限界まで高めた。', valor: 2, virtue: 1 }, { text: '領地の新田開発を強引に推し進め、国の根幹たる財力と国力を着実に高めた。', money: 10, virtue: 2 }, { text: '主君の張り詰めた評定に出席し、他国を出し抜くための冷徹な軍略を献策した。', strategy: 3 } ]; break;
+                    case 'daimyo': pool = [ { text: '他国の油断ならぬ大名と密かに書状を交わし、薄氷を踏むような同盟の腹を探り合った。', strategy: 3 }, { text: '大勢の供を連れて鷹狩りに出かけ、領民たちに圧倒的な力と威光を見せつけた。', valor: 1, hp: 2 }, { text: '金に糸目をつけず豪勢な茶会を開き、腹の読めない家臣たちとの結束を無理矢理固めた。', money: -20, virtue: 3 } ]; break;
+                    case 'kuge': pool = [ { text: '美しい庭園で花鳥風月を愛でて和歌を詠み、戦乱とは無縁の雅な一日を過ごした。', virtue: 2, hp: 2 }, { text: '格式高い朝廷の儀式に重い装束で参列し、公卿としての体裁を必死に保った。', money: 5 }, { text: '武家から胡散臭い献上品を受け取り、扇で顔を隠しながら優雅に微笑んだ。', money: 10, karma: 1 } ]; break;
+                    case 'ninja': pool = [ { text: '闇夜に紛れて屋根裏を這い、他国の危険な情勢を探り歩いた。', strategy: 4, hp: -2 }, { text: '指から血が滲むほど手裏剣と体術の修行に明け暮れた。', valor: 3, hp: -3 }, { text: '即効性のある新たな毒の調合を人体で試し、裏の知識を深めた。', strategy: 2, karma: 1 } ]; break;
+                    case 'monk': pool = [ { text: '破れた笠を被り、雨の日も風の日も諸国を托鉢して回って民の平穏を祈り続けた。', virtue: 5, money: 2 }, { text: '悪臭漂う病に苦しむ者を熱心に看病し、涙を流して深く感謝された。', virtue: 4, hp: -2 }, { text: '静寂の寺でただひたすらに経典を書き写し、己の波立つ心と向き合った。', strategy: 2, hp: 2 } ]; break;
+                    case 'bandit': pool = [ { text: '暗い街道を通りかかる丸腰の商人を容赦なく襲い、荷をすべて奪い取った。', money: 15, karma: 3, hp: -2 }, { text: '血塗られた盗品を怪しげな闇市で売り捌き、手軽に日銭を得た。', money: 10, karma: 2 }, { text: '薄暗いアジトで下品な手下たちと豪快に酒盛りをし、英気を養った。', hp: 5, money: -5 } ]; break;
+                    case 'ronin': pool = [ { text: '雨漏りのする長屋で傘張りなどのみすぼらしい内職をし、細々と日銭を稼いだ。', money: 3, hp: -1 }, { text: '町道場の師範代として剣術を教え、幾ばくかのありがたい謝礼を得た。', money: 5, valor: 1 }, { text: '町を荒らす辻斬りを一刀の元に退治し、奉行所から褒美をもらったが、返り血を浴びた。', money: 10, valor: 3, virtue: 2, hp: -5 } ]; break;
+                    default: pool = [{ text: '特に何も起こらない、静かで平穏な一年だった。', money: 1 }];
                 }
             } else if (state.mode === 'battle') {
-                pool = [
-                    { text: '最前線の砦の警備にあたり、飛んでくる矢を避けながら幾度かの奇襲を退けた。', valor: 3 },
-                    { text: '暗闇に紛れた敵の斥候部隊を素早く看破し、味方に急報をもたらして危機を救った！', strategy: 4, virtue: 2 },
-                    { text: '凍えるような野営の夜、瞬く星を見上げながら遠い故郷に想いを馳せた。', hp: 2 },
-                    { text: '小競り合いの混乱の中で、打ち倒した敵兵の懐から泥にまみれた銭袋を素早くかすめ取った。', money: 6, karma: 2 }
-                ];
+                pool = [ { text: '最前線の砦の警備にあたり、飛んでくる矢を避けながら幾度かの奇襲を退けた。', valor: 3 }, { text: '暗闇に紛れた敵の斥候部隊を素早く看破し、味方に急報をもたらして危機を救った！', strategy: 4, virtue: 2 }, { text: '凍えるような野営の夜、瞬く星を見上げながら遠い故郷に想いを馳せた。', hp: 2 }, { text: '小競り合いの混乱の中で、打ち倒した敵兵の懐から泥にまみれた銭袋を素早くかすめ取った。', money: 6, karma: 2 } ];
             } else if (state.mode === 'fugitive') {
-                pool = [
-                    { text: '遠くに見える追手の松明の灯りを避け、冷たく湿った洞窟でガタガタと震えながら一夜を明かした。', hp: -3 },
-                    { text: '獣のように這いつくばって野イチゴや木の根を掘り、泥ごと食べて空腹を紛らわせた。', hp: 1 },
-                    { text: '足の裏が破れて血が滲むのも構わず、人里離れた険しい山道をひたすら歩き続けた。', hp: -2 }
-                ];
+                pool = [ { text: '遠くに見える追手の松明の灯りを避け、冷たく湿った洞窟でガタガタと震えながら一夜を明かした。', hp: -3 }, { text: '獣のように這いつくばって野イチゴや木の根を掘り、泥ごと食べて空腹を紛らわせた。', hp: 1 }, { text: '足の裏が破れて血が滲むのも構わず、人里離れた険しい山道をひたすら歩き続けた。', hp: -2 } ];
             }
 
             const item = pool[Math.floor(Math.random() * pool.length)];
-            const hpDiff = item.hp || 0;
-            const moneyDiff = item.money || 0;
-
-            state.health += hpDiff;
-            state.money += moneyDiff;
+            const hpDiff = item.hp || 0; const moneyDiff = item.money || 0;
+            state.health += hpDiff; state.money += moneyDiff;
             if (item.valor) state.valor += item.valor;
             if (item.karma) state.karma += item.karma;
             if (item.strategy) state.strategy += item.strategy;
@@ -1918,99 +1650,54 @@
             if (hpDiff !== 0) tag.push(`体力${hpDiff > 0 ? '+' : ''}${hpDiff}`);
             if (moneyDiff !== 0) tag.push(`銭${moneyDiff > 0 ? '+' : ''}${moneyDiff}`);
             const statStr = tag.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tag.join(', ')})</span>` : '';
-
             addLog(`<span class="font-bold text-gray-500">【${state.age}歳】</span> ${item.text}${statStr}`);
         }
 
         function presentEventChoices(ev) {
-            stopAutoPlay();
-            isWaitingForChoice = true;
-
+            stopAutoPlay(); isWaitingForChoice = true;
             state.flags.currentEventTitle = ev.title;
             const textContent = typeof ev.text === 'function' ? ev.text(state) : ev.text;
 
-            const card = document.createElement('div');
-            card.className = 'event-active-card';
+            const card = document.createElement('div'); card.className = 'event-active-card';
             card.innerHTML = `
-                <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs font-black text-gold flex items-center">
-                        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-1.5 animate-ping"></span>
-                        【${state.age}歳】${ev.title}
-                    </span>
-                    <span class="text-[10px] text-yellow-200/60 font-bold border border-yellow-700/50 px-1 py-0.2 rounded">選択の刻</span>
-                </div>
-                <div class="text-[13px] leading-relaxed text-gray-100 font-bold">
-                    ${textContent}
-                </div>
+                <div class="flex items-center justify-between mb-1"><span class="text-xs font-black text-gold flex items-center"><span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-1.5 animate-ping"></span>【${state.age}歳】${ev.title}</span><span class="text-[10px] text-yellow-200/60 font-bold border border-yellow-700/50 px-1 py-0.2 rounded">選択の刻</span></div>
+                <div class="text-[13px] leading-relaxed text-gray-100 font-bold">${textContent}</div>
             `;
             logContainer.appendChild(card);
-
             choicesContainer.innerHTML = '';
 
             ev.choices.forEach((choice) => {
                 const isSelectable = !choice.condition || choice.condition(state);
-                const btn = document.createElement('button');
-                btn.type = 'button';
-
+                const btn = document.createElement('button'); btn.type = 'button';
                 if (isSelectable) {
                     btn.className = "choice-btn w-full text-left py-2 px-3 rounded text-xs sm:text-sm text-gray-200 transition-all flex flex-col cursor-pointer";
                     const hintHtml = choice.hint ? `<span class="text-[10px] text-gray-400 mt-0.5 ml-3">↳ ${choice.hint}</span>` : '';
                     btn.innerHTML = `<span class="font-bold flex items-center leading-snug"><span class="text-gold text-xs mr-1 shrink-0">◆</span>${choice.text}</span>${hintHtml}`;
-                    btn.onclick = () => {
-                        executeChoice(choice);
-                    };
+                    btn.onclick = () => { executeChoice(choice); };
                 } else {
-                    btn.className = "w-full text-left py-2 px-3 rounded text-xs sm:text-sm text-red-400/40 bg-red-950/10 border border-red-900/30 transition-all flex flex-col cursor-not-allowed";
-                    btn.disabled = true;
+                    btn.className = "w-full text-left py-2 px-3 rounded text-xs sm:text-sm text-red-400/40 bg-red-950/10 border border-red-900/30 transition-all flex flex-col cursor-not-allowed"; btn.disabled = true;
                     const hintHtml = choice.hint ? `<span class="text-[10px] text-red-500/40 mt-0.5 ml-3">↳ ${choice.hint} 【条件不足】</span>` : '';
                     btn.innerHTML = `<span class="font-bold flex items-center leading-snug"><span class="text-red-900 text-xs mr-1 shrink-0">×</span><span class="line-through">${choice.text}</span></span>${hintHtml}`;
                 }
-
                 choicesContainer.appendChild(btn);
             });
 
-            advanceBtn.classList.add('hidden');
-            choicesContainer.classList.remove('hidden');
-            choicesContainer.classList.add('flex');
-
-            requestAnimationFrame(() => {
-                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                setTimeout(() => {
-                    if (logContainer) logContainer.scrollTop = logContainer.scrollHeight;
-                }, 50);
-            });
+            advanceBtn.classList.add('hidden'); choicesContainer.classList.remove('hidden'); choicesContainer.classList.add('flex');
+            requestAnimationFrame(() => { card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); setTimeout(() => { if (logContainer) logContainer.scrollTop = logContainer.scrollHeight; }, 50); });
         }
 
         function executeChoice(choice) {
             if (!state.isAlive) return;
-
-            isWaitingForChoice = false;
-
-            choicesContainer.classList.add('hidden');
-            choicesContainer.classList.remove('flex');
-            choicesContainer.innerHTML = '';
+            isWaitingForChoice = false; choicesContainer.classList.add('hidden'); choicesContainer.classList.remove('flex'); choicesContainer.innerHTML = '';
 
             try {
                 const res = choice.effect(state);
-                const hpChg = res.hp || 0;
-                const moneyChg = res.money || 0;
-
-                state.health += hpChg;
-                state.money += moneyChg;
+                const hpChg = res.hp || 0; const moneyChg = res.money || 0;
+                state.health += hpChg; state.money += moneyChg;
                 
-                if (state.money < 0) {
-                    state.money = 0;
-                    state.health -= 25;
-                    state.lastDamageEvent = '極度の困窮';
-                    state.deathCause = 'starvation';
-                } else if (hpChg <= -999) {
-                    state.health = 0;
-                    state.lastDamageEvent = state.flags.currentEventTitle || '重傷';
-                    if (!state.deathCause) state.deathCause = state.mode === 'battle' ? 'battle' : 'execution';
-                } else if (hpChg < 0) {
-                    state.lastDamageEvent = state.flags.currentEventTitle || '重傷';
-                    if (state.health <= 0 && !state.deathCause) state.deathCause = state.mode === 'battle' ? 'battle' : 'oldage';
-                }
+                if (state.money < 0) { state.money = 0; state.health -= 25; state.lastDamageEvent = '極度の困窮'; state.deathCause = 'starvation'; }
+                else if (hpChg <= -999) { state.health = 0; state.lastDamageEvent = state.flags.currentEventTitle || '重傷'; if (!state.deathCause) state.deathCause = state.mode === 'battle' ? 'battle' : 'execution'; }
+                else if (hpChg < 0) { state.lastDamageEvent = state.flags.currentEventTitle || '重傷'; if (state.health <= 0 && !state.deathCause) state.deathCause = state.mode === 'battle' ? 'battle' : 'oldage'; }
 
                 let tags = [];
                 if (hpChg !== 0 && hpChg > -900) tags.push(`体力${hpChg > 0 ? '+' : ''}${hpChg}`);
@@ -2018,163 +1705,68 @@
                 const statTag = tags.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tags.join(', ')})</span>` : '';
 
                 addLog(`<span class="font-bold text-gray-500 mr-1">┗ 決断:</span><em class="text-gray-300">${choice.text.replace(/【.*?】/g, '')}</em><br>${res.log}${statTag}`, hpChg <= -25);
+                if (hpChg < 0 && appContainer) { appContainer.classList.remove('damage-flash'); void appContainer.offsetWidth; appContainer.classList.add('damage-flash'); }
+            } catch (err) { console.error("Choice effect error:", err); }
 
-                if (hpChg < 0 && appContainer) {
-                    appContainer.classList.remove('damage-flash');
-                    void appContainer.offsetWidth;
-                    appContainer.classList.add('damage-flash');
-                }
-            } catch (err) {
-                console.error("Choice effect error:", err);
-            }
-
-            updateUI();
-            checkSurvival();
-
-            if (state.isAlive) {
-                advanceBtn.classList.remove('hidden');
-                if (advanceBtnText) advanceBtnText.innerText = "次 の 年 へ 進 む";
-                isProcessing = false;
-                saveCurrentRun(); 
-                scheduleNextAutoPlay(1000);
-            }
+            updateUI(); checkSurvival();
+            if (state.isAlive) { advanceBtn.classList.remove('hidden'); if (advanceBtnText) advanceBtnText.innerText = "次 の 年 へ 進 む"; isProcessing = false; saveCurrentRun(); scheduleNextAutoPlay(1000); }
         }
 
         function updateUI() {
             if (!uiAge) return;
-            uiAge.innerText = state.age;
-            uiClass.innerText = state.classInfo ? state.classInfo.name : '--';
-            uiHealth.innerText = Math.max(0, state.health);
-            uiMoney.innerText = state.money;
-            
+            uiAge.innerText = state.age; uiClass.innerText = state.classInfo ? state.classInfo.name : '--'; uiHealth.innerText = Math.max(0, state.health); uiMoney.innerText = state.money;
             const maxHp = 150 + window.currentReincarnationCount;
             if (uiMaxHealth) uiMaxHealth.innerText = `/ ${maxHp}`;
-            
-            if (uiHealth) {
-                if (state.health > maxHp) {
-                    uiHealth.className = "text-xl font-black text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]";
-                } else {
-                    uiHealth.className = "text-xl font-black text-white";
-                }
-            }
-
-            if (uiValor) uiValor.innerText = state.valor;
-            if (uiKarma) uiKarma.innerText = state.karma;
-            if (uiStrategy) uiStrategy.innerText = state.strategy;
-            if (uiVirtue) uiVirtue.innerText = state.virtue;
-            if (uiLuck) uiLuck.innerText = state.luck;
-
-            if (state.faction) {
-                uiFaction.innerText = state.faction.name;
-                uiFaction.style.backgroundColor = state.faction.color;
-            }
+            if (uiHealth) { if (state.health > maxHp) { uiHealth.className = "text-xl font-black text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]"; } else { uiHealth.className = "text-xl font-black text-white"; } }
+            if (uiValor) uiValor.innerText = state.valor; if (uiKarma) uiKarma.innerText = state.karma; if (uiStrategy) uiStrategy.innerText = state.strategy; if (uiVirtue) uiVirtue.innerText = state.virtue; if (uiLuck) uiLuck.innerText = state.luck;
+            if (state.faction) { uiFaction.innerText = state.faction.name; uiFaction.style.backgroundColor = state.faction.color; }
 
             const hb = document.getElementById('health-box');
-            if (hb) {
-                if (state.health <= 30) {
-                    hb.classList.add('bg-red-950', 'border-red-600');
-                    hb.classList.remove('bg-[#201C18]', 'border-[#3A322A]');
-                } else {
-                    hb.classList.remove('bg-red-950', 'border-red-600');
-                    hb.classList.add('bg-[#201C18]', 'border-[#3A322A]');
-                }
-            }
-
+            if (hb) { if (state.health <= 30) { hb.classList.add('bg-red-950', 'border-red-600'); hb.classList.remove('bg-[#201C18]', 'border-[#3A322A]'); } else { hb.classList.remove('bg-red-950', 'border-red-600'); hb.classList.add('bg-[#201C18]', 'border-[#3A322A]'); } }
             if (appContainer) appContainer.classList.remove('mode-battle', 'mode-fugitive');
             if (modeBadge) {
                 modeBadge.classList.add('hidden');
-                if (state.mode === 'battle') {
-                    if (appContainer) appContainer.classList.add('mode-battle');
-                    modeBadge.innerText = '戦場';
-                    modeBadge.className = 'text-[10px] bg-red-950 text-red-200 border border-red-600 px-1.5 py-0.5 font-bold rounded-sm';
-                    modeBadge.classList.remove('hidden');
-                } else if (state.mode === 'fugitive') {
-                    if (appContainer) appContainer.classList.add('mode-fugitive');
-                    modeBadge.innerText = '逃亡';
-                    modeBadge.className = 'text-[10px] bg-gray-900 text-gray-300 border border-gray-600 px-1.5 py-0.5 font-bold rounded-sm';
-                    modeBadge.classList.remove('hidden');
-                }
+                if (state.mode === 'battle') { if (appContainer) appContainer.classList.add('mode-battle'); modeBadge.innerText = '戦場'; modeBadge.className = 'text-[10px] bg-red-950 text-red-200 border border-red-600 px-1.5 py-0.5 font-bold rounded-sm'; modeBadge.classList.remove('hidden'); }
+                else if (state.mode === 'fugitive') { if (appContainer) appContainer.classList.add('mode-fugitive'); modeBadge.innerText = '逃亡'; modeBadge.className = 'text-[10px] bg-gray-900 text-gray-300 border border-gray-600 px-1.5 py-0.5 font-bold rounded-sm'; modeBadge.classList.remove('hidden'); }
             }
-
-            if (!isWaitingForChoice && advanceBtnText) {
-                advanceBtnText.innerText = autoPlayTimer ? "自動進行中... (タップで進む)" : "歳 月 を 進 め る";
-            }
+            if (!isWaitingForChoice && advanceBtnText) { advanceBtnText.innerText = autoPlayTimer ? "自動進行中... (タップで進む)" : "歳 月 を 進 め る"; }
         }
 
         function renderChronologyToList(containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
             container.innerHTML = '';
-            
-            if (state.chronology.length === 0) {
-                container.innerHTML = '<div class="text-[9px] text-gray-500 py-1">特筆すべき事跡なし</div>';
-                return;
-            }
-
-            const title = document.createElement('span');
-            title.className = "text-[10px] text-gold font-bold mb-1 block";
-            title.innerText = "【生涯年表】";
-            container.appendChild(title);
-
-            state.chronology.forEach(item => {
-                const row = document.createElement('div');
-                row.className = "chronology-item";
-                row.innerHTML = `<span class="chronology-age">${item.age}歳</span><span class="chronology-text">${item.text}</span>`;
-                container.appendChild(row);
-            });
+            if (state.chronology.length === 0) { container.innerHTML = '<div class="text-[9px] text-gray-500 py-1">特筆すべき事跡なし</div>'; return; }
+            const title = document.createElement('span'); title.className = "text-[10px] text-gold font-bold mb-1 block"; title.innerText = "【生涯年表】"; container.appendChild(title);
+            state.chronology.forEach(item => { const row = document.createElement('div'); row.className = "chronology-item"; row.innerHTML = `<span class="chronology-age">${item.age}歳</span><span class="chronology-text">${item.text}</span>`; container.appendChild(row); });
         }
 
         function addLog(html, isHeavy = false) {
             if (!logContainer) return;
-            const div = document.createElement('div');
-            div.className = `log-entry ${isHeavy ? 'font-bold text-blood' : ''}`;
-            div.innerHTML = html;
-            logContainer.appendChild(div);
-            requestAnimationFrame(() => {
-                if (logContainer) logContainer.scrollTop = logContainer.scrollHeight;
-            });
+            const div = document.createElement('div'); div.className = `log-entry ${isHeavy ? 'font-bold text-blood' : ''}`; div.innerHTML = html; logContainer.appendChild(div);
+            requestAnimationFrame(() => { if (logContainer) logContainer.scrollTop = logContainer.scrollHeight; });
         }
 
         function checkSurvival() {
             if (!state.isAlive) return;
 
-            if (state.age >= 70) {
-                state.health = 0;
-                state.lastDamageEvent = '天寿';
-                state.deathCause = 'oldage';
-                addLog(`<span class="text-gold font-bold">過酷な戦乱を生き抜き、天寿を全うして静かに目を閉じた……。</span>`);
-            } else if (state.age >= 60 && Math.random() < (state.age - 59) * 0.08) {
-                state.health = 0;
-                state.lastDamageEvent = '老衰';
-                state.deathCause = 'oldage';
-                addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた老躯が限界を迎え、静かに眠りについた。</span>`);
-            }
+            if (state.age >= 70) { state.health = 0; state.lastDamageEvent = '天寿'; state.deathCause = 'oldage'; addLog(`<span class="text-gold font-bold">過酷な戦乱を生き抜き、天寿を全うして静かに目を閉じた……。</span>`); }
+            else if (state.age >= 60 && Math.random() < (state.age - 59) * 0.08) { state.health = 0; state.lastDamageEvent = '老衰'; state.deathCause = 'oldage'; addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた老躯が限界を迎え、静かに眠りについた。</span>`); }
 
             if (state.health <= 0 && state.flags.migawari) {
-                state.health = 1;
-                state.flags.migawari = false;
-                state.deathCause = '';
+                state.health = 1; state.flags.migawari = false; state.deathCause = '';
                 addLog(`<span class="text-purple-300 font-bold">【身代わり地蔵】懐に忍ばせていた地蔵が砕け散った！冥府の力により、死の淵から奇跡的に生還する……！</span>`);
-                updateUI();
-                return;
+                updateUI(); return;
             }
 
             if (state.health <= 0) {
-                state.isAlive = false;
-                stopAutoPlay();
-                isWaitingForChoice = false;
-                isProcessing = false;
-
-                recordChronology("この世を去る");
-                
-                localStorage.removeItem('sengoku_current_run');
+                state.isAlive = false; stopAutoPlay(); isWaitingForChoice = false; isProcessing = false;
+                recordChronology("この世を去る"); localStorage.removeItem('sengoku_current_run');
 
                 const earnedMeisen = Math.floor((state.age + state.valor + state.karma + state.luck + state.strategy + state.virtue) / 10);
                 window.meisen += earnedMeisen;
 
-                if (!window.unlockedDeaths.includes(state.deathCause)) {
-                    window.unlockedDeaths.push(state.deathCause);
-                }
+                if (!window.unlockedDeaths.includes(state.deathCause)) window.unlockedDeaths.push(state.deathCause);
 
                 let reason = "戦国の風雲に呑まれ、血の海に沈んで息絶えた。";
                 if (state.deathCause === 'starvation') reason = "泥を啜るような極限の飢餓の中、腹を抱えて悶え死んだ。";
@@ -2184,9 +1776,7 @@
                 else if (state.deathCause === 'plague') reason = "恐ろしい疫病に身体を蝕まれ、高熱と苦痛の中で黒い血を吐いて死んだ。";
                 else reason = `${state.lastDamageEvent}により深い手傷を負い、無念のまま命を落とした。`;
 
-                const finalTitle = calculateTitle(state);
-                const nextHeirloom = determineHeirloom(state);
-
+                const finalTitle = calculateTitle(state); const nextHeirloom = determineHeirloom(state);
                 window.currentReincarnationCount = (window.currentReincarnationCount || 0) + 1;
 
                 if (nextHeirloom) {
@@ -2194,22 +1784,11 @@
                     const exists = window.unlockedHeirlooms.find(h => h.id === nextHeirloom.id);
                     if (!exists) window.unlockedHeirlooms.push(nextHeirloom);
                 }
-
                 saveMetaProgress();
 
                 try {
                     const past = JSON.parse(localStorage.getItem('sengoku_past_lives') || '[]');
-                    past.unshift({
-                        age: state.age,
-                        className: state.classInfo ? state.classInfo.name : '不明',
-                        faction: state.faction ? state.faction.name : '不明',
-                        title: finalTitle,
-                        reason: reason,
-                        valor: state.valor, karma: state.karma, luck: state.luck, money: state.money,
-                        strategy: state.strategy, virtue: state.virtue,
-                        timestamp: Date.now(),
-                        chronology: state.chronology
-                    });
+                    past.unshift({ age: state.age, className: state.classInfo ? state.classInfo.name : '不明', faction: state.faction ? state.faction.name : '不明', title: finalTitle, reason: reason, valor: state.valor, karma: state.karma, luck: state.luck, money: state.money, strategy: state.strategy, virtue: state.virtue, timestamp: Date.now(), chronology: state.chronology });
                     localStorage.setItem('sengoku_past_lives', JSON.stringify(past.slice(0, 30)));
                 } catch (e) {}
 
@@ -2217,279 +1796,120 @@
                     window.__saveDeathData(state.age, state.classInfo ? state.classInfo.name : '', state.faction ? state.faction.name : '', finalTitle, reason, state, nextHeirloom);
                 }
 
-                if (state.age >= 60) {
-                    setTimeout(() => showPremiumEnding(finalTitle, nextHeirloom, earnedMeisen), 400);
-                } else {
-                    setTimeout(() => showGameOver(reason, finalTitle, nextHeirloom, state.deathCause, earnedMeisen), 400);
-                }
+                if (state.age >= 60) setTimeout(() => showPremiumEnding(finalTitle, nextHeirloom, earnedMeisen), 400);
+                else setTimeout(() => showGameOver(reason, finalTitle, nextHeirloom, state.deathCause, earnedMeisen), 400);
             }
         }
 
         function showGameOver(reason, title, nextHeirloom, deathCause, earnedMeisen) {
-            const screen = document.getElementById('gameover-screen');
-            const mainTitle = document.getElementById('go-main-title');
-            const subTitle = document.getElementById('go-sub-title');
+            const screen = document.getElementById('gameover-screen'); const mainTitle = document.getElementById('go-main-title'); const subTitle = document.getElementById('go-sub-title');
+            screen.className = 'hidden absolute inset-0 z-50 flex flex-col items-center justify-center p-5 text-white text-center backdrop-blur-md overflow-y-auto pointer-events-auto transition-colors duration-700'; mainTitle.className = 'text-5xl sm:text-6xl font-black mb-1 mt-2 tracking-[0.25em]';
 
-            screen.className = 'hidden absolute inset-0 z-50 flex flex-col items-center justify-center p-5 text-white text-center backdrop-blur-md overflow-y-auto pointer-events-auto transition-colors duration-700';
-            mainTitle.className = 'text-5xl sm:text-6xl font-black mb-1 mt-2 tracking-[0.25em]';
+            if (deathCause === 'starvation') { screen.classList.add('death-bg-starvation'); mainTitle.classList.add('death-text-starvation'); mainTitle.innerText = '餓死'; subTitle.innerText = '- 飢えに苛まれし末路 -'; }
+            else if (deathCause === 'execution') { screen.classList.add('death-bg-execution'); mainTitle.classList.add('death-text-execution'); mainTitle.innerText = '斬首'; subTitle.innerText = '- 野望の果て、刑場の露と消ゆ -'; }
+            else if (deathCause === 'hunted') { screen.classList.add('death-bg-hunted'); mainTitle.classList.add('death-text-hunted'); mainTitle.innerText = '野垂死'; subTitle.innerText = '- 泥に塗れ、名もなき骸となる -'; }
+            else if (deathCause === 'plague') { screen.classList.add('death-bg-plague'); mainTitle.classList.add('death-text-plague'); mainTitle.innerText = '病死'; subTitle.innerText = '- 疫病に蝕まれ、志半ばで倒る -'; }
+            else { screen.classList.add('death-bg-battle'); mainTitle.classList.add('death-text-battle'); mainTitle.innerText = '討死'; subTitle.innerText = '- 乱世の泡と消ゆ -'; }
 
-            if (deathCause === 'starvation') {
-                screen.classList.add('death-bg-starvation');
-                mainTitle.classList.add('death-text-starvation');
-                mainTitle.innerText = '餓死';
-                subTitle.innerText = '- 飢えに苛まれし末路 -';
-            } else if (deathCause === 'execution') {
-                screen.classList.add('death-bg-execution');
-                mainTitle.classList.add('death-text-execution');
-                mainTitle.innerText = '斬首';
-                subTitle.innerText = '- 野望の果て、刑場の露と消ゆ -';
-            } else if (deathCause === 'hunted') {
-                screen.classList.add('death-bg-hunted');
-                mainTitle.classList.add('death-text-hunted');
-                mainTitle.innerText = '野垂死';
-                subTitle.innerText = '- 泥に塗れ、名もなき骸となる -';
-            } else if (deathCause === 'plague') {
-                screen.classList.add('death-bg-plague');
-                mainTitle.classList.add('death-text-plague');
-                mainTitle.innerText = '病死';
-                subTitle.innerText = '- 疫病に蝕まれ、志半ばで倒る -';
-            } else {
-                screen.classList.add('death-bg-battle');
-                mainTitle.classList.add('death-text-battle');
-                mainTitle.innerText = '討死';
-                subTitle.innerText = '- 乱世の泡と消ゆ -';
-            }
-
-            document.getElementById('go-age').innerText = state.age;
-            document.getElementById('go-class').innerText = state.classInfo ? state.classInfo.name : '--';
-            document.getElementById('go-faction').innerText = state.faction ? `[${state.faction.name}]` : '';
-            document.getElementById('go-title').innerText = title;
-
-            document.getElementById('go-valor').innerText = state.valor;
-            document.getElementById('go-karma').innerText = state.karma;
-            document.getElementById('go-luck').innerText = state.luck;
-            document.getElementById('go-strategy').innerText = state.strategy;
-            document.getElementById('go-virtue').innerText = state.virtue;
-            document.getElementById('go-money').innerText = state.money;
-            document.getElementById('go-reason').innerText = reason;
-            
-            const goMeisen = document.getElementById('go-meisen');
-            if (goMeisen) goMeisen.innerText = `+${earnedMeisen}`;
-
+            document.getElementById('go-age').innerText = state.age; document.getElementById('go-class').innerText = state.classInfo ? state.classInfo.name : '--'; document.getElementById('go-faction').innerText = state.faction ? `[${state.faction.name}]` : ''; document.getElementById('go-title').innerText = title;
+            document.getElementById('go-valor').innerText = state.valor; document.getElementById('go-karma').innerText = state.karma; document.getElementById('go-luck').innerText = state.luck; document.getElementById('go-strategy').innerText = state.strategy; document.getElementById('go-virtue').innerText = state.virtue; document.getElementById('go-money').innerText = state.money; document.getElementById('go-reason').innerText = reason;
+            const goMeisen = document.getElementById('go-meisen'); if (goMeisen) goMeisen.innerText = `+${earnedMeisen}`;
             renderChronologyToList('go-chronology-list');
 
             const hlNotice = document.getElementById('new-heirloom-notice');
-            if (nextHeirloom) {
-                hlNotice.classList.remove('hidden');
-                document.getElementById('new-heirloom-text').innerText = nextHeirloom.name;
-            } else {
-                hlNotice.classList.add('hidden');
-            }
-
+            if (nextHeirloom) { hlNotice.classList.remove('hidden'); document.getElementById('new-heirloom-text').innerText = nextHeirloom.name; } else { hlNotice.classList.add('hidden'); }
             if (gameScreen) gameScreen.classList.add('hidden');
-            if (gameoverScreen) {
-                gameoverScreen.classList.remove('hidden');
-            }
+            if (gameoverScreen) gameoverScreen.classList.remove('hidden');
         }
 
         function showPremiumEnding(title, nextHeirloom, earnedMeisen) {
             if (gameScreen) gameScreen.classList.add('hidden');
-            const screen = document.getElementById('premium-screen');
-            const content = document.getElementById('premium-content');
+            const screen = document.getElementById('premium-screen'); const content = document.getElementById('premium-content');
+            screen.classList.remove('hidden'); content.classList.remove('opacity-100'); content.classList.add('opacity-0');
 
-            screen.classList.remove('hidden');
-            content.classList.remove('opacity-100');
-            content.classList.add('opacity-0');
-
-            document.getElementById('premium-title').innerText = `【称号: ${title}】`;
-            document.getElementById('premium-age').innerText = state.age;
-            document.getElementById('premium-class').innerText = state.classInfo ? state.classInfo.name : '--';
-            document.getElementById('premium-faction').innerText = state.faction ? `[${state.faction.name}]` : '';
-
-            document.getElementById('premium-valor').innerText = state.valor;
-            document.getElementById('premium-karma').innerText = state.karma;
-            document.getElementById('premium-luck').innerText = state.luck;
-            document.getElementById('premium-strategy').innerText = state.strategy;
-            document.getElementById('premium-virtue').innerText = state.virtue;
-            document.getElementById('premium-money').innerText = state.money;
-            
-            const premMeisen = document.getElementById('premium-meisen');
-            if (premMeisen) premMeisen.innerText = `+${earnedMeisen} 冥銭`;
-
+            document.getElementById('premium-title').innerText = `【称号: ${title}】`; document.getElementById('premium-age').innerText = state.age; document.getElementById('premium-class').innerText = state.classInfo ? state.classInfo.name : '--'; document.getElementById('premium-faction').innerText = state.faction ? `[${state.faction.name}]` : '';
+            document.getElementById('premium-valor').innerText = state.valor; document.getElementById('premium-karma').innerText = state.karma; document.getElementById('premium-luck').innerText = state.luck; document.getElementById('premium-strategy').innerText = state.strategy; document.getElementById('premium-virtue').innerText = state.virtue; document.getElementById('premium-money').innerText = state.money;
+            const premMeisen = document.getElementById('premium-meisen'); if (premMeisen) premMeisen.innerText = `+${earnedMeisen} 冥銭`;
             renderChronologyToList('premium-chronology-list');
 
             const hlNotice = document.getElementById('premium-heirloom-notice');
-            if (nextHeirloom) {
-                hlNotice.classList.remove('hidden');
-                document.getElementById('premium-heirloom-text').innerText = nextHeirloom.name;
-            } else {
-                hlNotice.classList.add('hidden');
-            }
+            if (nextHeirloom) { hlNotice.classList.remove('hidden'); document.getElementById('premium-heirloom-text').innerText = nextHeirloom.name; } else { hlNotice.classList.add('hidden'); }
 
-            const freeze = document.getElementById('freeze-overlay');
-            if (freeze) freeze.classList.add('freeze-active');
-
-            setTimeout(() => {
-                if (freeze) freeze.classList.remove('freeze-active');
-                if (content) {
-                    content.classList.remove('opacity-0');
-                    content.classList.add('opacity-100');
-                }
-                startSakuraParticles();
-            }, 3000);
+            const freeze = document.getElementById('freeze-overlay'); if (freeze) freeze.classList.add('freeze-active');
+            setTimeout(() => { if (freeze) freeze.classList.remove('freeze-active'); if (content) { content.classList.remove('opacity-0'); content.classList.add('opacity-100'); } startSakuraParticles(); }, 3000);
         }
 
         function startSakuraParticles() {
-            const canvas = document.getElementById('particle-canvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-
-            const particles = Array.from({ length: 70 }, () => ({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height - canvas.height,
-                size: Math.random() * 4 + 3,
-                speedY: Math.random() * 2 + 1,
-                speedX: Math.random() * 2 - 1,
-                type: Math.random() > 0.5 ? 'gold' : 'sakura',
-                angle: Math.random() * 360,
-                spin: (Math.random() - 0.5) * 3,
-                opacity: Math.random() * 0.7 + 0.3
-            }));
-
+            const canvas = document.getElementById('particle-canvas'); if (!canvas) return;
+            const ctx = canvas.getContext('2d'); canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+            const particles = Array.from({ length: 70 }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height - canvas.height, size: Math.random() * 4 + 3, speedY: Math.random() * 2 + 1, speedX: Math.random() * 2 - 1, type: Math.random() > 0.5 ? 'gold' : 'sakura', angle: Math.random() * 360, spin: (Math.random() - 0.5) * 3, opacity: Math.random() * 0.7 + 0.3 }));
             function loop() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
-                    ctx.save();
-                    ctx.translate(p.x, p.y);
-                    ctx.rotate((p.angle * Math.PI) / 180);
-                    ctx.globalAlpha = p.opacity;
-                    if (p.type === 'gold') {
-                        ctx.fillStyle = '#D4AF37';
-                        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
-                    } else {
-                        ctx.fillStyle = '#FFB7C5';
-                        ctx.beginPath();
-                        ctx.ellipse(0, 0, p.size, p.size * 0.5, 0, 0, Math.PI * 2);
-                        ctx.fill();
-                    }
-                    ctx.restore();
-                    p.y += p.speedY;
-                    p.x += p.speedX + Math.sin(p.angle * 0.04) * 0.5;
-                    p.angle += p.spin;
-                    if (p.y > canvas.height + 20) {
-                        p.y = -20;
-                        p.x = Math.random() * canvas.width;
-                    }
+                    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate((p.angle * Math.PI) / 180); ctx.globalAlpha = p.opacity;
+                    if (p.type === 'gold') { ctx.fillStyle = '#D4AF37'; ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7); } else { ctx.fillStyle = '#FFB7C5'; ctx.beginPath(); ctx.ellipse(0, 0, p.size, p.size * 0.5, 0, 0, Math.PI * 2); ctx.fill(); }
+                    ctx.restore(); p.y += p.speedY; p.x += p.speedX + Math.sin(p.angle * 0.04) * 0.5; p.angle += p.spin;
+                    if (p.y > canvas.height + 20) { p.y = -20; p.x = Math.random() * canvas.width; }
                 });
                 animFrameId = requestAnimationFrame(loop);
             }
             loop();
         }
 
-        window.resetSaveData = function(e) {
-            if (e) { e.preventDefault(); e.stopPropagation(); }
-            if (confirm("これまでの輪廻の記録と獲得した家宝蔵をすべて完全に消去します。\nよろしいですか？")) {
-                localStorage.removeItem('sengoku_rinne_count');
-                localStorage.removeItem('sengoku_heirloom');
-                localStorage.removeItem('sengoku_equipped_heirlooms');
-                localStorage.removeItem('sengoku_unlocked_heirlooms');
-                localStorage.removeItem('sengoku_unlocked_deaths');
-                localStorage.removeItem('sengoku_past_lives');
-                localStorage.removeItem('sengoku_current_run');
-                localStorage.removeItem('sengoku_meisen');
-                localStorage.removeItem('sengoku_inventory');
-                localStorage.removeItem('sengoku_active_consumable');
-                window.currentReincarnationCount = 0;
-                window.unlockedHeirlooms = [];
-                window.activeHeirlooms = [];
-                window.unlockedDeaths = [];
-                window.meisen = 0;
-                window.inventory = {};
-                window.activeConsumable = null;
-                window.updateStartScreenUI();
-                alert("すべての記録を初期化しました。");
-            }
-        };
-
         window.openHistory = async function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
             historyScreen.classList.remove('hidden');
-            const hList = document.getElementById('history-list');
-            const hLoading = document.getElementById('history-loading');
-            hList.classList.add('hidden');
-            hLoading.classList.remove('hidden');
+            const hList = document.getElementById('history-list'); const hLoading = document.getElementById('history-loading');
+            hList.classList.add('hidden'); hLoading.classList.remove('hidden');
 
             let records = [];
-            if (typeof window.__fetchPastLives === 'function') {
-                try { records = await window.__fetchPastLives(); } catch (e) {}
-            }
-            if (!records || records.length === 0) {
-                try { records = JSON.parse(localStorage.getItem('sengoku_past_lives') || '[]'); } catch (e) {}
-            }
+            if (typeof window.__fetchPastLives === 'function') { try { records = await window.__fetchPastLives(); } catch (e) {} }
+            if (!records || records.length === 0) { try { records = JSON.parse(localStorage.getItem('sengoku_past_lives') || '[]'); } catch (e) {} }
 
-            hLoading.classList.add('hidden');
-            hList.classList.remove('hidden');
-            hList.innerHTML = '';
-
-            if (records.length === 0) {
-                hList.innerHTML = '<div class="text-center text-gray-500 mt-10 text-xs">魂の記録はまだ刻まれておりません。</div>';
-                return;
-            }
+            hLoading.classList.add('hidden'); hList.classList.remove('hidden'); hList.innerHTML = '';
+            if (records.length === 0) { hList.innerHTML = '<div class="text-center text-gray-500 mt-10 text-xs">魂の記録はまだ刻まれておりません。</div>'; return; }
 
             records.forEach(item => {
                 const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleDateString('ja-JP') : '';
-                const card = document.createElement('div');
-                card.className = 'bg-[#181513] border border-[#3A322A] p-3 rounded-sm relative shadow';
+                const card = document.createElement('div'); card.className = 'bg-[#181513] border border-[#3A322A] p-3 rounded-sm relative shadow';
                 const ojBadge = item.age >= 60 ? '<span class="absolute top-2 right-2 text-[10px] bg-yellow-800 text-yellow-100 px-1.5 py-0.5 rounded-sm border border-yellow-600 font-bold">大往生</span>' : '';
-
                 let chronoHtml = '';
                 if (item.chronology && item.chronology.length > 0) {
                     chronoHtml = '<div class="mt-2 pt-2 border-t border-[#3A322A] text-left">';
-                    item.chronology.forEach(c => {
-                        chronoHtml += `<div class="flex gap-2 text-[9px] mb-0.5"><span class="text-gold font-bold min-w-[2rem]">${c.age}歳</span><span class="text-gray-400">${c.text}</span></div>`;
-                    });
+                    item.chronology.forEach(c => { chronoHtml += `<div class="flex gap-2 text-[9px] mb-0.5"><span class="text-gold font-bold min-w-[2rem]">${c.age}歳</span><span class="text-gray-400">${c.text}</span></div>`; });
                     chronoHtml += '</div>';
                 }
-
                 card.innerHTML = `
                     ${ojBadge}
                     <div class="text-[10px] text-gray-500 mb-1">${dateStr}</div>
                     <div class="text-sm font-bold text-gold mb-1">${item.title || '名もなき武者'}</div>
-                    <div class="flex items-baseline gap-3 text-xs text-gray-300 mb-2">
-                        <span>享年 <strong class="text-lg text-blood">${item.age}</strong> 歳</span>
-                        <span class="text-gray-400">[${item.faction || '浪人'}] ${item.className}</span>
-                    </div>
-                    <div class="text-xs text-gray-400 bg-black/60 p-2 rounded-sm border border-gray-800 leading-relaxed">
-                        死因: ${item.reason}
-                    </div>
+                    <div class="flex items-baseline gap-3 text-xs text-gray-300 mb-2"><span>享年 <strong class="text-lg text-blood">${item.age}</strong> 歳</span><span class="text-gray-400">[${item.faction || '浪人'}] ${item.className}</span></div>
+                    <div class="text-xs text-gray-400 bg-black/60 p-2 rounded-sm border border-gray-800 leading-relaxed">死因: ${item.reason}</div>
                     ${chronoHtml}
                 `;
                 hList.appendChild(card);
             });
         };
+        window.closeHistory = function(e) { if (e) { e.preventDefault(); e.stopPropagation(); } historyScreen.classList.add('hidden'); };
 
-        window.closeHistory = function(e) {
-            if (e) { e.preventDefault(); e.stopPropagation(); }
-            historyScreen.classList.add('hidden');
-        };
-
-        function initApp() {
-            cacheElements();
-            window.updateStartScreenUI();
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initApp);
-        } else {
-            initApp();
-        }
+        function initApp() { cacheElements(); window.updateStartScreenUI(); }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initApp); else initApp();
     })();
     </script>
 
-        <!-- ================= Firebase連携 ================= -->
-    <script type="module">
+    <!-- ================= Firebase連携（スマホのローカルファイル対応版） ================= -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // スマホ画面にエラーを直接表示させる設定
+        window.onerror = function(msg) {
+            alert("【システムエラー】\n" + msg);
+            return false;
+        };
+
+        // Firebaseの設定
         const firebaseConfig = {
             apiKey: "AIzaSyA4EanMhH1xvArI-zAEHg0dYdcAHSgNV-Y",
             authDomain: "sengokurinne-e0113.firebaseapp.com",
@@ -2499,89 +1919,78 @@
             appId: "1:315253519898:web:3b0ea1de418ecf188643a3"
         };
 
-        // スマホ画面にエラーを直接表示させる設定
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            alert("【システムエラー】\n" + msg);
-            return false;
-        };
+        try {
+            // 初期化
+            firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();
+            const db = firebase.firestore();
+            const appId = 'sengoku-life-app';
 
-        (async function() {
-            try {
-                const appId = 'sengoku-life-app';
-                if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) return;
+            // 匿名ログインの実行
+            auth.signInAnonymously().catch(function(err) {
+                alert("【原因判明①】ログイン失敗\n" + err.message);
+            });
 
-                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
-                const { getAuth, signInAnonymously, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
-                const { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs, increment } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
-
-                const app = initializeApp(firebaseConfig);
-                const auth = getAuth(app);
-                const db = getFirestore(app);
-
-                // 匿名ログインの実行
-                try {
-                    await signInAnonymously(auth);
-                } catch (authErr) {
-                    alert("【原因判明①】ログインに失敗しました。\n" + authErr.message);
+            // 全ユーザーの総プレイ回数を監視
+            const globalStatsRef = db.collection('artifacts').doc(appId).collection('global_stats').doc('summary');
+            
+            globalStatsRef.onSnapshot(function(docSnap) {
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    const globalCountElem = document.getElementById('ui-global-reincarnations');
+                    if (globalCountElem && data.totalReincarnations) {
+                        globalCountElem.innerText = data.totalReincarnations.toLocaleString();
+                    }
                 }
+            }, function(err) {
+                alert("【原因判明②】データベース読み込み失敗\n" + err.message);
+            });
 
-                // 全ユーザーの総プレイ回数をリアルタイム監視して画面に表示
-                const globalStatsRef = doc(db, 'artifacts', appId, 'global_stats', 'summary');
-                onSnapshot(globalStatsRef, (docSnap) => {
-                    if (docSnap.exists()) {
-                        const data = docSnap.data();
-                        const globalCountElem = document.getElementById('ui-global-reincarnations');
-                        if (globalCountElem && data.totalReincarnations) {
-                            globalCountElem.innerText = data.totalReincarnations.toLocaleString();
-                        }
-                    }
-                }, (err) => {
-                    alert("【原因判明②】データベースの読み込みに失敗しました。\n" + err.message);
-                });
+            auth.onAuthStateChanged(function(user) {
+                if (user) window.__currentUser = user;
+            });
 
-                onAuthStateChanged(auth, (user) => {
-                    if (user) window.__currentUser = user;
-                });
+            // 死亡時の保存処理
+            window.__saveDeathData = async function(age, className, factionName, title, reason, finalState, newHeirloom) {
+                if (!window.__currentUser) {
+                    alert("【原因判明③】ログイン情報がありません。通信環境を確認してください。");
+                    return;
+                }
+                const uid = window.__currentUser.uid;
+                try {
+                    // 個人データ保存
+                    const countRef = db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('stats').doc('reincarnation');
+                    await countRef.set({ count: window.currentReincarnationCount, equippedHeirlooms: window.activeHeirlooms }, { merge: true });
 
-                // 死亡時のデータ保存処理
-                window.__saveDeathData = async (age, className, factionName, title, reason, finalState, newHeirloom) => {
-                    if (!window.__currentUser) {
-                        alert("【原因判明③】ログイン情報がないため、回数を保存できません。");
-                        return;
-                    }
-                    const uid = window.__currentUser.uid;
-                    try {
-                        const countRef = doc(db, 'artifacts', appId, 'users', uid, 'stats', 'reincarnation');
-                        await setDoc(countRef, { count: window.currentReincarnationCount, equippedHeirlooms: window.activeHeirlooms }, { merge: true });
+                    const pastLivesRef = db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('past_lives');
+                    await pastLivesRef.add({ age: age, className: className, faction: factionName, title: title, reason: reason, valor: finalState.valor, karma: finalState.karma, luck: finalState.luck, money: finalState.money, strategy: finalState.strategy, virtue: finalState.virtue, timestamp: Date.now(), chronology: finalState.chronology });
 
-                        const pastLivesRef = collection(db, 'artifacts', appId, 'users', uid, 'past_lives');
-                        await addDoc(pastLivesRef, { age: age, className: className, faction: factionName, title: title, reason: reason, valor: finalState.valor, karma: finalState.karma, luck: finalState.luck, money: finalState.money, strategy: finalState.strategy, virtue: finalState.virtue, timestamp: Date.now(), chronology: finalState.chronology });
+                    // ★ 天下の総輪廻数を+1する
+                    await globalStatsRef.set({
+                        totalReincarnations: firebase.firestore.FieldValue.increment(1)
+                    }, { merge: true });
+                } catch (e) {
+                    alert("【原因判明④】データ保存失敗\n" + e.message);
+                }
+            };
 
-                        // ★ 全ユーザーの総プレイ回数を +1 する
-                        await setDoc(globalStatsRef, { totalReincarnations: increment(1) }, { merge: true });
-                        
-                    } catch (e) {
-                        alert("【原因判明④】データの保存に失敗しました。\n" + e.message);
-                    }
-                };
-
-                window.__fetchPastLives = async () => {
-                    if (!window.__currentUser) return [];
-                    const pastLivesRef = collection(db, 'artifacts', appId, 'users', window.__currentUser.uid, 'past_lives');
-                    try {
-                        const snapshot = await getDocs(pastLivesRef);
-                        let lives = [];
-                        snapshot.forEach(d => lives.push({ id: d.id, ...d.data() }));
-                        lives.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-                        return lives;
-                    } catch (e) {
-                        return [];
-                    }
-                };
-            } catch (initErr) {
-                alert("【原因判明⑤】Firebaseの初期設定に失敗しました。\n" + initErr.message);
-            }
-        })();
+            // 回想用データ読み込み
+            window.__fetchPastLives = async function() {
+                if (!window.__currentUser) return [];
+                const pastLivesRef = db.collection('artifacts').doc(appId).collection('users').doc(window.__currentUser.uid).collection('past_lives');
+                try {
+                    const snapshot = await pastLivesRef.get();
+                    let lives = [];
+                    snapshot.forEach(function(d) { lives.push(Object.assign({ id: d.id }, d.data())); });
+                    lives.sort(function(a, b) { return (b.timestamp || 0) - (a.timestamp || 0); });
+                    return lives;
+                } catch (e) {
+                    return [];
+                }
+            };
+        } catch (initErr) {
+            alert("【原因判明⑤】Firebase初期化エラー\n" + initErr.message);
+        }
     </script>
 </body>
 </html>
