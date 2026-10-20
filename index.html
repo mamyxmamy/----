@@ -162,7 +162,7 @@
                 <div class="absolute inset-0 flex items-center justify-center opacity-10 text-[10rem] font-black text-red-700 pointer-events-none select-none">輪</div>
                 <h1 class="vertical-rl text-5xl sm:text-6xl font-black text-white tracking-[0.35em] drop-shadow-[0_0_20px_rgba(200,0,0,0.6)] z-10">乱世の輪廻</h1>
                 
-                <!-- ★NEW: 冥銭表示 -->
+                <!-- 冥銭表示 -->
                 <div class="absolute top-0 right-0 bg-black/60 border border-gray-700 px-3 py-1.5 rounded-sm shadow-md flex items-center gap-2">
                     <span class="text-[10px] text-gray-400">所持冥銭</span>
                     <span class="text-sm font-bold text-gray-200"><span id="ui-meisen">0</span></span>
@@ -173,6 +173,12 @@
                 <div class="border-y border-[#3A322A] py-2 bg-black/45 rounded-sm">
                     <span class="text-gray-400 text-xs font-bold block mb-0.5">輪廻の巡り</span>
                     <div class="text-2xl font-black text-white"><span id="ui-reincarnations">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
+                </div>
+
+                <!-- ★NEW: 全体の総輪廻数表示 -->
+                <div class="text-center mt-1 mb-2">
+                    <span class="text-[10px] text-gray-500 tracking-widest">天下の総輪廻数</span>
+                    <div class="text-sm font-bold text-gold"><span id="ui-global-reincarnations">---</span><span class="text-[10px] text-gray-500 font-normal ml-1">回</span></div>
                 </div>
 
                 <!-- 家宝表示エリア -->
@@ -186,7 +192,7 @@
                     </div>
                 </div>
                 
-                <!-- ★NEW: 持込道具エリア -->
+                <!-- 持込道具エリア -->
                 <div onclick="window.openItemStorage()" class="bg-[#1A1821] border border-purple-900/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#23202C]">
                     <span class="text-[11px] text-purple-300 font-bold block mb-1.5 flex justify-between border-b border-purple-900/40 pb-1">
                         <span>【持込道具】 <span class="text-gray-400 font-normal">(1回使い切り)</span></span>
@@ -345,7 +351,6 @@
                     </div>
                 </div>
                 
-                <!-- ★NEW: 獲得冥銭の表示 -->
                 <div class="flex justify-between items-end border-t border-gray-800 pt-1.5 mt-2">
                     <span class="text-[10px] text-gray-400">獲得冥銭</span>
                     <span class="text-sm font-bold text-purple-300"><span id="go-meisen">+0</span></span>
@@ -459,7 +464,7 @@
             </div>
         </div>
 
-        <!-- ================= 8. NEW: 冥府の商人（ショップ）モーダル ================= -->
+        <!-- ================= 8. 冥府の商人（ショップ）モーダル ================= -->
         <div id="shop-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
                 <div>
@@ -475,7 +480,7 @@
             <div id="shop-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
-        <!-- ================= 9. NEW: 道具（持ち込み）選択モーダル ================= -->
+        <!-- ================= 9. 道具（持ち込み）選択モーダル ================= -->
         <div id="item-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
                 <div>
@@ -487,7 +492,7 @@
             <div id="item-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
-        <!-- ================= 10. NEW: 遊戯指南（ヘルプ）モーダル ================= -->
+        <!-- ================= 10. 遊戯指南（ヘルプ）モーダル ================= -->
         <div id="help-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-green-900/60 bg-[#111613] flex justify-between items-center shrink-0">
                 <div>
@@ -534,9 +539,8 @@
         window.activeHeirlooms = [];
         window.unlockedDeaths = [];
         
-        // ★NEW: 冥銭とアイテムの変数
         window.meisen = 0;
-        window.inventory = {}; // { 'item_id': 数量 }
+        window.inventory = {}; 
         window.activeConsumable = null;
 
         window.__currentUser = null;
@@ -1206,7 +1210,6 @@
                 }
             }
 
-            // ★NEW: 持ち込み道具のUI更新
             const itemDiv = document.getElementById('item-equipped-list');
             if(itemDiv) {
                 if (!window.activeConsumable) {
@@ -1336,7 +1339,7 @@
                         window.inventory[item.id] = (window.inventory[item.id] || 0) + 1;
                         saveMetaProgress();
                         window.updateStartScreenUI();
-                        window.openShop(); // 再描画
+                        window.openShop(); 
                     }
                 };
                 sList.appendChild(card);
@@ -1479,7 +1482,6 @@
             }
         };
 
-        // ★NEW: 遊戯指南（ヘルプ）モーダルの制御
         window.openHelp = function(e) {
             if(e){ e.preventDefault(); e.stopPropagation(); }
             document.getElementById('help-screen').classList.remove('hidden');
@@ -1602,7 +1604,6 @@
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
 
-            // 家宝の適用
             if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
                 window.activeHeirlooms.forEach(hl => {
                     if (hl.type === 'money') state.money += hl.value;
@@ -1615,7 +1616,6 @@
                 });
             }
 
-            // ★NEW: 持ち込み道具（使い切り）の適用と消費
             if (window.activeConsumable) {
                 const cons = window.activeConsumable;
                 if (cons.type === 'migawari') {
@@ -1626,13 +1626,11 @@
                 else if (cons.type === 'strategy') state.strategy += cons.value;
                 else if (cons.type === 'virtue') state.virtue += cons.value;
 
-                // インベントリから消費
                 if (window.inventory[cons.id] > 0) {
                     window.inventory[cons.id] -= 1;
                 }
                 state.flags.consumedItemName = cons.name;
                 
-                // 消費したので選択を解除
                 window.activeConsumable = null;
                 saveMetaProgress();
             }
@@ -1701,7 +1699,6 @@
                 const hlNames = window.activeHeirlooms.map(h => h.name).join('、');
                 hlText = `<p class="text-gold mt-6 text-[11px]">家宝「${hlNames}」の加護を携え、<br>宿命の旅が始まる。</p>`;
             }
-            // ★NEW: 道具のテキスト
             if (state.flags.consumedItemName) {
                 hlText += `<p class="text-purple-300 mt-2 text-[10px]">冥府の道具「${state.flags.consumedItemName}」の力を身に宿した。</p>`;
             }
@@ -2502,7 +2499,7 @@
 
                 const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
                 const { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
-                const { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+                const { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs, increment } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
 
                 const app = initializeApp(firebaseConfig);
                 const auth = getAuth(app);
@@ -2515,6 +2512,18 @@
                 } catch (authErr) {
                     console.warn("Auth initialization fallback:", authErr);
                 }
+
+                // 全ユーザーの総プレイ回数をリアルタイム監視して画面に表示
+                const globalStatsRef = doc(db, 'artifacts', appId, 'global_stats', 'summary');
+                onSnapshot(globalStatsRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const globalCountElem = document.getElementById('ui-global-reincarnations');
+                        if (globalCountElem && data.totalReincarnations) {
+                            globalCountElem.innerText = data.totalReincarnations.toLocaleString();
+                        }
+                    }
+                }, (err) => console.warn("Global stats snapshot error:", err));
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
@@ -2543,12 +2552,14 @@
                     if (!window.__currentUser) return;
                     const uid = window.__currentUser.uid;
                     try {
+                        // 1. 個人のプレイ回数を更新
                         const countRef = doc(db, 'artifacts', appId, 'users', uid, 'stats', 'reincarnation');
                         setDoc(countRef, { 
                             count: window.currentReincarnationCount,
                             equippedHeirlooms: window.activeHeirlooms
                         }, { merge: true }).catch(() => {});
 
+                        // 2. 個人の過去生データを追加
                         const pastLivesRef = collection(db, 'artifacts', appId, 'users', uid, 'past_lives');
                         addDoc(pastLivesRef, {
                             age: age, className: className, faction: factionName, title: title, reason: reason, 
@@ -2558,6 +2569,12 @@
                             timestamp: Date.now(),
                             chronology: finalState.chronology
                         }).catch(() => {});
+
+                        // 3. 全ユーザーの総プレイ回数を +1 する
+                        setDoc(globalStatsRef, {
+                            totalReincarnations: increment(1)
+                        }, { merge: true }).catch(() => {});
+
                     } catch (e) {
                         console.warn("Firebase save skipped:", e);
                     }
