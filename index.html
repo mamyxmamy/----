@@ -148,6 +148,9 @@
         .chronology-item { display: flex; gap: 0.5rem; margin-bottom: 0.25rem; font-size: 0.65rem; }
         .chronology-age { color: var(--wafu-gold); font-weight: bold; min-width: 2.2rem; flex-shrink: 0; }
         .chronology-text { color: #D1D5DB; line-height: 1.3; }
+        
+        /* 導入テキスト用 */
+        .fade-text { transition: opacity 1.5s ease-in-out; }
     </style>
 </head>
 <body>
@@ -180,19 +183,22 @@
             </div>
 
             <div class="w-full space-y-2 z-10">
-                <!-- 直接onclickを指定し確実な動作を保証 -->
                 <button type="button" onclick="window.startGame(event)" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white border border-[#A32020] py-4 text-xl font-bold active:scale-95 transition-all shadow-[0_0_20px_rgba(139,0,0,0.5)] tracking-[0.25em] rounded-sm mb-1">
                     乱世に堕ちる
                 </button>
+                <!-- ★ボタン配置整理 -->
                 <div class="grid grid-cols-2 gap-2 w-full">
                     <button type="button" onclick="window.openHeirloomStorage(event)" class="action-button-main col-span-2 bg-black/50 text-gold hover:text-white border border-gold/50 py-3 text-xs font-bold tracking-widest rounded-sm transition-all shadow-[0_0_10px_rgba(197,160,89,0.15)]">
                         家宝蔵（装備変更）
                     </button>
+                    <button type="button" onclick="window.openEncyclopedia(event)" class="action-button-main bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
+                        絵巻図鑑
+                    </button>
                     <button type="button" onclick="window.openHistory(event)" class="action-button-main bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
                         輪廻の回想
                     </button>
-                    <button type="button" onclick="window.resetSaveData(event)" class="action-button-main bg-black/50 text-red-500 hover:text-red-400 border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
-                        記録の初期化
+                    <button type="button" onclick="window.resetSaveData(event)" class="action-button-main col-span-2 bg-black/50 text-red-900 hover:text-red-500 border border-red-900/50 py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all mt-2">
+                        すべての記録を初期化
                     </button>
                 </div>
             </div>
@@ -211,6 +217,16 @@
                     <span class="text-[10px] text-gray-500 tracking-widest block mb-2">身分</span>
                     <div id="roulette-class" class="text-5xl sm:text-6xl font-black text-gray-200 tracking-[0.2em] flex items-center justify-center">--</div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ================= 1.8. NEW: ストーリー導入画面 ================= -->
+        <div id="intro-screen" class="hidden absolute inset-0 z-40 bg-black flex flex-col items-center justify-center p-6 cursor-pointer" onclick="window.finishIntro()">
+            <div id="intro-text" class="text-white text-[13px] sm:text-sm leading-[2.2] font-bold tracking-[0.15em] text-center space-y-5 fade-text opacity-0">
+                <!-- JSで注入 -->
+            </div>
+            <div id="intro-tap-prompt" class="absolute bottom-10 text-gray-500 text-xs tracking-widest animate-pulse fade-text opacity-0">
+                画面をタップして進む
             </div>
         </div>
 
@@ -400,6 +416,20 @@
             <div id="heirloom-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
+        <!-- ================= 7. NEW: 絵巻図鑑モーダル ================= -->
+        <div id="encyclopedia-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
+            <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
+                <h2 class="text-base font-bold text-gold tracking-widest">絵巻図鑑</h2>
+                <button type="button" onclick="window.closeEncyclopedia(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
+            </div>
+            <div class="flex border-b border-[#3A322A] bg-[#1A1613]">
+                <button type="button" onclick="window.switchEncycTab('heirloom')" id="tab-heirloom" class="flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors">お宝図鑑</button>
+                <button type="button" onclick="window.switchEncycTab('death')" id="tab-death" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">死因図鑑</button>
+            </div>
+            <div id="encyc-content" class="flex-grow overflow-y-auto p-4 pb-8 space-y-3">
+            </div>
+        </div>
+
     </div>
 
     <!-- ================= ゲームロジック ================= -->
@@ -408,6 +438,7 @@
         window.currentReincarnationCount = 0;
         window.unlockedHeirlooms = [];
         window.activeHeirlooms = [];
+        window.unlockedDeaths = []; // ★NEW: 死因の保存用
         window.__currentUser = null;
 
         window.getMaxHeirloomSlots = function() {
@@ -421,11 +452,7 @@
             if (savedCount) window.currentReincarnationCount = parseInt(savedCount, 10) || 0;
 
             const savedHeirlooms = localStorage.getItem('sengoku_unlocked_heirlooms');
-            if (savedHeirlooms) {
-                window.unlockedHeirlooms = JSON.parse(savedHeirlooms);
-            } else {
-                window.unlockedHeirlooms = [];
-            }
+            if (savedHeirlooms) window.unlockedHeirlooms = JSON.parse(savedHeirlooms);
 
             const savedEquipped = localStorage.getItem('sengoku_equipped_heirlooms');
             if (savedEquipped) {
@@ -435,12 +462,10 @@
                 if (oldHeirloom) {
                     const parsed = JSON.parse(oldHeirloom);
                     if(!parsed.id) parsed.id = 'hl_' + parsed.type;
-                    if (!window.unlockedHeirlooms.find(h => h.id === parsed.id)) {
-                        window.unlockedHeirlooms.push(parsed);
-                    }
+                    if (!window.unlockedHeirlooms.find(h => h.id === parsed.id)) window.unlockedHeirlooms.push(parsed);
+                    window.activeHeirlooms = [parsed];
                     localStorage.removeItem('sengoku_heirloom');
                     localStorage.setItem('sengoku_unlocked_heirlooms', JSON.stringify(window.unlockedHeirlooms));
-                    window.activeHeirlooms = [parsed];
                     localStorage.setItem('sengoku_equipped_heirlooms', JSON.stringify(window.activeHeirlooms));
                 }
             }
@@ -450,10 +475,12 @@
                 window.activeHeirlooms = window.activeHeirlooms.slice(0, maxSlots);
             }
 
+            // ★死因データのロード
+            const savedDeaths = localStorage.getItem('sengoku_unlocked_deaths');
+            if (savedDeaths) window.unlockedDeaths = JSON.parse(savedDeaths);
+
         } catch (e) {
             console.warn("Storage restricted:", e);
-            window.unlockedHeirlooms = [];
-            window.activeHeirlooms = [];
         }
 
         const CLASSES = [
@@ -478,6 +505,35 @@
             { id: 'shimazu', name: '島津家', color: '#556B2F' }
         ];
 
+        // ★NEW: 図鑑用データ
+        const HEIRLOOMS_DB = [
+            { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" },
+            { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
+            { id: 'hl_ranjyatai', name: "名香・蘭奢待", hint: "天下の万民から敬愛されし者が賜る" },
+            { id: 'hl_hiragumo', name: "古天明平蜘蛛", hint: "非道と悪逆の果て、魔道を往く者が手にする" },
+            { id: 'hl_tsukumo', name: "九十九髪茄子", hint: "途方もない巨万の富を築きし商人が落とす" },
+            { id: 'hl_nanbandou', name: "南蛮胴具足", hint: "数多の死線を越え、長寿を全うせし者が得る" },
+            { id: 'hl_mikazuki', name: "天下五剣・三日月宗近", hint: "高き武芸を誇る剣豪が手にする" },
+            { id: 'hl_hasebe', name: "へし切長谷部", hint: "冷徹なる武功を挙げし者の愛刀" },
+            { id: 'hl_koyogunkan', name: "甲陽軍鑑", hint: "優れた軍略を遺せし者が著す" },
+            { id: 'hl_sonshi', name: "孫子の古伝書", hint: "高い兵法と知略を備えし者が受け継ぐ" },
+            { id: 'hl_matsukaze', name: "名馬・松風", hint: "人望厚き将の元へ駆けつける名馬" },
+            { id: 'hl_muramasa', name: "妖刀・千子村正", hint: "血塗られた悪逆の道を歩む者が振るう" },
+            { id: 'hl_chaki', name: "黄金の茶器", hint: "莫大な富を蓄えし商人の証" },
+            { id: 'hl_furo', name: "南蛮不老薬", hint: "還暦を越える長寿を成せし者が秘蔵する" },
+            { id: 'hl_yohen', name: "曜変天目茶碗", hint: "並外れた強運を持つ者が偶然手に入れる" },
+            { id: 'hl_aoi', name: "四葉の葵紋", hint: "戦火の中で運良く拾う品" }
+        ];
+
+        const DEATH_CAUSES_DB = [
+            { id: 'battle', name: '討死', hint: '戦場で名誉ある、あるいは無残な最期を遂げる。' },
+            { id: 'starvation', name: '餓死', hint: '極限の飢えに苦しみ、泥を啜って命を落とす。' },
+            { id: 'execution', name: '斬首・処刑', hint: '権力者の怒りを買うか、捕縛されて首を刎ねられる。' },
+            { id: 'hunted', name: '野垂死', hint: '落武者狩りなどに遭い、路傍で息絶える。' },
+            { id: 'plague', name: '病死', hint: '恐ろしい病魔に蝕まれ、病床で果てる。' },
+            { id: 'oldage', name: '大往生・老衰', hint: '天寿を全うし、畳の上で穏やかに生涯を閉じる。' }
+        ];
+
         const WIFE_NAMES = ['千代', 'まつ', '寧々', 'お市', '濃姫', '小松', '妙玖', '早川殿', '甲斐姫', 'お田鶴'];
 
         let state = {
@@ -495,6 +551,7 @@
 
         let appContainer, startScreen, gameScreen, gameoverScreen, premiumScreen, historyScreen;
         let rouletteScreen, rouletteClass, rouletteFaction;
+        let introScreen, introText, introPrompt;
         let advanceBtn, advanceBtnText, choicesContainer, logContainer;
         let uiAge, uiClass, uiHealth, uiMoney, uiFaction, modeBadge;
         let uiValor, uiKarma, uiStrategy, uiVirtue, uiLuck;
@@ -509,6 +566,9 @@
             rouletteScreen = document.getElementById('roulette-screen');
             rouletteClass = document.getElementById('roulette-class');
             rouletteFaction = document.getElementById('roulette-faction');
+            introScreen = document.getElementById('intro-screen');
+            introText = document.getElementById('intro-text');
+            introPrompt = document.getElementById('intro-tap-prompt');
             
             advanceBtn = document.getElementById('advance-btn');
             advanceBtnText = document.getElementById('advance-btn-text');
@@ -661,7 +721,7 @@
             },
             {
                 id: 'plague', mode: ['normal', 'fugitive'], weight: 25, condition: () => true,
-                title: '【疫病】死の病魔', text: '不吉な黒雲が空を覆う中、村々を「死の病魔」が舐め尽くしている。昨日まで笑っていた隣人が突突として黒い血を吐いて倒れ、そのまま二度と動かなくなる。死体を焼く異臭が風に乗って漂い、ついにあなたの体にも焼けるような高熱と激しい悪寒が走り始めた。見えざる死神が、すぐ背後に立っている。',
+                title: '【疫病】死の病魔', text: '不吉な黒雲が空を覆う中、村々を「死の病魔」が舐め尽くしている。昨日まで笑っていた隣人が突如として黒い血を吐いて倒れ、そのまま二度と動かなくなる。死体を焼く異臭が風に乗って漂い、ついにあなたの体にも焼けるような高熱と激しい悪寒が走り始めた。見えざる死神が、すぐ背後に立っている。',
                 choices: [
                     { text: '【銭100文】高価な南蛮の秘薬をすがる思いで買い求める', condition: (s) => s.money >= 100, hint: '安全に回復', effect: (s) => { return { money: -100, hp: 10, log: '莫大な金を支払い、怪しげな宣教師から南蛮由来の特効薬を手に入れた。数日後には嘘のように熱が引き、九死に一生を得た。' }; } },
                     { text: '【人徳30】寺社に籠り、病に苦しむ民と共に不眠の祈祷を行う', condition: (s) => s.virtue >= 30, hint: '人徳上昇・被害軽減', effect: (s) => { s.virtue += 20; return { hp: -10, log: '激しい熱病にうなされながらも、不眠不休で祈り続けた。奇跡的に病魔は去り、民からの信仰はより強固なものとなった。' }; } },
@@ -1025,6 +1085,84 @@
             document.getElementById('heirloom-screen').classList.add('hidden');
         };
 
+        // ★NEW: 絵巻図鑑の表示ロジック
+        window.openEncyclopedia = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('encyclopedia-screen').classList.remove('hidden');
+            window.switchEncycTab('heirloom');
+        };
+
+        window.closeEncyclopedia = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('encyclopedia-screen').classList.add('hidden');
+        };
+
+        window.switchEncycTab = function(tabName) {
+            const tabH = document.getElementById('tab-heirloom');
+            const tabD = document.getElementById('tab-death');
+            const content = document.getElementById('encyc-content');
+            
+            if(tabName === 'heirloom') {
+                tabH.className = "flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors";
+                tabD.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+                
+                let html = '<div class="text-[10px] text-gray-400 mb-2">※未取得の家宝はヒントのみ表示されます</div>';
+                HEIRLOOMS_DB.forEach(hl => {
+                    const isUnlocked = window.unlockedHeirlooms.some(u => u.id === hl.id);
+                    if(isUnlocked) {
+                        const actual = window.unlockedHeirlooms.find(u => u.id === hl.id) || hl;
+                        html += `
+                        <div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md">
+                            <div class="w-10 h-10 bg-gold/20 border border-gold flex items-center justify-center rounded text-lg flex-shrink-0">✨</div>
+                            <div>
+                                <div class="font-bold text-gold text-sm">${actual.name || hl.name}</div>
+                                <div class="text-xs text-gray-300 mt-0.5">${actual.desc || '取得済み'}</div>
+                            </div>
+                        </div>`;
+                    } else {
+                        html += `
+                        <div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60">
+                            <div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-lg flex-shrink-0">？</div>
+                            <div>
+                                <div class="font-bold text-gray-500 text-sm">？？？</div>
+                                <div class="text-[10px] text-gray-600 mt-0.5">【取得条件】 ${hl.hint}</div>
+                            </div>
+                        </div>`;
+                    }
+                });
+                content.innerHTML = html;
+                
+            } else {
+                tabH.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+                tabD.className = "flex-1 py-3 text-xs font-bold text-red-500 border-b-2 border-red-500 transition-colors";
+                
+                let html = '<div class="text-[10px] text-gray-400 mb-2">※これまで迎えた最期が記録されます</div>';
+                DEATH_CAUSES_DB.forEach(dc => {
+                    const isUnlocked = window.unlockedDeaths.includes(dc.id);
+                    if(isUnlocked) {
+                        html += `
+                        <div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md">
+                            <div class="w-10 h-10 bg-red-900/30 border border-red-800 flex items-center justify-center rounded text-lg flex-shrink-0">💀</div>
+                            <div>
+                                <div class="font-bold text-red-400 text-sm">${dc.name}</div>
+                                <div class="text-xs text-gray-300 mt-0.5">${dc.hint}</div>
+                            </div>
+                        </div>`;
+                    } else {
+                        html += `
+                        <div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60">
+                            <div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-lg flex-shrink-0">？</div>
+                            <div>
+                                <div class="font-bold text-gray-500 text-sm">未到達の死</div>
+                                <div class="text-[10px] text-gray-600 mt-0.5">まだこの結末を迎えていない</div>
+                            </div>
+                        </div>`;
+                    }
+                });
+                content.innerHTML = html;
+            }
+        };
+
         function resetAllStateAndUI() {
             stopAutoPlay();
             isWaitingForChoice = false;
@@ -1041,6 +1179,7 @@
             if (gameScreen) gameScreen.classList.add('hidden');
             if (historyScreen) historyScreen.classList.add('hidden');
             if (rouletteScreen) rouletteScreen.classList.add('hidden');
+            if (introScreen) introScreen.classList.add('hidden');
 
             if (logContainer) {
                 logContainer.innerHTML = '';
@@ -1061,7 +1200,6 @@
             if (modeBadge) modeBadge.classList.add('hidden');
         }
 
-        // ★NEW: リトライ処理を堅牢化
         window.resetGame = function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
             resetAllStateAndUI();
@@ -1074,7 +1212,7 @@
 
         window.startGame = function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
-            if (isProcessing) return; // 二重起動防止
+            if (isProcessing) return;
 
             resetAllStateAndUI();
 
@@ -1154,23 +1292,61 @@
                     setTimeout(() => {
                         if (!isProcessing) return;
                         rouletteScreen.classList.add('hidden');
-                        gameScreen.classList.remove('hidden');
                         
-                        updateUI();
-                        addLog(`<span class="font-bold text-gold">【生誕】</span>${state.faction.name}の領内にて。<br>${state.classInfo.intro}`);
-                        
-                        if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
-                            const hlNames = window.activeHeirlooms.map(h => h.name).join('、');
-                            addLog(`<span class="text-gold font-bold">家宝「${hlNames}」の加護を受け、宿命の旅が始まる。</span>`);
-                        }
-                        
-                        isProcessing = false;
-                        scheduleNextAutoPlay(1100);
+                        // ★NEW: ルーレット終了後に導入テキスト画面へ移行
+                        window.showIntro(selectedClass, selectedFaction);
                     }, 1800);
                 }
             }
-            
             spin();
+        };
+
+        // ★NEW: 導入テキストの表示処理
+        window.showIntro = function(cls, faction) {
+            introScreen.classList.remove('hidden');
+            introText.classList.remove('opacity-100');
+            introText.classList.add('opacity-0');
+            introPrompt.classList.remove('opacity-100');
+            introPrompt.classList.add('opacity-0');
+            
+            let hlText = "";
+            if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
+                const hlNames = window.activeHeirlooms.map(h => h.name).join('、');
+                hlText = `<p class="text-gold mt-6 text-[11px]">家宝「${hlNames}」の加護を携え、<br>宿命の旅が始まる。</p>`;
+            }
+            
+            introText.innerHTML = `
+                <p>時は乱世。</p>
+                <p>果てなき戦乱が続き、<br>人命は草芥のごとく散りゆく時代。</p>
+                <p class="mt-6 text-yellow-500">あなたは今、${faction.name}の領内で<br>「<span class="text-xl">${cls.name}</span>」として新たな生を受けた。</p>
+                <p class="text-xs text-gray-300 mt-4 leading-relaxed">${cls.intro}</p>
+                <p class="mt-6 text-red-500 font-black">己の才覚と運命のみを頼りに、<br>この過酷な時代を生き抜け。</p>
+                ${hlText}
+            `;
+            
+            setTimeout(() => {
+                introText.classList.remove('opacity-0');
+                introText.classList.add('opacity-100');
+            }, 100);
+            
+            setTimeout(() => {
+                introPrompt.classList.remove('opacity-0');
+                introPrompt.classList.add('opacity-100');
+                isProcessing = false; // タップ待ちにする
+            }, 2500);
+        };
+
+        // ★NEW: 導入テキストを終えてゲーム画面へ
+        window.finishIntro = function() {
+            if (isProcessing) return; // テキスト表示中はスキップ不可にするかどうかの判定
+            
+            introScreen.classList.add('hidden');
+            gameScreen.classList.remove('hidden');
+            
+            updateUI();
+            addLog(`<span class="font-bold text-gold">【生誕】</span>${state.faction.name}の領内にて。`);
+            
+            scheduleNextAutoPlay(1000);
         };
 
         function scheduleNextAutoPlay(delay = 900) {
@@ -1571,6 +1747,12 @@
 
                 recordChronology("この世を去る");
 
+                // ★NEW: 死因のアンロック処理
+                if (!window.unlockedDeaths.includes(state.deathCause)) {
+                    window.unlockedDeaths.push(state.deathCause);
+                    try { localStorage.setItem('sengoku_unlocked_deaths', JSON.stringify(window.unlockedDeaths)); } catch(e){}
+                }
+
                 let reason = "戦国の風雲に呑まれ、血の海に沈んで息絶えた。";
                 if (state.deathCause === 'starvation') reason = "泥を啜るような極限の飢餓の中、腹を抱えて悶え死んだ。";
                 else if (state.deathCause === 'oldage') reason = "数多の死線を潜り抜け、奇跡的に畳の上で穏やかに生涯を閉じた。";
@@ -1791,10 +1973,12 @@
                 localStorage.removeItem('sengoku_heirloom');
                 localStorage.removeItem('sengoku_equipped_heirlooms');
                 localStorage.removeItem('sengoku_unlocked_heirlooms');
+                localStorage.removeItem('sengoku_unlocked_deaths'); // ★追加
                 localStorage.removeItem('sengoku_past_lives');
                 window.currentReincarnationCount = 0;
                 window.unlockedHeirlooms = [];
                 window.activeHeirlooms = [];
+                window.unlockedDeaths = []; // ★追加
                 window.updateStartScreenUI();
                 alert("すべての記録を初期化しました。");
             }
@@ -1862,9 +2046,22 @@
             historyScreen.classList.add('hidden');
         };
 
+        function bindButton(id, handler) {
+            const btn = document.getElementById(id);
+            if (!btn) return;
+            btn.onclick = handler;
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                handler(e);
+            }, { passive: false });
+        }
+
         function initApp() {
             cacheElements();
             window.updateStartScreenUI();
+
+            bindButton('start-btn', window.startGame);
+            bindButton('advance-btn', window.manualAdvance);
         }
 
         if (document.readyState === 'loading') {
