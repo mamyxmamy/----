@@ -250,7 +250,6 @@
 
                 <div class="grid grid-cols-2 gap-2.5">
                     <div id="health-box" class="bg-[#201C18] p-2 text-center border border-[#3A322A] rounded-sm transition-colors">
-                        <!-- ★NEW: 限界突破した体力上限のUI表示 -->
                         <span class="block text-[11px] text-gray-400 font-bold">体力 <span id="ui-max-health" class="text-[9px] text-gray-600 font-normal">/ 150</span></span>
                         <span id="ui-health" class="text-xl font-black text-white">100</span>
                     </div>
@@ -570,7 +569,7 @@
         let advanceBtn, advanceBtnText, choicesContainer, logContainer;
         let uiAge, uiClass, uiHealth, uiMoney, uiFaction, modeBadge;
         let uiValor, uiKarma, uiStrategy, uiVirtue, uiLuck;
-        let uiMaxHealth; // ★NEW
+        let uiMaxHealth;
 
         function cacheElements() {
             appContainer = document.getElementById('app-container');
@@ -602,7 +601,7 @@
             uiStrategy = document.getElementById('ui-strategy');
             uiVirtue = document.getElementById('ui-virtue');
             uiLuck = document.getElementById('ui-luck');
-            uiMaxHealth = document.getElementById('ui-max-health'); // ★NEW
+            uiMaxHealth = document.getElementById('ui-max-health');
         }
 
         function stopAutoPlay() {
@@ -613,7 +612,25 @@
             state.chronology.push({ age: state.age, text: text });
         }
 
+        // ================= ★NEW: モード矛盾解消版 イベント定義 =================
         const EVENTS = [
+            // ★NEW: 合戦終了イベント (戦場から日常へ戻る)
+            {
+                id: 'battle_end', mode: ['battle'], weight: 45, condition: () => true,
+                title: '【帰陣】合戦の終わり', text: '長く血生臭い戦いがついに終わりを告げた。両軍は兵を引き、生き残った者たちはそれぞれの故郷や陣所へと帰還する。生存を分かち合う論功行賞の刻だ。',
+                choices: [
+                    { text: '意気揚々と武功を報告し、恩賞を賜る', condition: (s) => s.valor >= 10, hint: '武功に応じて銭獲得・日常へ戻る', effect: (s) => { 
+                        s.mode = 'normal';
+                        let reward = Math.floor(s.valor * 2.5);
+                        recordChronology("合戦を生き抜き、武功により恩賞を得る");
+                        return { money: reward, hp: 10, log: `生き延びた安堵と共に帰陣した。戦場での働きが認められ、金 ${reward}文の恩賞を賜り、平穏な日常へと戻る。` }; 
+                    } },
+                    { text: 'ひっそりと陣を払い、日常へ戻る', condition: () => true, hint: '日常へ戻る', effect: (s) => { 
+                        s.mode = 'normal';
+                        return { hp: 5, log: '特に目立った手柄はなかったが、五体満足で生き残ったことこそが最大の報酬だ。血塗られた武器を置き、平穏な日常へと戻る。' }; 
+                    } }
+                ]
+            },
             {
                 id: 'defection', mode: ['normal', 'battle'], weight: 25, condition: (s) => (s.classInfo.id === 'bushou' || s.classInfo.id === 'ninja' || s.classInfo.id === 'ashigaru') && s.age > 20 && s.faction.id !== 'custom',
                 title: '【調略】敵陣営からの誘い', text: '敵対する大名家から密使が訪れた。「今の主君を見限り我が陣営へ寝返れば、莫大な恩賞と地位を約束しよう」と囁く。',
@@ -660,7 +677,9 @@
                         return { money: -400, hp: 0, log: '恥も外聞も捨てて土下座し、私財を投じて手に入れた茶器を献上。必死にへりくだることで、辛くも粛清の嵐から逃れきった。' }; 
                     } },
                     { text: '城を脱出し、浪人に身をやつす', condition: () => true, hint: '浪人へ転落・カルマ増', effect: (s) => { 
-                        s.classInfo = CLASSES.find(c=>c.id==='ronin'); s.karma += 20; recordChronology("主君の暗殺の手から逃れ、浪人へと身をやつす");
+                        s.classInfo = CLASSES.find(c=>c.id==='ronin'); s.karma += 20; 
+                        s.mode = 'normal'; // ★NEW: モードを強制的に日常に戻す
+                        recordChronology("主君の暗殺の手から逃れ、浪人へと身をやつす");
                         return { hp: -10, log: '「ここで死ぬわけにはいかぬ」と迫りくる刺客の手を逃れ、夜陰に紛れて出奔した。地位も名誉もすべてを捨て、また一介の「浪人」に戻る。' }; 
                     } },
                     { text: '甘んじて腹を切る', condition: () => true, hint: '即死', effect: (s) => { 
@@ -681,7 +700,12 @@
                     { text: '【知略30】重病を装い、巧妙に徴兵を逃れる', condition: (s) => s.strategy >= 30, hint: '知略で無傷回避', effect: (s) => { s.strategy += 5; return { hp: 0, log: '顔に泥を塗り、咳き込みながら血を吐く迫真の名演技で、疑り深い代官を完全に信じ込ませて徴兵を逃れきった。' }; } },
                     { text: 'すべてを捨てて深い山中へ逃走する', condition: () => true, hint: '逃亡状態へ移行・カルマ上昇', effect: (s) => { 
                         s.mode = 'fugitive'; s.karma += 10; s.virtue -= 10; recordChronology("兵役を逃れ、すべてを捨てて逃亡生活を始める");
-                        return { hp: -5, log: '家も土地もすべて捨て、追っ手の矢を避けながら夜の山中へ姿を消した。落武者狩りの影に怯える、見えざる敵との過酷な逃走劇が幕を開けた。' }; 
+                        let baseDmg = 15;
+                        let reduce = Math.floor(s.strategy * 0.2);
+                        let finalDmg = Math.max(0, baseDmg - reduce);
+                        let msg = '家も土地もすべて捨て、追っ手の矢を避けながら夜の山中へ姿を消した。';
+                        if (reduce > 0) msg += `<br><span class="text-[10px] text-green-400">【知略】裏道を熟知しており、追手を安全に巻いた！（被害軽減）</span>`;
+                        return { hp: -finalDmg, log: msg }; 
                     } }
                 ]
             },
@@ -690,9 +714,23 @@
                 title: '【合戦】激突の陣', text: '天地を揺るがすような法螺貝の音と、むせ返るような血と火薬の匂いが戦場を支配している。怒号と悲鳴が入り混じる中、土煙を切り裂くように敵の精鋭騎馬隊が地響きを立てて肉薄してきた！味方の陣形が完全に崩れかける中、目前には朱塗りの槍を構えた狂気の騎馬武者が迫る！',
                 choices: [
                     { text: '死の恐怖を怒声に変え、真っ向から槍を突き出す！', condition: () => true, hint: '武功大幅増・負傷リスク', effect: (s) => { 
-                        s.valor += 30; const dmg = Math.floor(Math.random() * 35) + 20; s.deathCause = 'battle'; 
+                        s.valor += 30; s.deathCause = 'battle'; 
                         if(s.valor > 60) recordChronology("激戦の中で敵兵を次々と討ち取り、大いなる武功を挙げる");
-                        return { hp: -dmg, log: '先頭で突っ込んできた騎馬兵を馬ごと突き落として見事な殊勲を挙げた！しかし、乱戦の中で背後から刃を浴び、熱い血を吹き出しながらその場に倒れ込んだ。' }; 
+                        
+                        let baseDmg = Math.floor(Math.random() * 35) + 30;
+                        let reduce = Math.floor(s.valor * 0.3);
+                        let isDodge = Math.random() < (s.luck * 0.005);
+                        let finalDmg = isDodge ? 0 : Math.max(5, baseDmg - reduce);
+
+                        let msg = '先頭で突っ込んできた騎馬兵を馬ごと突き落として見事な殊勲を挙げた！';
+                        if (isDodge) {
+                            msg += '<br><span class="text-[10px] text-yellow-300">【強運】奇跡的に敵の反撃がすべて急所を外れた！（ダメージ無効化）</span>';
+                        } else if (reduce > 0) {
+                            msg += `<br><span class="text-[10px] text-green-400">【武功】鍛え抜かれた武の力で、敵の刃を最小限に防いだ！（被害を ${reduce} 軽減）</span>`;
+                        } else {
+                            msg += '<br>しかし、乱戦の中で背後から刃を浴び、熱い血を吹き出しながらその場に倒れ込んだ。';
+                        }
+                        return { hp: -finalDmg, log: msg }; 
                     } },
                     { text: '【知略】戦局を俯瞰し、有利な高所へ素早く退避・布陣', condition: () => true, hint: '知略増・被ダメージ軽減', effect: (s) => { s.strategy += 15; s.deathCause = 'battle'; return { hp: -8, log: '馬鹿正直に突っ込む愚を避け、地形を巧みに利用して高台へ移動。味方への被害を最小限に抑えつつ、上から矢を射掛けて敵の突撃を見事にいなした。' }; } },
                     { text: '【乾坤一擲】血路を開き、敵本陣へ単騎突撃！（成功率25%）', condition: () => true, hint: '大逆転か即死', effect: (s) => {
@@ -732,7 +770,14 @@
                         s.virtue += 45; recordChronology("大飢饉において私財を投じて施しを行い、生き神として崇められる");
                         return { money: -120, hp: 5, log: '私財を限界まで投じて食糧を買い集め、通りで大量の炊き出しを行った。生き返った領民たちは涙を流し、あなたを生き神の如く崇め立てた。' }; 
                     } },
-                    { text: '【銭50文】高騰した食糧を強引に買い占める', condition: (s) => s.money >= 50, hint: '銭消費で生存確保', effect: (s) => { return { money: -50, hp: 15, log: '周囲で人がバタバタと倒れる中、蓄えておいた銭に物を言わせて闇米を確保した。懐は痛んだが、己と家族の命だけは確実に繋ぎ止めた。' }; } },
+                    { text: '【銭50文】高騰した食糧を強引に買い占める', condition: (s) => s.money >= 50, hint: '知略で出費を抑制', effect: (s) => { 
+                        let baseCost = 50;
+                        let discount = Math.floor(s.strategy * 0.3);
+                        let finalCost = Math.max(10, baseCost - discount);
+                        let msg = '周囲で人がバタバタと倒れる中、蓄えておいた銭に物を言わせて闇米を確保した。懐は痛んだが、己と家族の命だけは確実に繋ぎ止めた。';
+                        if(discount > 0) msg += `<br><span class="text-[10px] text-green-400">【知略】商人の弱みを握って巧みに交渉し、安く買い叩いた！（銭 ${discount}文 節約）</span>`;
+                        return { money: -finalCost, hp: 15, log: msg }; 
+                    } },
                     { text: '草の根や泥を齧り、ただひたすらに耐え忍ぶ', condition: () => true, hint: '体力大ダメージ', effect: (s) => { s.deathCause = 'starvation'; return { hp: -40, log: '食べるものが何一つなくなり、最後は木の皮を煮て飢えを凌ぐ地獄の日々が続いた。身体は痩せこけ、立っていることも辛いほどに体力が削り取られた。' }; } }
                 ]
             },
@@ -742,7 +787,19 @@
                 choices: [
                     { text: '【銭100文】高価な南蛮の秘薬をすがる思いで買い求める', condition: (s) => s.money >= 100, hint: '安全に回復', effect: (s) => { return { money: -100, hp: 10, log: '莫大な金を支払い、怪しげな宣教師から南蛮由来の特効薬を手に入れた。数日後には嘘のように熱が引き、九死に一生を得た。' }; } },
                     { text: '【人徳30】寺社に籠り、病に苦しむ民と共に不眠の祈祷を行う', condition: (s) => s.virtue >= 30, hint: '人徳上昇・被害軽減', effect: (s) => { s.virtue += 20; return { hp: -10, log: '激しい熱病にうなされながらも、不眠不休で祈り続けた。奇跡的に病魔は去り、民からの信仰はより強固なものとなった。' }; } },
-                    { text: '己の気力と体力だけを頼りに病魔に耐え抜く', condition: () => true, hint: '体力大ダメージ', effect: (s) => { s.deathCause = 'plague'; return { hp: -55, log: '薬に頼る金もなく、高熱と吐血でのたうち回る三日三晩を過ごした。一命は取り留めたものの、髪は抜け落ち、大きく寿命を縮める結果となった。' }; } }
+                    { text: '己の気力と体力だけを頼りに病魔に耐え抜く', condition: () => true, hint: '運で被害軽減', effect: (s) => { 
+                        s.deathCause = 'plague';
+                        let baseDmg = 55;
+                        let isDodge = Math.random() < (s.luck * 0.005);
+                        let finalDmg = isDodge ? 5 : baseDmg;
+                        let msg = '薬に頼る金もなく、高熱と吐血でのたうち回る三日三晩を過ごした。';
+                        if (isDodge) {
+                            msg += `<br><span class="text-[10px] text-yellow-300">【強運】しかし、体内の免疫が奇跡的に打ち勝ち、後遺症なく完全回復を果たした！</span>`;
+                        } else {
+                            msg += '一命は取り留めたものの、髪は抜け落ち、大きく寿命を縮める結果となった。';
+                        }
+                        return { hp: -finalDmg, log: msg }; 
+                    } }
                 ]
             },
             {
@@ -799,18 +856,21 @@
                 id: 'tournament', mode: ['normal'], weight: 25, condition: (s) => s.classInfo && (s.classInfo.id === 'ronin' || s.classInfo.id === 'ashigaru' || s.classInfo.id === 'bushou'),
                 title: '【御前試合】真剣勝負', text: '大名肝煎りの盛大な御前試合が開催された。熱狂する群衆に囲まれた白砂の闘技場には、己の腕一本で成り上がろうとする野心に満ちた剣客や、血に飢えた荒くれ者たちが集結している。勝者には莫大な報奨金と栄誉が約束されるが、一歩間違えれば真剣の餌食となる過酷な死合である。',
                 choices: [
-                    { text: '【武功30】己の腕と刀だけを信じて、血塗られた闘技場に立つ', condition: (s) => s.valor >= 30, hint: '成功で名誉と銭獲得、失敗で負傷', effect: (s) => {
+                    { text: '【武功30】己の腕と刀だけを信じて、血塗られた闘技場に立つ', condition: (s) => s.valor >= 30, hint: '武功で勝率と賞金増', effect: (s) => {
                         if (Math.random() < 0.6 + (s.valor * 0.002)) {
                             s.valor += 30; recordChronology("大名主催の御前試合で見事に優勝し、名声と賞金を獲得する");
-                            return { money: 150, hp: -5, log: '飛沫を上げる鮮血の中で、見事な剣捌きで並み居る猛者を次々と打ち倒し、堂々の優勝を果たした！その武勇は城中に鳴り響く。' };
+                            let reward = 150 + Math.floor(s.valor * 0.5);
+                            return { money: reward, hp: -5, log: `飛沫を上げる鮮血の中で、見事な剣捌きで並み居る猛者を次々と打ち倒し、堂々の優勝を果たした！<br><span class="text-[10px] text-green-400">【武功】圧倒的な強さにより、殿から追加の褒美が出た！（賞金+${Math.floor(s.valor*0.5)}文）</span>` };
                         } else {
-                            return { hp: -25, log: '準決勝で立ちはだかった無双の浪人に力負けし、肩口から深く骨まで達する斬り傷を負って無念の退場となった。' };
+                            let dmg = Math.max(5, 30 - Math.floor(s.valor * 0.2));
+                            return { hp: -dmg, log: `準決勝で立ちはだかった無双の浪人に力負けし、無念の敗退となった。<br><span class="text-[10px] text-green-400">【武功】受け身を取り、致命傷だけは避けた。（被害軽減）</span>` };
                         }
                     } },
-                    { text: '見物人として酒を飲みながら賭けを楽しむ（銭20文）', condition: (s) => s.money >= 20, hint: '運勝負', effect: (s) => {
+                    { text: '見物人として酒を飲みながら賭けを楽しむ（銭20文）', condition: (s) => s.money >= 20, hint: '運で勝率と配当増', effect: (s) => {
                         if (Math.random() < 0.5 + (s.luck * 0.005)) {
                             s.luck += 5;
-                            return { money: 40, hp: 0, log: '大穴狙いで賭けた無名の剣客が見事に勝利を収め、懐が思いがけず温かくなった。' };
+                            let bonus = Math.floor(s.luck * 0.8);
+                            return { money: 40 + bonus, hp: 0, log: `大穴狙いで賭けた無名の剣客が見事に勝利を収め、懐が思いがけず温かくなった。<br><span class="text-[10px] text-yellow-300">【強運】とんでもない大穴が的中し、配当が跳ね上がった！（ボーナス+${bonus}文）</span>` };
                         } else {
                             return { money: -20, hp: 0, log: '自信満々で賭けた剣客はあっさりと最初の一撃で首を落とされ、掛け銭をすべてすってしまった。' };
                         }
@@ -847,9 +907,14 @@
                         s.flags.revolt=true; s.valor+=20; s.karma+=30; s.virtue=0; recordChronology("一揆勢を武力で容赦なく鎮圧し、血塗られた領主として恐れられる");
                         return { hp: -10, log: '「刃向かう者は皆殺しにせよ！」容赦なく一揆勢に鉛玉を浴びせ、完全に制圧した。反乱は鎮まったが、血塗られた領主として深い恨みを買った。' }; 
                     } },
-                    { text: '【銭300文】ただちに年貢を減免し、蔵の米をすべて配る', condition: (s) => s.money >= 300, hint: '人徳大幅アップ', effect: (s) => { 
+                    { text: '【銭300文】ただちに年貢を減免し、蔵の米をすべて配る', condition: (s) => s.money >= 300, hint: '人徳で出費を抑制', effect: (s) => { 
                         s.flags.revolt=true; s.virtue+=40; recordChronology("私財を投じて一揆を鎮め、名君としての名声を高める");
-                        return { money: -300, hp: 0, log: '怒り狂う民の前に単身進み出て苦境を詫び、私財をなげうって救済を約束した。誠意は伝わり、領民からの忠誠は盤石なものとなった。' }; 
+                        let baseCost = 300;
+                        let discount = Math.floor(s.virtue * 1.5);
+                        let finalCost = Math.max(50, baseCost - discount);
+                        let msg = '怒り狂う民の前に単身進み出て苦境を詫び、私財をなげうって救済を約束した。誠意は伝わり、領民からの忠誠は盤石なものとなった。';
+                        if(discount > 0) msg += `<br><span class="text-[10px] text-green-400">【人徳】日頃の善政と人望のおかげで、民は少ない施しでも涙を流して納得した！（出費を ${discount}文 抑制）</span>`;
+                        return { money: -finalCost, hp: 0, log: msg }; 
                     } },
                     { text: '面倒事は家臣に押し付け、安全な天守に籠もる', condition: () => true, hint: '名声低下・被害', effect: (s) => { 
                         s.flags.revolt=true; s.virtue-=20; s.valor-=10; recordChronology("一揆に怯えて城に籠もり、領主としての威厳を大きく損なう");
@@ -880,7 +945,7 @@
                         s.valor += 30; s.karma += 20; recordChronology("敵国大名の暗殺任務を完璧に遂行し、闇の世界に伝説を残す");
                         return { money: 200, hp: -5, log: '誰一人として影すら踏ませず、寝所に致死の猛毒を見事に仕掛けた。翌朝、城が騒然とする中を悠然と離脱し、莫大な報奨金を得る。まさに闇の伝説だ。' }; 
                     } },
-                    { text: '見張りを斬り捨て、強行突破で強引に寝所へ忍び込む（成功率50%）', condition: () => true, hint: '成功で報酬、失敗で死', effect: (s) => {
+                    { text: '見張りを斬り捨て、強行突破で強引に寝所へ忍び込む（成功率50%）', condition: () => true, hint: '成功で報酬、失敗で即死', effect: (s) => {
                         if (Math.random() < 0.5) {
                             s.valor += 40; s.karma += 30;
                             return { money: 150, hp: -15, log: '血飛沫を上げながら寝所に突入し、驚愕する大名の首を強引に刎ね飛ばした！手傷を負いながらも、死地から辛くも生還を果たす。' };
@@ -1314,7 +1379,6 @@
                 });
             }
 
-            // ★上限の初期計算と適用
             const maxHp = 150 + window.currentReincarnationCount;
             if (state.health > maxHp) state.health = maxHp;
 
@@ -1589,10 +1653,6 @@
             if (item.strategy) state.strategy += item.strategy;
             if (item.virtue) state.virtue += item.virtue;
 
-            // ★NEW: 限界突破の計算と適用
-            const maxHp = 150 + window.currentReincarnationCount;
-            if (state.health > maxHp) state.health = maxHp;
-
             let tag = [];
             if (hpDiff !== 0) tag.push(`体力${hpDiff > 0 ? '+' : ''}${hpDiff}`);
             if (moneyDiff !== 0) tag.push(`銭${moneyDiff > 0 ? '+' : ''}${moneyDiff}`);
@@ -1677,16 +1737,13 @@
                 state.health += hpChg;
                 state.money += moneyChg;
                 
-                // ★NEW: 限界突破の計算と適用
-                const maxHp = 150 + window.currentReincarnationCount;
-                if (state.health > maxHp) state.health = maxHp;
-
                 if (state.money < 0) {
                     state.money = 0;
                     state.health -= 25;
                     state.lastDamageEvent = '極度の困窮';
                     state.deathCause = 'starvation';
-                } else if (hpChg <= -999) { // ★-999は即死処理
+                } else if (hpChg <= -999) {
+                    state.health = 0;
                     state.lastDamageEvent = state.flags.currentEventTitle || '重傷';
                     if (!state.deathCause) state.deathCause = state.mode === 'battle' ? 'battle' : 'execution';
                 } else if (hpChg < 0) {
@@ -1729,9 +1786,16 @@
             uiHealth.innerText = Math.max(0, state.health);
             uiMoney.innerText = state.money;
             
-            // ★NEW: 体力上限表示の更新
             const maxHp = 150 + window.currentReincarnationCount;
             if (uiMaxHealth) uiMaxHealth.innerText = `/ ${maxHp}`;
+            
+            if (uiHealth) {
+                if (state.health > maxHp) {
+                    uiHealth.className = "text-xl font-black text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]";
+                } else {
+                    uiHealth.className = "text-xl font-black text-white";
+                }
+            }
 
             if (uiValor) uiValor.innerText = state.valor;
             if (uiKarma) uiKarma.innerText = state.karma;
