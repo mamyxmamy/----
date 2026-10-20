@@ -2487,29 +2487,35 @@
     })();
     </script>
 
-    <!-- ================= Firebase連携 ================= -->
+        <!-- ================= Firebase連携 ================= -->
     <script type="module">
+        // 取得したFirebaseの設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyA4EanMhH1xvArI-zAEHg0dYdcAHSgNV-Y",
+            authDomain: "sengokurinne-e0113.firebaseapp.com",
+            projectId: "sengokurinne-e0113",
+            storageBucket: "sengokurinne-e0113.firebasestorage.app",
+            messagingSenderId: "315253519898",
+            appId: "1:315253519898:web:3b0ea1de418ecf188643a3"
+        };
+
         (async function() {
             try {
-                const appId = typeof __app_id !== 'undefined' ? __app_id : 'sengoku-life-app';
-                const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-                let firebaseConfig = {};
-                try { firebaseConfig = JSON.parse(firebaseConfigStr); } catch (e) {}
+                const appId = 'sengoku-life-app';
 
                 if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) return;
 
                 const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
-                const { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
+                const { getAuth, signInAnonymously, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
                 const { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs, increment } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
 
                 const app = initializeApp(firebaseConfig);
                 const auth = getAuth(app);
                 const db = getFirestore(app);
 
-                const initToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                // 匿名ログインの実行
                 try {
-                    if (initToken) await signInWithCustomToken(auth, initToken);
-                    else await signInAnonymously(auth);
+                    await signInAnonymously(auth);
                 } catch (authErr) {
                     console.warn("Auth initialization fallback:", authErr);
                 }
@@ -2553,14 +2559,12 @@
                     if (!window.__currentUser) return;
                     const uid = window.__currentUser.uid;
                     try {
-                        // 1. 個人のプレイ回数を更新
                         const countRef = doc(db, 'artifacts', appId, 'users', uid, 'stats', 'reincarnation');
                         setDoc(countRef, { 
                             count: window.currentReincarnationCount,
                             equippedHeirlooms: window.activeHeirlooms
                         }, { merge: true }).catch(() => {});
 
-                        // 2. 個人の過去生データを追加
                         const pastLivesRef = collection(db, 'artifacts', appId, 'users', uid, 'past_lives');
                         addDoc(pastLivesRef, {
                             age: age, className: className, faction: factionName, title: title, reason: reason, 
@@ -2571,7 +2575,7 @@
                             chronology: finalState.chronology
                         }).catch(() => {});
 
-                        // 3. 全ユーザーの総プレイ回数を +1 する
+                        // ★ 全ユーザーの総プレイ回数を +1 する
                         setDoc(globalStatsRef, {
                             totalReincarnations: increment(1)
                         }, { merge: true }).catch(() => {});
