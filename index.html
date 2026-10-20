@@ -156,18 +156,25 @@
 
     <div id="app-container" class="w-full h-full sm:h-[95vh] sm:max-h-[850px] max-w-md mx-auto relative flex flex-col sm:border sm:border-[#3A322A] sm:rounded-lg overflow-hidden">
 
-        <!-- ================= 1. タイトル＆スタート画面 ================= -->
+                <!-- ================= 1. タイトル＆スタート画面 ================= -->
         <div id="start-screen" class="absolute inset-0 z-30 bg-[#161311] flex flex-col items-center justify-between px-6 py-8">
             <div class="flex-grow flex items-center justify-center relative w-full">
+                
+                <!-- ★復活：左上のリセット（記録初期化）ボタン -->
+                <button type="button" onclick="window.resetSaveData(event)" class="absolute top-0 left-0 bg-red-950/40 text-red-500 hover:text-white border border-red-900/50 hover:bg-red-900 px-2 py-1.5 rounded-sm shadow-md text-[10px] transition-colors z-20">
+                    記録初期化
+                </button>
+
                 <div class="absolute inset-0 flex items-center justify-center opacity-10 text-[10rem] font-black text-red-700 pointer-events-none select-none">輪</div>
                 <h1 class="vertical-rl text-5xl sm:text-6xl font-black text-white tracking-[0.35em] drop-shadow-[0_0_20px_rgba(200,0,0,0.6)] z-10">乱世の輪廻</h1>
                 
-                <!-- 冥銭表示 -->
+                <!-- 右上の冥銭表示 -->
                 <div class="absolute top-0 right-0 bg-black/60 border border-gray-700 px-3 py-1.5 rounded-sm shadow-md flex items-center gap-2">
                     <span class="text-[10px] text-gray-400">所持冥銭</span>
                     <span class="text-sm font-bold text-gray-200"><span id="ui-meisen">0</span></span>
                 </div>
             </div>
+
 
             <div class="w-full text-center my-2 space-y-2">
                 <div class="border-y border-[#3A322A] py-2 bg-black/45 rounded-sm">
@@ -1100,6 +1107,40 @@
                     } }
                 ]
             },
+                        // ▼ 忍者の出世イベント
+            {
+                id: 'ninja_promotion', mode: ['normal', 'battle'], weight: 30, condition: (s) => s.classInfo.id === 'ninja' && s.valor >= 40 && s.strategy >= 40 && !s.flags.ninjaPromotion,
+                title: '【御庭番】闇から光へ', text: '数々の過酷な任務を完璧にこなしてきたあなたの手腕が、ついに大名の目に留まった。「これからは日陰者ではなく、我が直属の将として表舞台で働かぬか」と、武士としての召し抱えを打診される。',
+                choices: [
+                    { text: '有難くお受けし、武士（武将）として仕える', condition: () => true, hint: '武将化・銭獲得', effect: (s) => { 
+                        s.flags.ninjaPromotion = true; s.classInfo = CLASSES.find(c=>c.id==='bushou');
+                        recordChronology("大名に類まれなる手腕を認められ、直属の武将に取り立てられる");
+                        return { money: 150, hp: 10, log: '忍びの装束を脱ぎ捨て、立派な具足を与えられた。今日からあなたは名を持たぬ影ではなく、歴史に名を刻む「武将」だ。' }; 
+                    } },
+                    { text: '「闇に生きるが忍びの宿命」と丁重に断る', condition: () => true, hint: '忍者を継続・知略上昇', effect: (s) => { 
+                        s.flags.ninjaPromotion = true; s.strategy += 10;
+                        return { hp: 0, log: '光の当たる場所は自分には眩しすぎる。大名の誘いを断り、引き続き影として暗躍する道を選んだ。' }; 
+                    } }
+                ]
+            },
+            // ▼ 僧侶の一発逆転イベント
+            {
+                id: 'monk_promotion', mode: ['normal'], weight: 35, condition: (s) => s.classInfo.id === 'monk' && s.virtue >= 60 && !s.flags.monkPromotion,
+                title: '【紫衣】高僧への昇叙', text: '長年にわたり民草を救い、無私の祈りを捧げ続けたあなたの徳の高さは、ついに都の朝廷にまで知れ渡った。帝より直接、最高位の僧侶の証である「紫衣（しえ）」と多額のお布施が下賜されるという、仏門における最高の栄誉が舞い込んだ。',
+                choices: [
+                    { text: '謹んでお受けし、民の浄財として役立てる', condition: () => true, hint: '大金獲得・体力回復', effect: (s) => { 
+                        s.flags.monkPromotion = true; s.virtue += 30;
+                        recordChronology("その類まれなる徳を帝に認められ、紫衣を賜り高僧となる");
+                        return { money: 300, hp: 30, log: '高貴な紫の衣を身にまとい、民衆からの絶大な信仰と莫大なお布施が集まるようになった。栄養ある食事と立派な寺の庇護により、衰えていた体力も劇的に回復した。' }; 
+                    } },
+                    { text: '権力にすり寄ることを嫌い、破れ衣のまま諸国を巡る', condition: () => true, hint: '人徳特大アップ', effect: (s) => { 
+                        s.flags.monkPromotion = true; s.virtue += 50; s.strategy += 10;
+                        recordChronology("朝廷からの栄誉を辞退し、清貧を貫く生き仏として伝説となる");
+                        return { hp: 0, log: '最高権威からの申し出すら蹴り飛ばすその清貧な姿に、人々はあなたを「生き仏」として狂信的に崇めるようになった。' }; 
+                    } }
+                ]
+            },
+
             {
                 id: 'independence', mode: ['normal', 'battle'], weight: 50, condition: (s) => s.virtue >= 30 && s.valor >= 30 && s.classInfo.id === 'bushou' && !s.flags.independence,
                 title: '【IF野望】天下を望む独立の旗', text: '堂々たるあなたの武勲と人望に惹かれ、血の気の多い野心的な武士団が密かに集結した。彼らは熱を帯びた眼差しで「もはや今の主君の下に留まる器ではありませぬ。今こそ御旗を掲げ、天下の覇を競うべきです！」と決起を迫る。一介の家臣から大名へと飛躍する下剋上か、逆賊としての無惨な死か。歴史があなたに決断を求めている。',
@@ -1627,7 +1668,11 @@
                     case 'daimyo': pool = [ { text: '他国の油断ならぬ大名と密かに書状を交わし、薄氷を踏むような同盟の腹を探り合った。', strategy: 3 }, { text: '大勢の供を連れて鷹狩りに出かけ、領民たちに圧倒的な力と威光を見せつけた。', valor: 1, hp: 2 }, { text: '金に糸目をつけず豪勢な茶会を開き、腹の読めない家臣たちとの結束を無理矢理固めた。', money: -20, virtue: 3 } ]; break;
                     case 'kuge': pool = [ { text: '美しい庭園で花鳥風月を愛でて和歌を詠み、戦乱とは無縁の雅な一日を過ごした。', virtue: 2, hp: 2 }, { text: '格式高い朝廷の儀式に重い装束で参列し、公卿としての体裁を必死に保った。', money: 5 }, { text: '武家から胡散臭い献上品を受け取り、扇で顔を隠しながら優雅に微笑んだ。', money: 10, karma: 1 } ]; break;
                     case 'ninja': pool = [ { text: '闇夜に紛れて屋根裏を這い、他国の危険な情勢を探り歩いた。', strategy: 4, hp: -2 }, { text: '指から血が滲むほど手裏剣と体術の修行に明け暮れた。', valor: 3, hp: -3 }, { text: '即効性のある新たな毒の調合を人体で試し、裏の知識を深めた。', strategy: 2, karma: 1 } ]; break;
-                    case 'monk': pool = [ { text: '破れた笠を被り、雨の日も風の日も諸国を托鉢して回って民の平穏を祈り続けた。', virtue: 5, money: 2 }, { text: '悪臭漂う病に苦しむ者を熱心に看病し、涙を流して深く感謝された。', virtue: 4, hp: -2 }, { text: '静寂の寺でただひたすらに経典を書き写し、己の波立つ心と向き合った。', strategy: 2, hp: 2 } ]; break;
+                    case 'monk':
+                        pool = [
+                            { text: '破れた笠を被り、雨の日も風の日も諸国を托鉢して回って民の平穏を祈り続けた。', virtue: 5, money: 5 }, // ←お布施を+5に増額
+                            { text: '悪臭漂う病に苦しむ者を熱心に看病し、涙を流して深く感謝された。', virtue: 4, hp: -1 }, // ←体力消費を-1に軽減
+                            { text: '静寂の寺でただひたすらに経典を書き写し、己の波立つ心と向き合った。', strategy: 2, hp: 4 } // ←体力回復を+4に増加];break;         
                     case 'bandit': pool = [ { text: '暗い街道を通りかかる丸腰の商人を容赦なく襲い、荷をすべて奪い取った。', money: 15, karma: 3, hp: -2 }, { text: '血塗られた盗品を怪しげな闇市で売り捌き、手軽に日銭を得た。', money: 10, karma: 2 }, { text: '薄暗いアジトで下品な手下たちと豪快に酒盛りをし、英気を養った。', hp: 5, money: -5 } ]; break;
                     case 'ronin': pool = [ { text: '雨漏りのする長屋で傘張りなどのみすぼらしい内職をし、細々と日銭を稼いだ。', money: 3, hp: -1 }, { text: '町道場の師範代として剣術を教え、幾ばくかのありがたい謝礼を得た。', money: 5, valor: 1 }, { text: '町を荒らす辻斬りを一刀の元に退治し、奉行所から褒美をもらったが、返り血を浴びた。', money: 10, valor: 3, virtue: 2, hp: -5 } ]; break;
                     default: pool = [{ text: '特に何も起こらない、静かで平穏な一年だった。', money: 1 }];
