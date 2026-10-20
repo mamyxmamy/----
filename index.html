@@ -2489,7 +2489,6 @@
 
         <!-- ================= Firebase連携 ================= -->
     <script type="module">
-        // 取得したFirebaseの設定
         const firebaseConfig = {
             apiKey: "AIzaSyA4EanMhH1xvArI-zAEHg0dYdcAHSgNV-Y",
             authDomain: "sengokurinne-e0113.firebaseapp.com",
@@ -2499,10 +2498,15 @@
             appId: "1:315253519898:web:3b0ea1de418ecf188643a3"
         };
 
+        // スマホ画面にエラーを直接表示させる設定
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            alert("【システムエラー】\n" + msg);
+            return false;
+        };
+
         (async function() {
             try {
                 const appId = 'sengoku-life-app';
-
                 if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) return;
 
                 const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
@@ -2517,7 +2521,7 @@
                 try {
                     await signInAnonymously(auth);
                 } catch (authErr) {
-                    console.warn("Auth initialization fallback:", authErr);
+                    alert("【原因判明①】ログインに失敗しました。\n" + authErr.message);
                 }
 
                 // 全ユーザーの総プレイ回数をリアルタイム監視して画面に表示
@@ -2530,58 +2534,33 @@
                             globalCountElem.innerText = data.totalReincarnations.toLocaleString();
                         }
                     }
-                }, (err) => console.warn("Global stats snapshot error:", err));
-
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        window.__currentUser = user;
-                        try {
-                            const countRef = doc(db, 'artifacts', appId, 'users', user.uid, 'stats', 'reincarnation');
-                            onSnapshot(countRef, (docSnap) => {
-                                if (docSnap.exists()) {
-                                    const data = docSnap.data();
-                                    if (typeof data.count === 'number') {
-                                        window.currentReincarnationCount = data.count;
-                                        window.activeHeirlooms = data.equippedHeirlooms || [];
-                                        if (typeof window.updateStartScreenUI === 'function') {
-                                            window.updateStartScreenUI();
-                                        }
-                                    }
-                                }
-                            }, (err) => console.warn("Snapshot error:", err));
-                        } catch (snapErr) {
-                            console.warn("Firestore snapshot attach failed:", snapErr);
-                        }
-                    }
+                }, (err) => {
+                    alert("【原因判明②】データベースの読み込みに失敗しました。\n" + err.message);
                 });
 
+                onAuthStateChanged(auth, (user) => {
+                    if (user) window.__currentUser = user;
+                });
+
+                // 死亡時のデータ保存処理
                 window.__saveDeathData = async (age, className, factionName, title, reason, finalState, newHeirloom) => {
-                    if (!window.__currentUser) return;
+                    if (!window.__currentUser) {
+                        alert("【原因判明③】ログイン情報がないため、回数を保存できません。");
+                        return;
+                    }
                     const uid = window.__currentUser.uid;
                     try {
                         const countRef = doc(db, 'artifacts', appId, 'users', uid, 'stats', 'reincarnation');
-                        setDoc(countRef, { 
-                            count: window.currentReincarnationCount,
-                            equippedHeirlooms: window.activeHeirlooms
-                        }, { merge: true }).catch(() => {});
+                        await setDoc(countRef, { count: window.currentReincarnationCount, equippedHeirlooms: window.activeHeirlooms }, { merge: true });
 
                         const pastLivesRef = collection(db, 'artifacts', appId, 'users', uid, 'past_lives');
-                        addDoc(pastLivesRef, {
-                            age: age, className: className, faction: factionName, title: title, reason: reason, 
-                            valor: finalState.valor, karma: finalState.karma, 
-                            luck: finalState.luck, money: finalState.money,
-                            strategy: finalState.strategy, virtue: finalState.virtue,
-                            timestamp: Date.now(),
-                            chronology: finalState.chronology
-                        }).catch(() => {});
+                        await addDoc(pastLivesRef, { age: age, className: className, faction: factionName, title: title, reason: reason, valor: finalState.valor, karma: finalState.karma, luck: finalState.luck, money: finalState.money, strategy: finalState.strategy, virtue: finalState.virtue, timestamp: Date.now(), chronology: finalState.chronology });
 
                         // ★ 全ユーザーの総プレイ回数を +1 する
-                        setDoc(globalStatsRef, {
-                            totalReincarnations: increment(1)
-                        }, { merge: true }).catch(() => {});
-
+                        await setDoc(globalStatsRef, { totalReincarnations: increment(1) }, { merge: true });
+                        
                     } catch (e) {
-                        console.warn("Firebase save skipped:", e);
+                        alert("【原因判明④】データの保存に失敗しました。\n" + e.message);
                     }
                 };
 
@@ -2599,7 +2578,7 @@
                     }
                 };
             } catch (initErr) {
-                console.warn("Firebase dynamic import skipped:", initErr);
+                alert("【原因判明⑤】Firebaseの初期設定に失敗しました。\n" + initErr.message);
             }
         })();
     </script>
