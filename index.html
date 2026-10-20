@@ -149,7 +149,6 @@
         .chronology-age { color: var(--wafu-gold); font-weight: bold; min-width: 2.2rem; flex-shrink: 0; }
         .chronology-text { color: #D1D5DB; line-height: 1.3; }
         
-        /* 導入テキスト用 */
         .fade-text { transition: opacity 1.5s ease-in-out; }
     </style>
 </head>
@@ -186,7 +185,6 @@
                 <button type="button" onclick="window.startGame(event)" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white border border-[#A32020] py-4 text-xl font-bold active:scale-95 transition-all shadow-[0_0_20px_rgba(139,0,0,0.5)] tracking-[0.25em] rounded-sm mb-1">
                     乱世に堕ちる
                 </button>
-                <!-- ★ボタン配置整理 -->
                 <div class="grid grid-cols-2 gap-2 w-full">
                     <button type="button" onclick="window.openHeirloomStorage(event)" class="action-button-main col-span-2 bg-black/50 text-gold hover:text-white border border-gold/50 py-3 text-xs font-bold tracking-widest rounded-sm transition-all shadow-[0_0_10px_rgba(197,160,89,0.15)]">
                         家宝蔵（装備変更）
@@ -220,10 +218,9 @@
             </div>
         </div>
 
-        <!-- ================= 1.8. NEW: ストーリー導入画面 ================= -->
+        <!-- ================= 1.8. ストーリー導入画面 ================= -->
         <div id="intro-screen" class="hidden absolute inset-0 z-40 bg-black flex flex-col items-center justify-center p-6 cursor-pointer" onclick="window.finishIntro()">
-            <div id="intro-text" class="text-white text-[13px] sm:text-sm leading-[2.2] font-bold tracking-[0.15em] text-center space-y-5 fade-text opacity-0">
-                <!-- JSで注入 -->
+            <div id="intro-text" class="text-white text-[13px] sm:text-sm leading-[2.2] font-bold tracking-[0.15em] text-center space-y-5 fade-text opacity-0 w-full">
             </div>
             <div id="intro-tap-prompt" class="absolute bottom-10 text-gray-500 text-xs tracking-widest animate-pulse fade-text opacity-0">
                 画面をタップして進む
@@ -416,7 +413,7 @@
             <div id="heirloom-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
-        <!-- ================= 7. NEW: 絵巻図鑑モーダル ================= -->
+        <!-- ================= 7. 絵巻図鑑モーダル ================= -->
         <div id="encyclopedia-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
                 <h2 class="text-base font-bold text-gold tracking-widest">絵巻図鑑</h2>
@@ -438,7 +435,7 @@
         window.currentReincarnationCount = 0;
         window.unlockedHeirlooms = [];
         window.activeHeirlooms = [];
-        window.unlockedDeaths = []; // ★NEW: 死因の保存用
+        window.unlockedDeaths = [];
         window.__currentUser = null;
 
         window.getMaxHeirloomSlots = function() {
@@ -475,7 +472,6 @@
                 window.activeHeirlooms = window.activeHeirlooms.slice(0, maxSlots);
             }
 
-            // ★死因データのロード
             const savedDeaths = localStorage.getItem('sengoku_unlocked_deaths');
             if (savedDeaths) window.unlockedDeaths = JSON.parse(savedDeaths);
 
@@ -505,7 +501,6 @@
             { id: 'shimazu', name: '島津家', color: '#556B2F' }
         ];
 
-        // ★NEW: 図鑑用データ
         const HEIRLOOMS_DB = [
             { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" },
             { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
@@ -1085,7 +1080,6 @@
             document.getElementById('heirloom-screen').classList.add('hidden');
         };
 
-        // ★NEW: 絵巻図鑑の表示ロジック
         window.openEncyclopedia = function(e) {
             if(e){ e.preventDefault(); e.stopPropagation(); }
             document.getElementById('encyclopedia-screen').classList.remove('hidden');
@@ -1224,6 +1218,9 @@
                 rW -= c.weight;
                 if (rW <= 0) { selectedClass = c; break; }
             }
+            
+            // ★NEW: 降誕確率の計算
+            const spawnProbability = ((selectedClass.weight / totalWeight) * 100).toFixed(1);
 
             const selectedFaction = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];
 
@@ -1293,16 +1290,16 @@
                         if (!isProcessing) return;
                         rouletteScreen.classList.add('hidden');
                         
-                        // ★NEW: ルーレット終了後に導入テキスト画面へ移行
-                        window.showIntro(selectedClass, selectedFaction);
+                        // ★修正: 確率を引数として渡す
+                        window.showIntro(selectedClass, selectedFaction, spawnProbability);
                     }, 1800);
                 }
             }
             spin();
         };
 
-        // ★NEW: 導入テキストの表示処理
-        window.showIntro = function(cls, faction) {
+        // ★修正: 確率を受け取って表示に組み込む
+        window.showIntro = function(cls, faction, prob) {
             introScreen.classList.remove('hidden');
             introText.classList.remove('opacity-100');
             introText.classList.add('opacity-0');
@@ -1319,7 +1316,13 @@
                 <p>時は乱世。</p>
                 <p>果てなき戦乱が続き、<br>人命は草芥のごとく散りゆく時代。</p>
                 <p class="mt-6 text-yellow-500">あなたは今、${faction.name}の領内で<br>「<span class="text-xl">${cls.name}</span>」として新たな生を受けた。</p>
-                <p class="text-xs text-gray-300 mt-4 leading-relaxed">${cls.intro}</p>
+                
+                <div class="inline-block border border-gray-700 bg-black/50 px-3 py-1.5 mt-3 rounded-sm shadow-lg">
+                    <p class="text-[10px] text-gray-400 font-normal">降誕確率: 約 <span class="text-white font-bold text-sm">${prob}%</span></p>
+                    <p class="text-[8px] text-gray-500 mt-0.5">※戦国時代の推計人口比率に基づく独自算出</p>
+                </div>
+                
+                <p class="text-xs text-gray-300 mt-5 leading-relaxed">${cls.intro}</p>
                 <p class="mt-6 text-red-500 font-black">己の才覚と運命のみを頼りに、<br>この過酷な時代を生き抜け。</p>
                 ${hlText}
             `;
@@ -1332,13 +1335,12 @@
             setTimeout(() => {
                 introPrompt.classList.remove('opacity-0');
                 introPrompt.classList.add('opacity-100');
-                isProcessing = false; // タップ待ちにする
+                isProcessing = false;
             }, 2500);
         };
 
-        // ★NEW: 導入テキストを終えてゲーム画面へ
         window.finishIntro = function() {
-            if (isProcessing) return; // テキスト表示中はスキップ不可にするかどうかの判定
+            if (isProcessing) return;
             
             introScreen.classList.add('hidden');
             gameScreen.classList.remove('hidden');
@@ -1747,7 +1749,6 @@
 
                 recordChronology("この世を去る");
 
-                // ★NEW: 死因のアンロック処理
                 if (!window.unlockedDeaths.includes(state.deathCause)) {
                     window.unlockedDeaths.push(state.deathCause);
                     try { localStorage.setItem('sengoku_unlocked_deaths', JSON.stringify(window.unlockedDeaths)); } catch(e){}
@@ -1973,12 +1974,12 @@
                 localStorage.removeItem('sengoku_heirloom');
                 localStorage.removeItem('sengoku_equipped_heirlooms');
                 localStorage.removeItem('sengoku_unlocked_heirlooms');
-                localStorage.removeItem('sengoku_unlocked_deaths'); // ★追加
+                localStorage.removeItem('sengoku_unlocked_deaths');
                 localStorage.removeItem('sengoku_past_lives');
                 window.currentReincarnationCount = 0;
                 window.unlockedHeirlooms = [];
                 window.activeHeirlooms = [];
-                window.unlockedDeaths = []; // ★追加
+                window.unlockedDeaths = [];
                 window.updateStartScreenUI();
                 alert("すべての記録を初期化しました。");
             }
@@ -2046,22 +2047,9 @@
             historyScreen.classList.add('hidden');
         };
 
-        function bindButton(id, handler) {
-            const btn = document.getElementById(id);
-            if (!btn) return;
-            btn.onclick = handler;
-            btn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                handler(e);
-            }, { passive: false });
-        }
-
         function initApp() {
             cacheElements();
             window.updateStartScreenUI();
-
-            bindButton('start-btn', window.startGame);
-            bindButton('advance-btn', window.manualAdvance);
         }
 
         if (document.readyState === 'loading') {
