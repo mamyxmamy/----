@@ -150,6 +150,11 @@
         .chronology-text { color: #D1D5DB; line-height: 1.3; }
         
         .fade-text { transition: opacity 1.5s ease-in-out; }
+
+        /* ヘルプモーダルの装飾 */
+        .help-h3 { color: var(--wafu-gold); font-weight: bold; border-bottom: 1px solid rgba(197,160,89,0.3); padding-bottom: 0.25rem; margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.85rem; }
+        .help-p { font-size: 0.75rem; color: #D1D5DB; margin-bottom: 0.75rem; line-height: 1.6; }
+        .help-highlight { color: #F5D389; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -157,25 +162,23 @@
     <div id="app-container" class="w-full h-full sm:h-[95vh] sm:max-h-[850px] max-w-md mx-auto relative flex flex-col sm:border sm:border-[#3A322A] sm:rounded-lg overflow-hidden">
 
         <!-- ================= 1. タイトル＆スタート画面 ================= -->
-        <div id="start-screen" class="absolute inset-0 z-30 bg-[#161311] flex flex-col items-center justify-between px-6 py-8">
-            <div class="flex-grow flex items-center justify-center relative w-full">
+        <div id="start-screen" class="absolute inset-0 z-30 bg-[#161311] flex flex-col items-center justify-between px-6 py-8 overflow-y-auto">
+            <div class="flex-grow flex items-center justify-center relative w-full mt-4 sm:mt-0 min-h-[160px]">
                 <div class="absolute inset-0 flex items-center justify-center opacity-10 text-[10rem] font-black text-red-700 pointer-events-none select-none">輪</div>
                 <h1 class="vertical-rl text-5xl sm:text-6xl font-black text-white tracking-[0.35em] drop-shadow-[0_0_20px_rgba(200,0,0,0.6)] z-10">乱世の輪廻</h1>
                 
-                <!-- ★NEW: 冥銭表示 -->
                 <div class="absolute top-0 right-0 bg-black/60 border border-gray-700 px-3 py-1.5 rounded-sm shadow-md flex items-center gap-2">
                     <span class="text-[10px] text-gray-400">所持冥銭</span>
                     <span class="text-sm font-bold text-gray-200"><span id="ui-meisen">0</span></span>
                 </div>
             </div>
 
-            <div class="w-full text-center my-2 space-y-2">
+            <div class="w-full text-center my-3 space-y-2">
                 <div class="border-y border-[#3A322A] py-2 bg-black/45 rounded-sm">
                     <span class="text-gray-400 text-xs font-bold block mb-0.5">輪廻の巡り</span>
                     <div class="text-2xl font-black text-white"><span id="ui-reincarnations">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
                 </div>
 
-                <!-- 家宝表示エリア -->
                 <div onclick="window.openHeirloomStorage()" class="bg-[#211C18] border border-gold/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#2A231D]">
                     <span class="text-[11px] text-gold font-bold block mb-1.5 flex justify-between border-b border-gold/20 pb-1">
                         <span>【継承家宝】 <span class="text-gray-400 font-normal">(枠: <span id="hl-slots-count">0/1</span>)</span></span>
@@ -186,7 +189,6 @@
                     </div>
                 </div>
                 
-                <!-- ★NEW: 持込道具エリア -->
                 <div onclick="window.openItemStorage()" class="bg-[#1A1821] border border-purple-900/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#23202C]">
                     <span class="text-[11px] text-purple-300 font-bold block mb-1.5 flex justify-between border-b border-purple-900/40 pb-1">
                         <span>【持込道具】 <span class="text-gray-400 font-normal">(1回使い切り)</span></span>
@@ -198,7 +200,7 @@
                 </div>
             </div>
 
-            <div class="w-full space-y-2 z-10">
+            <div class="w-full space-y-2 z-10 shrink-0 pb-2">
                 <button id="resume-btn" type="button" onclick="window.resumeGame(event)" class="hidden action-button-main w-full bg-[#1A331A] hover:bg-[#204020] text-green-200 border border-green-800 py-3 text-sm sm:text-base font-bold active:scale-95 transition-all shadow-[0_0_15px_rgba(0,100,0,0.4)] tracking-[0.2em] rounded-sm mb-2">
                     続きから遊ぶ
                 </button>
@@ -215,6 +217,13 @@
                     </button>
                     <button type="button" onclick="window.openHistory(event)" class="action-button-main bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
                         輪廻の回想
+                    </button>
+                    <!-- ★NEW: 指南書ボタンを追加 -->
+                    <button type="button" onclick="window.openHelp(event)" class="action-button-main col-span-2 bg-[#0E1520] text-blue-300 hover:text-white border border-blue-900/60 py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all shadow-md mt-1">
+                        指南書（遊び方）
+                    </button>
+                    <button type="button" onclick="window.resetSaveData(event)" class="action-button-main col-span-2 bg-black/50 text-red-900 hover:text-red-500 border border-red-900/50 py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all mt-1">
+                        すべての記録を初期化
                     </button>
                 </div>
             </div>
@@ -298,7 +307,8 @@
                 </div>
             </header>
 
-            <main id="log-container" class="flex-1 overflow-y-auto px-4 py-3 flex flex-col relative scroll-smooth overscroll-contain">
+            <main id="log-container" class="flex-1 overflow-y-auto px-4 py-3 flex flex-col relative scroll-smooth overscroll-contain" onclick="window.manualAdvance(event)">
+                <!-- ログがここに -->
             </main>
 
             <footer id="action-bar" class="shrink-0 bg-[#161311] border-t border-[#3A322A] p-3 shadow-[0_-8px_20px_rgba(0,0,0,0.85)] z-20">
@@ -342,7 +352,6 @@
                     </div>
                 </div>
                 
-                <!-- ★NEW: 獲得冥銭の表示 -->
                 <div class="flex justify-between items-end border-t border-gray-800 pt-1.5 mt-2">
                     <span class="text-[10px] text-gray-400">獲得冥銭</span>
                     <span class="text-sm font-bold text-purple-300"><span id="go-meisen">+0</span></span>
@@ -456,7 +465,7 @@
             </div>
         </div>
 
-        <!-- ================= 8. NEW: 冥府の商人（ショップ）モーダル ================= -->
+        <!-- ================= 8. 冥府の商人モーダル ================= -->
         <div id="shop-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
                 <div>
@@ -472,7 +481,7 @@
             <div id="shop-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
-        <!-- ================= 9. NEW: 道具（持ち込み）選択モーダル ================= -->
+        <!-- ================= 9. 持込道具選択モーダル ================= -->
         <div id="item-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
                 <div>
@@ -484,6 +493,22 @@
             <div id="item-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
+        <!-- ================= 10. ★NEW: 指南書（遊び方）モーダル ================= -->
+        <div id="help-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
+            <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
+                <h2 class="text-base font-bold text-white tracking-widest">指南書（遊び方）</h2>
+                <button type="button" onclick="window.closeHelp(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
+            </div>
+            <div class="flex border-b border-[#3A322A] bg-[#1A1613]">
+                <button type="button" onclick="window.switchHelpTab('basic')" id="tab-help-basic" class="flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors">基本の心得</button>
+                <button type="button" onclick="window.switchHelpTab('status')" id="tab-help-status" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">能力と影響</button>
+                <button type="button" onclick="window.switchHelpTab('rinne')" id="tab-help-rinne" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">輪廻と冥府</button>
+            </div>
+            <div id="help-content" class="flex-grow overflow-y-auto p-4 pb-8 space-y-4 text-sm text-gray-300 leading-relaxed bg-[#110E0C]">
+                <!-- JSでコンテンツ注入 -->
+            </div>
+        </div>
+
     </div>
 
     <!-- ================= ゲームロジック ================= -->
@@ -493,12 +518,9 @@
         window.unlockedHeirlooms = [];
         window.activeHeirlooms = [];
         window.unlockedDeaths = [];
-        
-        // ★NEW: 冥銭とアイテムの変数
         window.meisen = 0;
-        window.inventory = {}; // { 'item_id': 数量 }
+        window.inventory = {};
         window.activeConsumable = null;
-
         window.__currentUser = null;
 
         window.getMaxHeirloomSlots = function() {
@@ -519,7 +541,6 @@
                 localStorage.setItem('sengoku_unlocked_heirlooms', JSON.stringify(window.unlockedHeirlooms));
                 localStorage.setItem('sengoku_equipped_heirlooms', JSON.stringify(window.activeHeirlooms));
                 localStorage.setItem('sengoku_unlocked_deaths', JSON.stringify(window.unlockedDeaths));
-                // ★NEW
                 localStorage.setItem('sengoku_meisen', window.meisen);
                 localStorage.setItem('sengoku_inventory', JSON.stringify(window.inventory));
                 if (window.activeConsumable) localStorage.setItem('sengoku_active_consumable', JSON.stringify(window.activeConsumable));
@@ -544,7 +565,6 @@
             const savedDeaths = localStorage.getItem('sengoku_unlocked_deaths');
             if (savedDeaths) window.unlockedDeaths = JSON.parse(savedDeaths);
 
-            // ★NEW: ロード
             const savedMeisen = localStorage.getItem('sengoku_meisen');
             if (savedMeisen) window.meisen = parseInt(savedMeisen, 10) || 0;
             const savedInv = localStorage.getItem('sengoku_inventory');
@@ -578,7 +598,6 @@
             { id: 'shimazu', name: '島津家', color: '#556B2F' }
         ];
 
-        // ★NEW: 使い切りアイテムDB
         const CONSUMABLES_DB = [
             { id: 'migawari', name: '身代わり地蔵', price: 50, desc: '致死ダメージを受けた際、自動で消費されてHP1で生き残る最強の保険。', type: 'migawari' },
             { id: 'tegata', name: '豪商の紹介状', price: 30, desc: '初期所持金 +150文 でスタート。', type: 'money', value: 150 },
@@ -588,7 +607,7 @@
             { id: 'shippo', name: '妖狐の尻尾', price: 30, desc: '初期運 +30 でスタート。', type: 'luck', value: 30 }
         ];
 
-        const HEIRLOOMS_DB = [ /* ...省略... */ 
+        const HEIRLOOMS_DB = [
             { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" },
             { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
             { id: 'hl_ranjyatai', name: "名香・蘭奢待", hint: "天下の万民から敬愛されし者が賜る" },
@@ -615,8 +634,6 @@
             { id: 'plague', name: '病死', hint: '恐ろしい病魔に蝕まれ、病床で果てる。' },
             { id: 'oldage', name: '大往生・老衰', hint: '天寿を全うし、畳の上で穏やかに生涯を閉じる。' }
         ];
-
-        const WIFE_NAMES = ['千代', 'まつ', '寧々', 'お市', '濃姫', '小松', '妙玖', '早川殿', '甲斐姫', 'お田鶴'];
 
         let state = {
             age: 15, health: 100, money: 0,
@@ -831,7 +848,7 @@
             },
             {
                 id: 'famine', mode: ['normal', 'fugitive'], weight: 20, condition: () => true,
-                title: '【飢饉】天変地異の飢餓', text: '残酷なまでの日照りと狂ったような長雨が続き、今年の作物は完全に根腐れを起こした。市場の米価は天井知らずに跳ね上がり、通りには骨と皮だけになった者たちが虚ろな目で泥を啜っている。飢餓という名の見えない魔物的、領民たちの命と理性を容赦なく食い荒らし始めていた。',
+                title: '【飢饉】天変地異の飢餓', text: '残酷なまでの日照りと狂ったような長雨が続き、今年の作物は完全に根腐れを起こした。市場の米価は天井知らずに跳ね上がり、通りには骨と皮だけになった者たちが虚ろな目で泥を啜っている。飢餓という名の見えない魔物が、領民たちの命と理性を容赦なく食い荒らし始めていた。',
                 choices: [
                     { text: '【銭120文】私財を投げ打ち、大量の粥を民に施す', condition: (s) => s.money >= 120, hint: '人徳特大アップ', effect: (s) => { 
                         s.virtue += 45; recordChronology("大飢饉において私財を投じて施しを行い、生き神として崇められる");
@@ -1087,62 +1104,75 @@
             }
         ];
 
-        function calculateTitle(s) {
-            if (s.classInfo && s.classInfo.id === 'daimyo') return "天下の覇者";
-            if (s.classInfo && s.classInfo.id === 'bandit') return "山河の凶魁";
-            if (s.classInfo && s.classInfo.id === 'ninja' && s.valor >= 50) return "影を統べる者";
-            if (s.classInfo && s.classInfo.id === 'monk' && s.virtue >= 60) return "生き仏";
-            if (s.strategy >= 70 && s.virtue >= 40) return "王佐の賢将";
-            if (s.strategy >= 70) return "稀代の知謀";
-            if (s.virtue >= 70) return "徳高き聖将";
-            if (s.valor >= 80 && s.karma >= 60) return "第六天魔王";
-            if (s.valor >= 70) return "無双の剛槍";
-            if (s.karma >= 70) return "乱世の梟雄";
-            if (s.money >= 800) return "富国豪商";
-            if (s.age >= 60) return "不撓不屈の大往生";
-            return "名もなき草奔";
-        }
+        // =============== ヘルプ画面の処理 ===============
+        window.openHelp = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('help-screen').classList.remove('hidden');
+            window.switchHelpTab('basic');
+        };
 
-        function determineHeirloom(s) {
-            let candidates = [];
-            
-            if (s.valor >= 100) candidates.push({ id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", type: "valor", value: 35, desc: "初期武功 +35" });
-            if (s.strategy >= 100) candidates.push({ id: 'hl_rikutou', name: "六韜三略の秘伝", type: "strategy", value: 35, desc: "初期知略 +35" });
-            if (s.virtue >= 100) candidates.push({ id: 'hl_ranjyatai', name: "名香・蘭奢待", type: "virtue", value: 35, desc: "初期人徳 +35" });
-            if (s.karma >= 100) candidates.push({ id: 'hl_hiragumo', name: "古天明平蜘蛛", type: "karma", value: 35, desc: "初期悪逆 +35" });
-            if (s.money >= 3000) candidates.push({ id: 'hl_tsukumo', name: "九十九髪茄子", type: "money", value: 600, desc: "初期所持金 +600文" });
-            if (s.age >= 70) candidates.push({ id: 'hl_nanbandou', name: "南蛮胴具足", type: "health", value: 50, desc: "初期体力 +50" });
+        window.closeHelp = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('help-screen').classList.add('hidden');
+        };
 
-            if (s.valor >= 80) {
-                candidates.push({ id: 'hl_mikazuki', name: "天下五剣・三日月宗近", type: "valor", value: 20, desc: "初期武功 +20" });
-                candidates.push({ id: 'hl_hasebe', name: "へし切長谷部", type: "valor", value: 20, desc: "初期武功 +20" });
-            }
-            if (s.strategy >= 80) {
-                candidates.push({ id: 'hl_koyogunkan', name: "甲陽軍鑑", type: "strategy", value: 20, desc: "初期知略 +20" });
-                candidates.push({ id: 'hl_sonshi', name: "孫子の古伝書", type: "strategy", value: 20, desc: "初期知略 +20" });
-            }
-            if (s.virtue >= 80) {
-                candidates.push({ id: 'hl_matsukaze', name: "名馬・松風", type: "virtue", value: 20, desc: "初期人徳 +20" });
-            }
-            if (s.karma >= 80) {
-                candidates.push({ id: 'hl_muramasa', name: "妖刀・千子村正", type: "karma", value: 20, desc: "初期悪逆 +20" });
-            }
-            if (s.money >= 1500) {
-                candidates.push({ id: 'hl_chaki', name: "黄金の茶器", type: "money", value: 300, desc: "初期所持金 +300文" });
-            }
-            if (s.age >= 60) {
-                candidates.push({ id: 'hl_furo', name: "南蛮不老薬", type: "health", value: 30, desc: "初期体力 +30" });
-            }
+        window.switchHelpTab = function(tabName) {
+            const tabs = {
+                basic: document.getElementById('tab-help-basic'),
+                status: document.getElementById('tab-help-status'),
+                rinne: document.getElementById('tab-help-rinne')
+            };
             
-            if (s.luck >= 60) candidates.push({ id: 'hl_yohen', name: "曜変天目茶碗", type: "luck", value: 20, desc: "初期運 +20" });
-            if (s.luck >= 40) candidates.push({ id: 'hl_aoi', name: "四葉の葵紋", type: "luck", value: 10, desc: "初期運 +10" });
+            Object.values(tabs).forEach(t => {
+                t.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+            });
+            tabs[tabName].className = "flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors";
             
-            if (candidates.length > 0) {
-                return candidates[Math.floor(Math.random() * candidates.length)];
-            }
-            return null;
-        }
+            const content = document.getElementById('help-content');
+            let html = '';
 
+            if (tabName === 'basic') {
+                html = `
+                    <h3 class="help-h3">目的と寿命</h3>
+                    <p class="help-p">乱世に生まれ落ちた一人の人間として、戦国の世を生き抜きます。<br>最終的な目標は<span class="help-highlight">「60歳まで生き延び、大往生を遂げること」</span>ですが、太く短い人生を駆け抜け、歴史に名を残すのもまた一興です。</p>
+                    
+                    <h3 class="help-h3">歳月を進める</h3>
+                    <p class="help-p">画面のどこか（または下部のボタン）をタップすると、1年が経過します。<br>年を経るごとに様々な出来事が起こり、あなたの能力（ステータス）や体力、所持金が上下します。</p>
+
+                    <h3 class="help-h3">選択の刻（イベント）</h3>
+                    <p class="help-p">人生の節目や突発的な事態において、重大な決断を迫られます。<br>特定の能力値や所持金が足りないと<span class="text-red-400 font-bold">選べない選択肢（赤字）</span>も存在します。己の身の丈に合った選択をするか、命を懸けて大勝負に出るかはあなた次第です。</p>
+                `;
+            } else if (tabName === 'status') {
+                html = `
+                    <h3 class="help-h3">各種能力の意味</h3>
+                    <p class="help-p">イベントの選択肢を解放するだけでなく、日々の出来事にも恩恵をもたらします。</p>
+                    <ul class="text-xs text-gray-300 space-y-2 mb-3 pl-2">
+                        <li><span class="text-red-300 font-bold">武功:</span> 武力や手柄。合戦での勝率や報酬が上がり、受ける物理的ダメージを軽減します。</li>
+                        <li><span class="text-blue-300 font-bold">知略:</span> 頭の回転。交渉で出費を値切ったり、裏道を察知して罠の被害を軽減します。</li>
+                        <li><span class="text-green-300 font-bold">人徳:</span> 人望の厚さ。周囲の助けを得やすく、一揆などの暴動を少ない出費で抑え込みます。</li>
+                        <li><span class="text-purple-300 font-bold">悪逆:</span> 非道な振る舞い。高まると裏社会での生き方が解放されたり、妖刀を引き寄せたりします。</li>
+                        <li><span class="text-yellow-300 font-bold">運:</span> 天の加護。すべての被ダメージ時に<span class="help-highlight">確率でダメージを無効化（回避）</span>します。また賭け事の報酬も跳ね上がります。</li>
+                    </ul>
+                    
+                    <h3 class="help-h3">体力と所持金</h3>
+                    <p class="help-p">体力が「0」になると、その時点で人生は終わり（ゲームオーバー）となります。<br>所持金が「0」未満になることはありませんが、借金を背負うような状況に陥ると<span class="text-red-400 font-bold">「極度の困窮」として莫大な体力ダメージ</span>を受けます。</p>
+                `;
+            } else if (tabName === 'rinne') {
+                html = `
+                    <h3 class="help-h3">限界突破（体力上限の上昇）</h3>
+                    <p class="help-p">死を重ね、輪廻（リトライ）を行うたびに、あなたの魂の器は大きくなります。<br>初期の体力上限は150ですが、<span class="help-highlight">1回輪廻するごとに上限が「+1」</span>されていきます。</p>
+
+                    <h3 class="help-h3">家宝の継承</h3>
+                    <p class="help-p">特定の高いステータスを持った状態で死を迎えると、「家宝」を遺すことができます。<br>家宝は次回の人生の開始時に装備することで、強力な初期ボーナスを得られます。輪廻を10回、30回と繰り返すことで、<span class="help-highlight">同時に持ち込める家宝の「枠数」が増加</span>します。</p>
+
+                    <h3 class="help-h3">冥銭と持込道具</h3>
+                    <p class="help-p">死後の評価（享年とステータスの合計値）に応じて、冥界の通貨である「冥銭」を獲得します。<br>タイトル画面の「冥府の商人」にて冥銭を支払うことで、<span class="help-highlight">1回の人生で使い切りとなる強力な道具</span>を購入し、持ち込むことができます。</p>
+                `;
+            }
+            content.innerHTML = html;
+        };
+
+        // 既存の他の処理群
         window.updateStartScreenUI = function() {
             const rinneElem = document.getElementById('ui-reincarnations');
             if (rinneElem) rinneElem.innerText = window.currentReincarnationCount || 0;
@@ -1169,7 +1199,6 @@
                 }
             }
 
-            // ★NEW: 持ち込み道具のUI更新
             const itemDiv = document.getElementById('item-equipped-list');
             if(itemDiv) {
                 if (!window.activeConsumable) {
@@ -1265,7 +1294,6 @@
             document.getElementById('heirloom-screen').classList.add('hidden');
         };
 
-        // ★NEW: 冥府の商人（ショップ）の表示
         window.openShop = function(e) {
             if(e){ e.preventDefault(); e.stopPropagation(); }
             const sScreen = document.getElementById('shop-screen');
@@ -1300,7 +1328,7 @@
                         window.inventory[item.id] = (window.inventory[item.id] || 0) + 1;
                         saveMetaProgress();
                         window.updateStartScreenUI();
-                        window.openShop(); // 再描画
+                        window.openShop(); 
                     }
                 };
                 sList.appendChild(card);
@@ -1312,7 +1340,6 @@
             document.getElementById('shop-screen').classList.add('hidden');
         };
 
-        // ★NEW: 持込道具の選択画面
         window.openItemStorage = function(e) {
             if(e){ e.preventDefault(); e.stopPropagation(); }
             const iScreen = document.getElementById('item-screen');
@@ -1465,6 +1492,8 @@
             if (shopScreen) shopScreen.classList.add('hidden');
             const itemScreen = document.getElementById('item-screen');
             if (itemScreen) itemScreen.classList.add('hidden');
+            const helpScreen = document.getElementById('help-screen');
+            if (helpScreen) helpScreen.classList.add('hidden');
 
             if (logContainer) {
                 logContainer.innerHTML = '';
@@ -1551,7 +1580,6 @@
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
 
-            // 家宝の適用
             if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
                 window.activeHeirlooms.forEach(hl => {
                     if (hl.type === 'money') state.money += hl.value;
@@ -1564,7 +1592,6 @@
                 });
             }
 
-            // ★NEW: 持ち込み道具（使い切り）の適用と消費
             if (window.activeConsumable) {
                 const cons = window.activeConsumable;
                 if (cons.type === 'migawari') {
@@ -1575,13 +1602,11 @@
                 else if (cons.type === 'strategy') state.strategy += cons.value;
                 else if (cons.type === 'virtue') state.virtue += cons.value;
 
-                // インベントリから消費
                 if (window.inventory[cons.id] > 0) {
                     window.inventory[cons.id] -= 1;
                 }
                 state.flags.consumedItemName = cons.name;
                 
-                // 消費したので選択を解除
                 window.activeConsumable = null;
                 saveMetaProgress();
             }
@@ -1650,7 +1675,6 @@
                 const hlNames = window.activeHeirlooms.map(h => h.name).join('、');
                 hlText = `<p class="text-gold mt-6 text-[11px]">家宝「${hlNames}」の加護を携え、<br>宿命の旅が始まる。</p>`;
             }
-            // ★NEW: 道具のテキスト
             if (state.flags.consumedItemName) {
                 hlText += `<p class="text-purple-300 mt-2 text-[10px]">冥府の道具「${state.flags.consumedItemName}」の力を身に宿した。</p>`;
             }
@@ -2100,14 +2124,13 @@
                 addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた老躯が限界を迎え、静かに眠りについた。</span>`);
             }
 
-            // ★NEW: 身代わり地蔵の消費ロジック
             if (state.health <= 0 && state.flags.migawari) {
                 state.health = 1;
                 state.flags.migawari = false;
                 state.deathCause = '';
                 addLog(`<span class="text-purple-300 font-bold">【身代わり地蔵】懐に忍ばせていた地蔵が砕け散った！冥府の力により、死の淵から奇跡的に生還する……！</span>`);
                 updateUI();
-                return; // 死亡処理をキャンセル
+                return; 
             }
 
             if (state.health <= 0) {
@@ -2120,7 +2143,6 @@
                 
                 localStorage.removeItem('sengoku_current_run');
 
-                // ★NEW: 冥銭の獲得計算
                 const earnedMeisen = Math.floor((state.age + state.valor + state.karma + state.luck + state.strategy + state.virtue) / 10);
                 window.meisen += earnedMeisen;
 
@@ -2177,7 +2199,6 @@
             }
         }
 
-        // ★引数に earnedMeisen を追加
         function showGameOver(reason, title, nextHeirloom, deathCause, earnedMeisen) {
             const screen = document.getElementById('gameover-screen');
             const mainTitle = document.getElementById('go-main-title');
@@ -2226,7 +2247,6 @@
             document.getElementById('go-money').innerText = state.money;
             document.getElementById('go-reason').innerText = reason;
             
-            // ★獲得冥銭の表示
             const goMeisen = document.getElementById('go-meisen');
             if (goMeisen) goMeisen.innerText = `+${earnedMeisen}`;
 
@@ -2246,7 +2266,6 @@
             }
         }
 
-        // ★引数に earnedMeisen を追加
         function showPremiumEnding(title, nextHeirloom, earnedMeisen) {
             if (gameScreen) gameScreen.classList.add('hidden');
             const screen = document.getElementById('premium-screen');
@@ -2268,7 +2287,6 @@
             document.getElementById('premium-virtue').innerText = state.virtue;
             document.getElementById('premium-money').innerText = state.money;
             
-            // ★獲得冥銭の表示
             const premMeisen = document.getElementById('premium-meisen');
             if (premMeisen) premMeisen.innerText = `+${earnedMeisen} 冥銭`;
 
