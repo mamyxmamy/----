@@ -441,8 +441,8 @@
                 <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-950/40 via-transparent to-transparent pointer-events-none"></div>
                 <h3 class="text-2xl font-black text-red-600 mb-3 tracking-widest relative z-10 drop-shadow-[0_0_10px_rgba(200,0,0,0.5)]">輪廻を断ち切る</h3>
                 <p class="text-xs text-gray-400 mb-6 leading-relaxed relative z-10 text-left border-l-2 border-red-900 pl-3 py-1">
-                    これまでの全ての記憶（過去の人生、継承した家宝、輪廻回数）を完全に消去し、真っ新な状態に戻します。<br>
-                    <span class="text-red-400 font-bold mt-2 block text-center">この操作は二度と取り消せませぬ。<br>本当によろしいか？</span>
+                    現在の「輪廻の巡り（回数）」と「継承した家宝」を破棄し、真っ新な状態からやり直します。<br>
+                    <span class="text-red-400 font-bold mt-2 block text-center">※「輪廻の回想（過去の人生）」の記録は残ります。</span>
                 </p>
                 <div class="flex gap-3 relative z-10">
                     <button id="cancel-reset-btn" type="button" class="action-button-main flex-1 bg-[#231E19] border border-[#3A322A] text-gray-400 hover:text-white py-3 text-sm font-bold rounded-sm active:scale-95 transition-all">
@@ -456,6 +456,7 @@
         </div>
 
     </div>
+
     <!-- ================= ゲームロジック ================= -->
     <script>
     (function() {
@@ -511,6 +512,7 @@
         let startBtn, historyBtn, advanceBtn, advanceBtnText, choicesContainer, logContainer;
         let marketToggleBtn, buyRiceBtn, sellRiceBtn, marketPanel, marketMsg;
         let uiAge, uiClass, uiHealth, uiMoney, uiRice, uiRicePrice, uiFaction, modeBadge;
+        
         // リセット機能用 DOM
         let resetConfirmScreen, cancelResetBtn, executeResetBtn, resetDataBtn;
 
@@ -552,4 +554,1093 @@
         }
 
         function stopAutoPlay() {
-   
+            if (autoPlayTimer) {
+                clearTimeout(autoPlayTimer);
+                autoPlayTimer = null;
+            }
+        }
+
+        function updateRiceMarket() {
+            let base = 25;
+            let volatility = Math.floor(Math.random() * 26) - 10;
+            if (state.mode === 'battle') volatility += 20;
+            if (state.flags.famineActive) volatility += 35;
+            if (state.classInfo && state.classInfo.id === 'merchant') volatility -= 5;
+            state.ricePrice = Math.max(8, Math.min(140, base + volatility));
+            state.flags.famineActive = false;
+        }
+
+        function toggleMarket() {
+            isMarketOpen = !isMarketOpen;
+            if (isMarketOpen) {
+                marketPanel.classList.add('market-open');
+                marketToggleBtn.innerText = "米市場 ▲";
+            } else {
+                marketPanel.classList.remove('market-open');
+                marketToggleBtn.innerText = "米市場 ▼";
+            }
+        }
+
+        function showMarketMessage(msg, isError = false) {
+            if (!marketMsg) return;
+            marketMsg.innerText = msg;
+            marketMsg.className = `text-[10px] text-center mt-1 h-3 transition-opacity opacity-100 ${isError ? 'text-red-400' : 'text-green-400'}`;
+            setTimeout(() => { if (marketMsg) marketMsg.classList.replace('opacity-100', 'opacity-0'); }, 1800);
+        }
+
+        function buyRiceAction() {
+            if (!state.isAlive) return;
+            if (state.money >= state.ricePrice) {
+                state.money -= state.ricePrice;
+                state.rice += 1;
+                updateUI();
+                showMarketMessage(`一石を ${state.ricePrice}文 で買い付けました`);
+            } else {
+                showMarketMessage("銭が足りませぬ！", true);
+            }
+        }
+
+        function sellRiceAction() {
+            if (!state.isAlive) return;
+            if (state.rice >= 1) {
+                state.rice -= 1;
+                state.money += state.ricePrice;
+                updateUI();
+                showMarketMessage(`一石を ${state.ricePrice}文 で売却しました`);
+            } else {
+                showMarketMessage("米蔵に米がございませぬ！", true);
+            }
+        }
+
+        // ================= イベント定義 =================
+        const EVENTS = [
+            {
+                id: 'draft', mode: ['normal'], weight: 30, condition: (s) => (s.classInfo.id === 'peasant' || s.classInfo.id === 'ashigaru') && s.age < 60,
+                title: '【動員令】合戦の徴用', text: '領主より強制徴兵令が布告された。田畑を捨てて戦地に向かうか、何らかの手段で抗うかを迫られている。',
+                choices: [
+                    { text: '槍を取り、手柄を目指して出陣する', condition: () => true, hint: '戦場へ移行・武功獲得の機会', effect: (s) => { s.mode = 'battle'; s.valor += 10; return { hp: 0, log: '泥を払い朱槍を手にした。血煙立ち込める戦場へ駆り出される！' }; } },
+                    { text: '【銭50文】役人に賄賂を握らせ兵籍を削る', condition: (s) => s.money >= 50, hint: '安全に徴兵回避', effect: (s) => { return { money: -50, hp: 0, log: '銭の力で名簿から名を消させた。乱世における金子の重みを噛み締める。' }; } },
+                    { text: '【米1石】米俵を差し出し兵役を免除される', condition: (s) => s.rice >= 1, hint: '米を消費して回避', effect: (s) => { s.rice -= 1; return { hp: 0, log: '苦労して蓄えた米を差し出し、兵役を免除された。平穏な日常が保たれる。' }; } },
+                    { text: '【知略30】病と偽り巧妙に逃れる', condition: (s) => s.strategy >= 30, hint: '知略で無傷回避', effect: (s) => { s.strategy += 5; return { hp: 0, log: '名演技と偽りの診断書で役人を完全に信じ込ませた。' }; } },
+                    { text: 'すべてを捨てて山中へ逃走する', condition: () => true, hint: '逃亡状態へ移行・カルマ上昇', effect: (s) => { s.mode = 'fugitive'; s.karma += 10; s.virtue -= 10; return { hp: -5, log: '闇夜に紛れて逃亡。落武者狩りの影に怯える過酷な逃走劇が幕を開けた。' }; } }
+                ]
+            },
+            {
+                id: 'battle_front', mode: ['battle'], weight: 50, condition: () => true,
+                title: '【合戦】激突の陣', text: '喚声と硝煙が戦場を包む。前面より敵の精鋭騎馬隊が土煙を上げて肉薄してきた！',
+                choices: [
+                    { text: '気迫で迎え撃ち、槍を突き出す！', condition: () => true, hint: '武功大幅増・負傷リスク', effect: (s) => { s.valor += 30; const dmg = Math.floor(Math.random() * 35) + 20; s.deathCause = 'battle'; return { hp: -dmg, log: '先頭の敵兵を突き落とし殊勲を挙げたが、自らも刃を受け深手を負った！' }; } },
+                    { text: '【知略】戦局を俯瞰し、有利な高所へ布陣', condition: () => true, hint: '知略増・被ダメージ軽減', effect: (s) => { s.strategy += 15; s.deathCause = 'battle'; return { hp: -8, log: '地形を巧みに利用し、味方への被害を抑えつつ敵の突撃をいなした。' }; } },
+                    { text: '【悪逆】混乱に紛れ、斃れた味方から銭を剥ぐ', condition: () => true, hint: '逃亡へ・銭獲得・カルマ激増', effect: (s) => { s.mode = 'fugitive'; s.karma += 25; s.deathCause = 'battle'; return { money: 70, hp: -5, log: '人の心を捨て死体から銭を奪い、戦場から脱走した。' }; } },
+                    { text: '【乾坤一擲】敵本陣へ単騎突撃（成功率25%）', condition: () => true, hint: '大逆転か即死の一騎打ち', effect: (s) => {
+                        if (Math.random() < 0.25 + (s.valor * 0.001)) {
+                            s.valor += 90;
+                            s.deathCause = 'battle';
+                            return { hp: -25, money: 250, log: '【大戦果！】敵武将の首級を挙げた！軍勢全体に名が轟き、莫大な報奨を得た！' };
+                        } else {
+                            s.deathCause = 'battle';
+                            return { hp: -999, log: '敵の親衛隊に包囲され、無数の槍に貫かれて絶命した……。' };
+                        }
+                    } }
+                ]
+            },
+            {
+                id: 'escape_survival', mode: ['fugitive'], weight: 80, condition: () => true,
+                title: '【流浪】落武者狩りの包囲', text: '山野を彷徨うあなたの元に、竹槍を持った農民たちの探索隊が迫る。一刻の猶予もない。',
+                choices: [
+                    { text: '【人徳15】かつて助けた里人を頼る', condition: (s) => s.virtue >= 15, hint: '農民へ復帰・HP回復', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'peasant'); return { hp: 35, log: 'かつて救った村人が命懸けで匿ってくれた。「農民」として新たな土地で土に生きる。' }; } },
+                    { text: '【銭80文】探索隊の頭を金で買収する', condition: (s) => s.money >= 80, hint: '浪人へ復帰', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'ronin'); return { money: -80, hp: 10, log: '懐の金を渡し見逃してもらった。「浪人」として他国へ逃れ再起を図る。' }; } },
+                    { text: '【米1石】米俵を投げ捨て足止めする', condition: (s) => s.rice >= 1, hint: '米を餌に脱出', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'ronin'); s.rice -= 1; return { hp: 10, log: '飢えた農民たちが米に群がっている隙に間一髪脱出した。' }; } },
+                    { text: '山賊の群れに加わり、野盗として生きる', condition: () => true, hint: '野盗へ転身・カルマ上昇', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'bandit'); s.karma += 25; return { hp: 15, money: 40, log: '修羅の道を選んだ。これからは奪う側として乱世を生き抜く。' }; } },
+                    { text: '深山幽谷のさらに奥へ賭けで逃げ込む', condition: () => true, hint: '成功で浪人化、失敗で大打撃', effect: (s) => {
+                        if (Math.random() < 0.45 + (s.luck * 0.01)) {
+                            s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'ronin');
+                            return { hp: 10, log: '険しい崖を飛び越え追手を完全に振り切った。「浪人」として自由を手に入れた。' };
+                        } else {
+                            s.deathCause = 'hunted';
+                            return { hp: -55, log: '竹槍の罠にかかり深手を負った！ほうほうの体で血を流しながら逃げ惑う。' };
+                        }
+                    } }
+                ]
+            },
+            {
+                id: 'famine', mode: ['normal', 'fugitive'], weight: 20, condition: () => true,
+                title: '【飢饉】天変地異の飢餓', text: '日照りと長雨で作物が壊滅。市場の米価が急騰し、街中には餓死者が溢れている。',
+                choices: [
+                    { text: '【米2石】蔵を開き、飢えた民に施しを行う', condition: (s) => s.rice >= 2, hint: '人徳特大アップ', effect: (s) => { s.flags.famineActive = true; s.virtue += 45; s.rice -= 2; return { hp: 5, log: '備蓄米を惜しみなく振る舞った。領民たちから生き神の如く崇敬を集める。' }; } },
+                    { text: '【米1石】家族と己の命を最優先に守る', condition: (s) => s.rice >= 1, hint: '体力回復・安全確保', effect: (s) => { s.flags.famineActive = true; s.rice -= 1; return { hp: 15, log: '蓄えておいた米で飢えをしのいだ。平然と生き永らえる姿に怨嗟の視線が集まる。' }; } },
+                    { text: '【銭80文】高騰した闇米を買い漁る', condition: (s) => s.money >= 80, hint: '銭消費で生存確保', effect: (s) => { s.flags.famineActive = true; return { money: -80, hp: 10, log: '強欲な米問屋から暴利の米を買い求めた。懐は痛んだが命は繋ぎ止めた。' }; } },
+                    { text: '【悪逆】飢えた民衆の蓄えを力づくで強奪する', condition: () => true, hint: 'カルマ上昇・人徳リセット', effect: (s) => { s.flags.famineActive = true; s.karma += 35; s.virtue = 0; return { hp: 10, log: '飢餓の極限で理性を捨て、隣人から粥を奪い取った。' }; } },
+                    { text: '草の根を齧り、耐え忍ぶ', condition: () => true, hint: '体力大ダメージ', effect: (s) => { s.flags.famineActive = true; s.deathCause = 'starvation'; return { hp: -40, log: '木の皮を煮て飢えを凌いだ。身体は痩せこけ、体力が著しく消耗した。' }; } }
+                ]
+            },
+            {
+                id: 'escape_survival', mode: ['fugitive'], weight: 80, condition: () => true,
+                title: '【流浪】落武者狩りの包囲', text: '山野を彷徨うあなたの元に、竹槍を持った農民たちの探索隊が迫る。一刻の猶予もない。',
+                choices: [
+                    { text: '【人徳15】かつて助けた里人を頼る', condition: (s) => s.virtue >= 15, hint: '農民へ復帰・HP回復', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'peasant'); return { hp: 35, log: 'かつて救った村人が命懸けで匿ってくれた。「農民」として新たな土地で土に生きる。' }; } },
+                    { text: '【銭80文】探索隊の頭を金で買収する', condition: (s) => s.money >= 80, hint: '浪人へ復帰', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'ronin'); return { money: -80, hp: 10, log: '懐の金を渡し見逃してもらった。「浪人」として他国へ逃れ再起を図る。' }; } },
+                    { text: '【米1石】米俵を投げ捨て足止めする', condition: (s) => s.rice >= 1, hint: '米を餌に脱出', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'ronin'); s.rice -= 1; return { hp: 10, log: '飢えた農民たちが米に群がっている隙に間一髪脱出した。' }; } },
+                    { text: '山賊の群れに加わり、野盗として生きる', condition: () => true, hint: '野盗へ転身・カルマ上昇', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'bandit'); s.karma += 25; return { hp: 15, money: 40, log: '修羅の道を選んだ。これからは奪う側として乱世を生き抜く。' }; } },
+                    { text: '深山幽谷のさらに奥へ賭けで逃げ込む', condition: () => true, hint: '成功で浪人化、失敗で大打撃', effect: (s) => {
+                        if (Math.random() < 0.45 + (s.luck * 0.01)) {
+                            s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'ronin');
+                            return { hp: 10, log: '険しい崖を飛び越え追手を完全に振り切った。「浪人」として自由を手に入れた。' };
+                        } else {
+                            return { hp: -55, log: '竹槍の罠にかかり深手を負った！ほうほうの体で血を流しながら逃げ惑う。' };
+                        }
+                    } }
+                ]
+            },
+            {
+                id: 'famine', mode: ['normal', 'fugitive'], weight: 20, condition: () => true,
+                title: '【飢饉】天変地異の飢餓', text: '日照りと長雨で作物が壊滅。市場の米価が急騰し、街中には餓死者が溢れている。',
+                choices: [
+                    { text: '【米2石】蔵を開き、飢えた民に施しを行う', condition: (s) => s.rice >= 2, hint: '人徳特大アップ', effect: (s) => { s.flags.famineActive = true; s.virtue += 45; s.rice -= 2; return { hp: 5, log: '備蓄米を惜しみなく振る舞った。領民たちから生き神の如く崇敬を集める。' }; } },
+                    { text: '【米1石】家族と己の命を最優先に守る', condition: (s) => s.rice >= 1, hint: '体力回復・安全確保', effect: (s) => { s.flags.famineActive = true; s.rice -= 1; return { hp: 15, log: '蓄えておいた米で飢えをしのいだ。平然と生き永らえる姿に怨嗟の視線が集まる。' }; } },
+                    { text: '【銭80文】高騰した闇米を買い漁る', condition: (s) => s.money >= 80, hint: '銭消費で生存確保', effect: (s) => { s.flags.famineActive = true; return { money: -80, hp: 10, log: '強欲な米問屋から暴利の米を買い求めた。懐は痛んだが命は繋ぎ止めた。' }; } },
+                    { text: '【悪逆】飢えた民衆の蓄えを力づくで強奪する', condition: () => true, hint: 'カルマ上昇・人徳リセット', effect: (s) => { s.flags.famineActive = true; s.karma += 35; s.virtue = 0; return { hp: 10, log: '飢餓の極限で理性を捨て、隣人から粥を奪い取った。' }; } },
+                    { text: '草の根を齧り、耐え忍ぶ', condition: () => true, hint: '体力大ダメージ', effect: (s) => { s.flags.famineActive = true; return { hp: -40, log: '木の皮を煮て飢えを凌いだ。身体は痩せこけ、体力が著しく消耗した。' }; } }
+                ]
+            },
+            {
+                id: 'marriage', mode: ['normal'], weight: 15, condition: (s) => s.age >= 18 && !s.flags.married,
+                title: '【縁談】生涯の伴侶', text: '近隣の有力者より良縁の申し入れがあった。',
+                choices: [
+                    { text: '【銭80文】盛大な祝宴を開き、華やかに迎える', condition: (s) => s.money >= 80, hint: '人徳・体力上昇', effect: (s) => {
+                        s.flags.married = true; s.flags.wifeName = WIFE_NAMES[Math.floor(Math.random() * WIFE_NAMES.length)];
+                        s.virtue += 20; return { money: -80, hp: 25, log: `町中が祝う盛大な式を挙げ、「${s.flags.wifeName}」を妻に迎えた。` };
+                    } },
+                    { text: '【人徳25】持参金付きで請われて婚姻する', condition: (s) => s.virtue >= 25, hint: '銭50文獲得・婚姻', effect: (s) => {
+                        s.flags.married = true; s.flags.wifeName = WIFE_NAMES[Math.floor(Math.random() * WIFE_NAMES.length)];
+                        s.virtue += 10; return { money: 50, hp: 15, log: `名声を慕われ、持参金付きで「${s.flags.wifeName}」を娶った。` };
+                    } },
+                    { text: 'ささやかに杯を交わす（銭10文）', condition: (s) => s.money >= 10, hint: '少額で婚姻成立', effect: (s) => {
+                        s.flags.married = true; s.flags.wifeName = WIFE_NAMES[Math.floor(Math.random() * WIFE_NAMES.length)];
+                        s.virtue += 5; return { money: -10, hp: 10, log: `質素ながら温かな祝言を挙げ、「${s.flags.wifeName}」と契りを結んだ。` };
+                    } },
+                    { text: '今は家を持つ時ではないと断る', condition: () => true, hint: '独身を貫く', effect: (s) => ({ hp: 0, log: '己の武辺・稼業に専念すべく、縁談を丁重に断った。' }) }
+                ]
+            },
+            {
+                id: 'childbirth', mode: ['normal'], weight: 20, condition: (s) => s.flags.married && !s.flags.hasChild,
+                title: '【生誕】新たな息吹', text: (s) => `妻の${s.flags.wifeName || '妻'}が子を身ごもった。我が子の誕生が迫っている。`,
+                choices: [
+                    { text: '【銭30文】名高き産婆を呼び手厚く処置する', condition: (s) => s.money >= 30, hint: '母子ともに安全・体力大幅回復', effect: (s) => {
+                        s.flags.hasChild = true; s.virtue += 15;
+                        return { money: -30, hp: 25, log: '元気な産声が響いた！名産婆の助けで母子ともに無事。活力に満ち溢れる。' };
+                    } },
+                    { text: '【米1石】産後の精のつく米粥を振る舞う', condition: (s) => s.rice >= 1, hint: '米消費で健康祈願', effect: (s) => {
+                        s.flags.hasChild = true; s.rice -= 1; s.virtue += 10;
+                        return { hp: 20, log: '白米を惜しみなく食べさせ、健やかな子が誕生した。家族の絆が深まる。' };
+                    } },
+                    { text: '神仏に祈りを捧げ、安産を願う', condition: () => true, hint: '通常出産', effect: (s) => {
+                        s.flags.hasChild = true; s.virtue += 5;
+                        return { hp: 10, log: '無事に赤子が誕生した。貧しくとも笑顔の絶えぬ家路を守る誓いを立てた。' };
+                    } }
+                ]
+            },
+            {
+                id: 'tactician', mode: ['normal', 'battle'], weight: 50, condition: (s) => s.strategy >= 30 && !s.flags.tactician && s.classInfo.id !== 'daimyo',
+                title: '【IF登用】軍師への推挙', text: 'あなたの戦局眼と深い知略が城代の耳に止まり、軍師としての召抱えを打診された。',
+                choices: [
+                    { text: '【知略50】強気の好待遇（銭300文）を勝ち取り受託', condition: (s) => s.strategy >= 50, hint: '武将へ転身・銭300文・知略激増', effect: (s) => {
+                        s.flags.tactician = true; s.classInfo = CLASSES.find(c => c.id === 'bushou'); s.mode = 'normal';
+                        s.strategy += 25; s.virtue += 15;
+                        return { money: 300, hp: -10, log: '圧倒的な戦略提言で主君を唸らせ、破格の俸禄で軍師の重責に就任した！' };
+                    } },
+                    { text: '謹んで軍師の職をお受けする', condition: () => true, hint: '武将へ転身・銭100文', effect: (s) => {
+                        s.flags.tactician = true; s.classInfo = CLASSES.find(c => c.id === 'bushou'); s.mode = 'normal';
+                        s.strategy += 20;
+                        return { money: 100, hp: -15, log: '采配を振るう軍師に抜擢された。謀略に明け暮れる日々が始まる。' };
+                    } },
+                    { text: '権力争いを嫌い、野に隠棲する', condition: () => true, hint: '辞退・平穏を維持', effect: (s) => { s.flags.tactician = true; s.virtue += 10; return { hp: 5, log: '功名を求めず断りを入れた。市井に生きる軍師として一目置かれる。' }; } }
+                ]
+            },
+            {
+                id: 'independence', mode: ['normal', 'battle'], weight: 50, condition: (s) => s.virtue >= 30 && s.valor >= 30 && s.classInfo.id === 'bushou' && !s.flags.independence,
+                title: '【IF野望】天下を望む独立の旗', text: '人望と武勇を兼ね備えたあなたを主君と仰ぐ武士団が集結。「今こそ自立し、大名として天下を統一すべき」と決断を迫る。',
+                choices: [
+                    { text: '【銭800文】近隣豪族を買収し、無血開城で独立', condition: (s) => s.money >= 800, hint: '安全に「大名」へ昇格', effect: (s) => {
+                        s.flags.independence = true; s.classInfo = CLASSES.find(c => c.id === 'daimyo'); s.mode = 'normal';
+                        s.faction = { id: 'custom', name: '独立勢力', color: '#B8860B' }; s.valor += 40; s.virtue += 40;
+                        return { money: -800, hp: 0, log: '潤沢な資金で敵方を降伏させ、無傷で独立を果たした！「大名」の誕生である！' };
+                    } },
+                    { text: '【米8石】民に米を配り蜂起させ、城を奪取', condition: (s) => s.rice >= 8, hint: '米消費で民意を味方に大名化', effect: (s) => {
+                        s.flags.independence = true; s.classInfo = CLASSES.find(c => c.id === 'daimyo'); s.mode = 'normal';
+                        s.faction = { id: 'custom', name: '独立勢力', color: '#B8860B' }; s.virtue += 80; s.rice -= 8;
+                        return { hp: 0, log: '米を施された領民が熱狂し味方した。民衆に推戴され堂々たる「大名」に君臨！' };
+                    } },
+                    { text: '【武力蜂起】己の軍勢のみで旗揚げ（成功率50%）', condition: () => true, hint: '成功で大名、失敗で即死', effect: (s) => {
+                        s.flags.independence = true;
+                        if (Math.random() < 0.5 + (s.strategy * 0.005) + (s.luck * 0.005)) {
+                            s.classInfo = CLASSES.find(c => c.id === 'daimyo'); s.mode = 'normal';
+                            s.faction = { id: 'custom', name: '独立勢力', color: '#B8860B' }; s.valor += 50;
+                            return { money: 200, hp: -20, log: '激戦の末に主家を打倒し、独立を成し遂げた！己の旗を掲げる「大名」となった！' };
+                        } else {
+                            s.deathCause = 'execution';
+                            return { hp: -999, log: '本隊の急襲を受け謀反は失敗。城壁の露と消えた……。' };
+                        }
+                    } },
+                    { text: '恩ある主家に不義理はできぬと諫める', condition: () => true, hint: '忠義を貫き人徳上昇', effect: (s) => { s.flags.independence = true; s.virtue += 35; return { hp: 0, log: '謀反の誘いを厳しく退け忠義を尽くした。家中での信望は不動のものとなった。' }; } }
+                ]
+            }
+        ];
+
+        function calculateTitle(s) {
+            if (s.classInfo && s.classInfo.id === 'daimyo') return "天下の覇者";
+            if (s.classInfo && s.classInfo.id === 'bandit') return "山河の凶魁";
+            if (s.strategy >= 70 && s.virtue >= 40) return "王佐の賢将";
+            if (s.strategy >= 70) return "稀代の知謀";
+            if (s.virtue >= 70) return "徳高き聖将";
+            if (s.valor >= 80 && s.karma >= 60) return "第六天魔王";
+            if (s.valor >= 70) return "無双の剛槍";
+            if (s.karma >= 70) return "乱世の梟雄";
+            if (s.money >= 800) return "富国豪商";
+            if (s.age >= 60) return "不撓不屈の大往生";
+            return "名もなき草奔";
+        }
+
+        function determineHeirloom(s) {
+            if (s.strategy >= 50) return { name: "孫子の古伝書", type: "strategy", value: 30, desc: "初期知略 +30" };
+            if (s.virtue >= 50) return { name: "名馬・松風", type: "virtue", value: 30, desc: "初期人徳 +30" };
+            if (s.money >= 1000) return { name: "黄金の茶器", type: "money", value: 400, desc: "初期所持金 +400文" };
+            if (s.valor >= 80) return { name: "名刀・備前長船", type: "valor", value: 35, desc: "初期武功 +35" };
+            if (s.karma >= 80) return { name: "妖刀・千子村正", type: "karma", value: 35, desc: "初期悪逆 +35" };
+            if (s.age >= 60) return { name: "南蛮不老薬", type: "health", value: 40, desc: "初期最大HPが大幅に増加" };
+            return null;
+        }
+
+        window.updateStartScreenUI = function() {
+            const rinneElem = document.getElementById('ui-reincarnations');
+            if (rinneElem) rinneElem.innerText = window.currentReincarnationCount || 0;
+
+            const hlBox = document.getElementById('heirloom-display');
+            if (hlBox) {
+                if (window.activeHeirloom) {
+                    hlBox.classList.remove('hidden');
+                    document.getElementById('hl-name').innerText = window.activeHeirloom.name;
+                    document.getElementById('hl-desc').innerText = window.activeHeirloom.desc;
+                } else {
+                    hlBox.classList.add('hidden');
+                }
+            }
+        };
+
+        function resetAllStateAndUI() {
+            stopAutoPlay();
+            isWaitingForChoice = false;
+            isProcessing = false;
+            state.isAlive = false;
+
+            if (animFrameId) {
+                cancelAnimationFrame(animFrameId);
+                animFrameId = null;
+            }
+
+            const freeze = document.getElementById('freeze-overlay');
+            if (freeze) freeze.classList.remove('freeze-active');
+
+            if (gameoverScreen) gameoverScreen.classList.add('hidden');
+            if (premiumScreen) premiumScreen.classList.add('hidden');
+            if (gameScreen) gameScreen.classList.add('hidden');
+            if (historyScreen) historyScreen.classList.add('hidden');
+            if (resetConfirmScreen) resetConfirmScreen.classList.add('hidden');
+
+            if (logContainer) logContainer.innerHTML = '';
+            if (choicesContainer) {
+                choicesContainer.innerHTML = '';
+                choicesContainer.classList.add('hidden');
+                choicesContainer.classList.remove('flex');
+            }
+            if (advanceBtn) {
+                advanceBtn.classList.remove('hidden');
+                if (advanceBtnText) advanceBtnText.innerText = "歳 月 を 進 め る";
+            }
+            if (appContainer) {
+                appContainer.classList.remove('mode-battle', 'mode-fugitive', 'damage-flash');
+            }
+            if (modeBadge) modeBadge.classList.add('hidden');
+            isMarketOpen = false;
+            if (marketPanel) {
+                marketPanel.classList.remove('market-open');
+                marketToggleBtn.innerText = "米市場 ▼";
+            }
+        }
+
+        // --- 周回要素のリセット処理 ---
+        window.resetAllData = function() {
+            if (startScreen) startScreen.style.animation = "fadeOutIn 2.5s ease-in-out forwards";
+            
+            setTimeout(() => {
+                try {
+                    localStorage.removeItem('sengoku_rinne_count');
+                    localStorage.removeItem('sengoku_heirloom');
+                    // 過去の人生履歴は消さないため removeItem('sengoku_past_lives') は実行しない
+                } catch(e) { console.warn("Storage reset failed:", e); }
+                
+                window.currentReincarnationCount = 0;
+                window.activeHeirloom = null;
+                window.updateStartScreenUI();
+                
+                if (typeof window.__resetCloudData === 'function') window.__resetCloudData();
+            }, 1250);
+
+            setTimeout(() => {
+                if (startScreen) startScreen.style.animation = "";
+            }, 2500);
+        };
+
+        window.startGame = function() {
+            resetAllStateAndUI();
+
+            const baseClasses = CLASSES.filter(c => c.weight > 0);
+            const totalWeight = baseClasses.reduce((sum, c) => sum + c.weight, 0);
+            let rW = Math.random() * totalWeight;
+            let selectedClass = baseClasses[0];
+            for (let c of baseClasses) {
+                rW -= c.weight;
+                if (rW <= 0) { selectedClass = c; break; }
+            }
+
+            const selectedFaction = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];
+
+            state = {
+                age: 15, health: selectedClass.initHealth, money: selectedClass.initMoney, rice: 0, ricePrice: 30,
+                classInfo: selectedClass, faction: selectedFaction,
+                isAlive: true, lastDamageEvent: '', deathCause: '',
+                valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0,
+                mode: 'normal', flags: {}
+            };
+
+            if (window.activeHeirloom) {
+                const hl = window.activeHeirloom;
+                if (hl.type === 'money') state.money += hl.value;
+                if (hl.type === 'valor') state.valor += hl.value;
+                if (hl.type === 'luck') state.luck += hl.value;
+                if (hl.type === 'karma') state.karma += hl.value;
+                if (hl.type === 'strategy') state.strategy += hl.value;
+                if (hl.type === 'virtue') state.virtue += hl.value;
+                if (hl.type === 'health') state.health += hl.value;
+            }
+
+            if (startScreen) startScreen.classList.add('hidden');
+            if (gameScreen) gameScreen.classList.remove('hidden');
+
+            updateRiceMarket();
+            updateUI();
+
+            addLog(`<span class="font-bold text-gold">【生誕】</span>${state.faction.name}の領内にて。<br>${state.classInfo.intro}`);
+            if (window.activeHeirloom) {
+                addLog(`<span class="text-gold font-bold">家宝「${window.activeHeirloom.name}」の加護を受け、宿命の旅が始まる。</span>`);
+            }
+
+            scheduleNextAutoPlay(1100);
+        };
+
+        function scheduleNextAutoPlay(delay = 900) {
+            stopAutoPlay();
+            if (!state.isAlive || isWaitingForChoice) return;
+            autoPlayTimer = setTimeout(() => {
+                if (state.isAlive && !isWaitingForChoice && !isProcessing) {
+                    advanceOneYear();
+                }
+            }, delay);
+        }
+
+        window.manualAdvance = function() {
+            if (!state.isAlive || isWaitingForChoice || isProcessing) return;
+            stopAutoPlay();
+            advanceOneYear();
+        };
+
+        function advanceOneYear() {
+            if (!state.isAlive || isWaitingForChoice || isProcessing) return;
+            isProcessing = true;
+
+            state.age++;
+            updateRiceMarket();
+
+            const isMilestone = (state.age % 5 === 0);
+            const isRandomEvent = Math.random() < 0.25;
+
+            if (isMilestone || isRandomEvent) {
+                let pool = EVENTS.filter(e => e.mode.includes(state.mode) && e.condition(state));
+                if (pool.length === 0) pool = [EVENTS[0]];
+
+                const totalW = pool.reduce((s, e) => s + e.weight, 0);
+                let r = Math.random() * totalW;
+                let ev = pool[0];
+                for (let e of pool) {
+                    r -= e.weight;
+                    if (r <= 0) { ev = e; break; }
+                }
+
+                presentEventChoices(ev);
+                isProcessing = false;
+            } else {
+                handleNormalYear();
+                updateUI();
+                checkSurvival();
+                isProcessing = false;
+
+                if (state.isAlive && !isWaitingForChoice) {
+                    scheduleNextAutoPlay(850);
+                }
+            }
+        }
+
+        function handleNormalYear() {
+            let pool = [];
+            if (state.mode === 'normal') {
+                pool = [
+                    { text: '田畑を耕し、日々の糧を得た。平穏な一年だった。', money: 3 },
+                    { text: '困窮する老人に握り飯を分け与えた。', virtue: 2, money: -1 },
+                    { text: '古寺で兵法書を紐解き、戦術を学んだ。', strategy: 3, hp: -1 },
+                    { text: '近隣の商人と交渉し、有利な商談を結んだ。', money: 12, strategy: 1 },
+                    { text: '穏やかな年の暮れを迎えた。', money: 1 }
+                ];
+            } else if (state.mode === 'battle') {
+                pool = [
+                    { text: '砦の警備にあたり、幾度かの奇襲を退けた。', valor: 3 },
+                    { text: '敵の斥候部隊を看破し、味方に急報をもたらした！', strategy: 4, virtue: 2 },
+                    { text: '野営の夜、星を見上げながら故郷に想いを馳せた。', hp: 2 },
+                    { text: '小競り合いの中で、打ち倒した敵兵の銭袋を拾った。', money: 6, karma: 2 }
+                ];
+            } else if (state.mode === 'fugitive') {
+                pool = [
+                    { text: '追手の篝火を避け、冷たい洞窟で一夜を明かした。', hp: -3 },
+                    { text: '野イチゴや木の根を掘り、空腹を紛らわせた。', hp: 1 },
+                    { text: '人里離れた山道をひたすら歩き続けた。', hp: -2 }
+                ];
+            }
+
+            const item = pool[Math.floor(Math.random() * pool.length)];
+            const hpDiff = item.hp || 0;
+            const moneyDiff = item.money || 0;
+
+            state.health += hpDiff;
+            state.money += moneyDiff;
+            if (item.valor) state.valor += item.valor;
+            if (item.karma) state.karma += item.karma;
+            if (item.strategy) state.strategy += item.strategy;
+            if (item.virtue) state.virtue += item.virtue;
+
+            if (state.health > 150) state.health = 150;
+
+            let tag = [];
+            if (hpDiff !== 0) tag.push(`体力${hpDiff > 0 ? '+' : ''}${hpDiff}`);
+            if (moneyDiff !== 0) tag.push(`銭${moneyDiff > 0 ? '+' : ''}${moneyDiff}`);
+            const statStr = tag.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tag.join(', ')})</span>` : '';
+
+            addLog(`<span class="font-bold text-gray-500">【${state.age}歳】</span> ${item.text}${statStr}`);
+        }
+
+        // ================= 状況説明テキストと選択肢の確実な表示 =================
+        function presentEventChoices(ev) {
+            stopAutoPlay();
+            isWaitingForChoice = true;
+
+            state.flags.currentEventTitle = ev.title;
+            const textContent = typeof ev.text === 'function' ? ev.text(state) : ev.text;
+
+            // 状況説明を「金枠のイベント強調カード」としてログに注入
+            const card = document.createElement('div');
+            card.className = 'event-active-card';
+            card.innerHTML = `
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-black text-gold flex items-center">
+                        <span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-1.5 animate-ping"></span>
+                        【${state.age}歳】${ev.title}
+                    </span>
+                    <span class="text-[10px] text-yellow-200/60 font-bold border border-yellow-700/50 px-1 py-0.2 rounded">選択の刻</span>
+                </div>
+                <div class="text-[13px] leading-relaxed text-gray-100 font-bold">
+                    ${textContent}
+                </div>
+            `;
+            logContainer.appendChild(card);
+
+            // 選択肢コンテナの構築
+            choicesContainer.innerHTML = '';
+            const validChoices = ev.choices.filter(c => !c.condition || c.condition(state));
+
+            validChoices.forEach((choice) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = "choice-btn w-full text-left py-2 px-3 rounded text-xs sm:text-sm text-gray-200 transition-all flex flex-col cursor-pointer";
+
+                const hintHtml = choice.hint ? `<span class="text-[10px] text-gray-400 mt-0.5 ml-3">↳ ${choice.hint}</span>` : '';
+                btn.innerHTML = `<span class="font-bold flex items-center leading-snug"><span class="text-gold text-xs mr-1 shrink-0">◆</span>${choice.text}</span>${hintHtml}`;
+
+                btn.onclick = () => {
+                    executeChoice(choice);
+                };
+
+                choicesContainer.appendChild(btn);
+            });
+
+            // UI切り替え
+            advanceBtn.classList.add('hidden');
+            choicesContainer.classList.remove('hidden');
+            choicesContainer.classList.add('flex');
+
+            // 状況説明カードが必ず視界に入るよう、確実に最下部へスクロール
+            requestAnimationFrame(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                setTimeout(() => {
+                    if (logContainer) logContainer.scrollTop = logContainer.scrollHeight;
+                }, 50);
+            });
+        }
+
+        function executeChoice(choice) {
+            if (!state.isAlive) return;
+
+            choicesContainer.classList.add('hidden');
+            choicesContainer.classList.remove('flex');
+            choicesContainer.innerHTML = '';
+
+            const res = choice.effect(state);
+            const hpChg = res.hp || 0;
+            const moneyChg = res.money || 0;
+
+            state.health += hpChg;
+            state.money += moneyChg;
+            if (state.health > 150) state.health = 150;
+
+            if (state.money < 0) {
+                state.money = 0;
+                state.health -= 25;
+                state.lastDamageEvent = '極度の困窮';
+                state.deathCause = 'starvation';
+            } else if (hpChg < 0) {
+                state.lastDamageEvent = state.flags.currentEventTitle || '重傷';
+                if (!state.deathCause) state.deathCause = state.mode === 'battle' ? 'battle' : 'oldage';
+            }
+
+            let tags = [];
+            if (hpChg !== 0) tags.push(`体力${hpChg > 0 ? '+' : ''}${hpChg}`);
+            if (moneyChg !== 0) tags.push(`銭${moneyChg > 0 ? '+' : ''}${moneyChg}`);
+            const statTag = tags.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tags.join(', ')})</span>` : '';
+
+            addLog(`<span class="font-bold text-gray-500 mr-1">┗ 決断:</span><em class="text-gray-300">${choice.text.replace(/【.*?】/g, '')}</em><br>${res.log}${statTag}`, hpChg <= -25);
+
+            if (hpChg < 0 && appContainer) {
+                appContainer.classList.remove('damage-flash');
+                void appContainer.offsetWidth;
+                appContainer.classList.add('damage-flash');
+            }
+
+            updateUI();
+            isWaitingForChoice = false;
+
+            checkSurvival();
+
+            if (state.isAlive) {
+                advanceBtn.classList.remove('hidden');
+                if (advanceBtnText) advanceBtnText.innerText = "次 の 年 へ 進 む";
+                scheduleNextAutoPlay(1000);
+            }
+        }
+
+        function updateUI() {
+            if (!uiAge) return;
+            uiAge.innerText = state.age;
+            uiClass.innerText = state.classInfo ? state.classInfo.name : '--';
+            uiHealth.innerText = Math.max(0, state.health);
+            uiMoney.innerText = state.money;
+            uiRice.innerText = state.rice;
+            uiRicePrice.innerText = state.ricePrice;
+
+            if (state.faction) {
+                uiFaction.innerText = state.faction.name;
+                uiFaction.style.backgroundColor = state.faction.color;
+            }
+
+            const hb = document.getElementById('health-box');
+            if (hb) {
+                if (state.health <= 30) {
+                    hb.classList.add('bg-red-950', 'border-red-600');
+                    hb.classList.remove('bg-[#201C18]', 'border-[#3A322A]');
+                } else {
+                    hb.classList.remove('bg-red-950', 'border-red-600');
+                    hb.classList.add('bg-[#201C18]', 'border-[#3A322A]');
+                }
+            }
+
+            if (appContainer) appContainer.classList.remove('mode-battle', 'mode-fugitive');
+            if (modeBadge) {
+                modeBadge.classList.add('hidden');
+                if (state.mode === 'battle') {
+                    if (appContainer) appContainer.classList.add('mode-battle');
+                    modeBadge.innerText = '戦場';
+                    modeBadge.className = 'text-[10px] bg-red-950 text-red-200 border border-red-600 px-1.5 py-0.5 font-bold rounded-sm';
+                    modeBadge.classList.remove('hidden');
+                } else if (state.mode === 'fugitive') {
+                    if (appContainer) appContainer.classList.add('mode-fugitive');
+                    modeBadge.innerText = '逃亡';
+                    modeBadge.className = 'text-[10px] bg-gray-900 text-gray-300 border border-gray-600 px-1.5 py-0.5 font-bold rounded-sm';
+                    modeBadge.classList.remove('hidden');
+                }
+            }
+
+            if (!isWaitingForChoice && advanceBtnText) {
+                advanceBtnText.innerText = autoPlayTimer ? "自動進行中... (タップで進む)" : "歳 月 を 進 め る";
+            }
+        }
+
+        function addLog(html, isHeavy = false) {
+            if (!logContainer) return;
+            const div = document.createElement('div');
+            div.className = `log-entry ${isHeavy ? 'font-bold text-blood' : ''}`;
+            div.innerHTML = html;
+            logContainer.appendChild(div);
+            requestAnimationFrame(() => {
+                if (logContainer) logContainer.scrollTop = logContainer.scrollHeight;
+            });
+        }
+
+        function checkSurvival() {
+            if (!state.isAlive) return;
+
+            if (state.age >= 70) {
+                state.health = 0;
+                state.lastDamageEvent = '天寿';
+                state.deathCause = 'oldage';
+                addLog(`<span class="text-gold font-bold">天寿を全うし、静かに目を閉じた……。</span>`);
+            } else if (state.age >= 60 && Math.random() < (state.age - 59) * 0.08) {
+                state.health = 0;
+                state.lastDamageEvent = '老衰';
+                state.deathCause = 'oldage';
+                addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた身体が静かに眠りについた。</span>`);
+            }
+
+            if (state.health <= 0) {
+                state.isAlive = false;
+                stopAutoPlay();
+                isWaitingForChoice = false;
+                isProcessing = false;
+
+                let reason = "戦国の風雲に呑まれ、息絶えた。";
+                if (state.deathCause === 'starvation') reason = "食うや食わずの果てに餓死を遂げた。";
+                else if (state.deathCause === 'oldage') reason = "数多の死線を潜り抜け、畳の上で穏やかに生涯を閉じた。";
+                else if (state.deathCause === 'execution') reason = "謀反の咎により、無惨にも斬首された。";
+                else if (state.deathCause === 'hunted') reason = "落武者狩りに遭い、名もなき泥の中で息絶えた。";
+                else reason = `${state.lastDamageEvent}により深い手傷を負い、命を落とした。`;
+
+                const finalTitle = calculateTitle(state);
+                const nextHeirloom = determineHeirloom(state);
+
+                window.currentReincarnationCount = (window.currentReincarnationCount || 0) + 1;
+                window.activeHeirloom = nextHeirloom;
+
+                try {
+                    localStorage.setItem('sengoku_rinne_count', window.currentReincarnationCount);
+                    if (nextHeirloom) localStorage.setItem('sengoku_heirloom', JSON.stringify(nextHeirloom));
+                    else localStorage.removeItem('sengoku_heirloom');
+
+                    const past = JSON.parse(localStorage.getItem('sengoku_past_lives') || '[]');
+                    past.unshift({
+                        age: state.age,
+                        className: state.classInfo ? state.classInfo.name : '不明',
+                        faction: state.faction ? state.faction.name : '不明',
+                        title: finalTitle,
+                        reason: reason,
+                        valor: state.valor, karma: state.karma, luck: state.luck, money: state.money,
+                        strategy: state.strategy, virtue: state.virtue,
+                        timestamp: Date.now()
+                    });
+                    localStorage.setItem('sengoku_past_lives', JSON.stringify(past.slice(0, 30)));
+                } catch (e) {
+                    console.warn("Save local failed:", e);
+                }
+
+                if (typeof window.__saveDeathData === 'function') {
+                    window.__saveDeathData(state.age, state.classInfo ? state.classInfo.name : '', state.faction ? state.faction.name : '', finalTitle, reason, state, nextHeirloom);
+                }
+
+                if (state.age >= 60) {
+                    setTimeout(() => showPremiumEnding(finalTitle, nextHeirloom), 400);
+                } else {
+                    setTimeout(() => showGameOver(reason, finalTitle, nextHeirloom, state.deathCause), 400);
+                }
+            }
+        }
+
+        function showGameOver(reason, title, nextHeirloom, deathCause) {
+            const screen = document.getElementById('gameover-screen');
+            const mainTitle = document.getElementById('go-main-title');
+            const subTitle = document.getElementById('go-sub-title');
+
+            // 背景と文字スタイルのリセット
+            screen.className = 'hidden absolute inset-0 z-50 flex flex-col items-center justify-center p-5 text-white text-center backdrop-blur-md overflow-y-auto pointer-events-auto transition-colors duration-700';
+            mainTitle.className = 'text-5xl sm:text-6xl font-black mb-1 mt-2 tracking-[0.25em]';
+
+            // 死因に応じた演出の適用
+            if (deathCause === 'starvation') {
+                screen.classList.add('death-bg-starvation');
+                mainTitle.classList.add('death-text-starvation');
+                mainTitle.innerText = '餓死';
+                subTitle.innerText = '- 飢えに苛まれし末路 -';
+            } else if (deathCause === 'execution') {
+                screen.classList.add('death-bg-execution');
+                mainTitle.classList.add('death-text-execution');
+                mainTitle.innerText = '斬首';
+                subTitle.innerText = '- 野望の果て、刑場の露と消ゆ -';
+            } else if (deathCause === 'hunted') {
+                screen.classList.add('death-bg-hunted');
+                mainTitle.classList.add('death-text-hunted');
+                mainTitle.innerText = '野垂死';
+                subTitle.innerText = '- 泥に塗れ、名もなき骸となる -';
+            } else {
+                // デフォルト (討死など)
+                screen.classList.add('death-bg-battle');
+                mainTitle.classList.add('death-text-battle');
+                mainTitle.innerText = '討死';
+                subTitle.innerText = '- 乱世の泡と消ゆ -';
+            }
+
+            document.getElementById('go-age').innerText = state.age;
+            document.getElementById('go-class').innerText = state.classInfo ? state.classInfo.name : '--';
+            document.getElementById('go-faction').innerText = state.faction ? `[${state.faction.name}]` : '';
+            document.getElementById('go-title').innerText = title;
+
+            document.getElementById('go-valor').innerText = state.valor;
+            document.getElementById('go-karma').innerText = state.karma;
+            document.getElementById('go-luck').innerText = state.luck;
+            document.getElementById('go-strategy').innerText = state.strategy;
+            document.getElementById('go-virtue').innerText = state.virtue;
+            document.getElementById('go-money').innerText = state.money;
+            document.getElementById('go-reason').innerText = reason;
+
+            const hlNotice = document.getElementById('new-heirloom-notice');
+            if (nextHeirloom) {
+                hlNotice.classList.remove('hidden');
+                document.getElementById('new-heirloom-text').innerText = nextHeirloom.name;
+            } else {
+                hlNotice.classList.add('hidden');
+            }
+
+            if (gameScreen) gameScreen.classList.add('hidden');
+            if (gameoverScreen) {
+                gameoverScreen.classList.remove('hidden');
+                gameoverScreen.style.pointerEvents = 'auto';
+            }
+            const rinneBtn = document.getElementById('rinne-btn');
+            if (rinneBtn) {
+                rinneBtn.disabled = false;
+                rinneBtn.style.pointerEvents = 'auto';
+            }
+        }
+
+        function showPremiumEnding(title, nextHeirloom) {
+            if (gameScreen) gameScreen.classList.add('hidden');
+            const screen = document.getElementById('premium-screen');
+            const content = document.getElementById('premium-content');
+
+            screen.classList.remove('hidden');
+            screen.style.pointerEvents = 'auto';
+            content.classList.remove('opacity-100');
+            content.classList.add('opacity-0');
+
+            document.getElementById('premium-title').innerText = `【称号: ${title}】`;
+            document.getElementById('premium-age').innerText = state.age;
+            document.getElementById('premium-class').innerText = state.classInfo ? state.classInfo.name : '--';
+            document.getElementById('premium-faction').innerText = state.faction ? `[${state.faction.name}]` : '';
+
+            document.getElementById('premium-valor').innerText = state.valor;
+            document.getElementById('premium-karma').innerText = state.karma;
+            document.getElementById('premium-luck').innerText = state.luck;
+            document.getElementById('premium-strategy').innerText = state.strategy;
+            document.getElementById('premium-virtue').innerText = state.virtue;
+            document.getElementById('premium-money').innerText = state.money;
+
+            const hlNotice = document.getElementById('premium-heirloom-notice');
+            if (nextHeirloom) {
+                hlNotice.classList.remove('hidden');
+                document.getElementById('premium-heirloom-text').innerText = nextHeirloom.name;
+            } else {
+                hlNotice.classList.add('hidden');
+            }
+
+            const freeze = document.getElementById('freeze-overlay');
+            if (freeze) freeze.classList.add('freeze-active');
+
+            setTimeout(() => {
+                if (freeze) freeze.classList.remove('freeze-active');
+                if (content) {
+                    content.classList.remove('opacity-0');
+                    content.classList.add('opacity-100');
+                    content.style.pointerEvents = 'auto';
+                }
+                const pBtn = document.getElementById('premium-rinne-btn');
+                if (pBtn) {
+                    pBtn.disabled = false;
+                    pBtn.style.pointerEvents = 'auto';
+                }
+                startSakuraParticles();
+            }, 3000);
+        }
+
+        function startSakuraParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            const particles = Array.from({ length: 70 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 4 + 3,
+                speedY: Math.random() * 2 + 1,
+                speedX: Math.random() * 2 - 1,
+                type: Math.random() > 0.5 ? 'gold' : 'sakura',
+                angle: Math.random() * 360,
+                spin: (Math.random() - 0.5) * 3,
+                opacity: Math.random() * 0.7 + 0.3
+            }));
+
+            function loop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.angle * Math.PI) / 180);
+                    ctx.globalAlpha = p.opacity;
+                    if (p.type === 'gold') {
+                        ctx.fillStyle = '#D4AF37';
+                        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+                    } else {
+                        ctx.fillStyle = '#FFB7C5';
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, p.size, p.size * 0.5, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+                    p.y += p.speedY;
+                    p.x += p.speedX + Math.sin(p.angle * 0.04) * 0.5;
+                    p.angle += p.spin;
+                    if (p.y > canvas.height + 20) {
+                        p.y = -20;
+                        p.x = Math.random() * canvas.width;
+                    }
+                });
+                animFrameId = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        window.resetGame = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            resetAllStateAndUI();
+            window.updateStartScreenUI();
+            if (startScreen) startScreen.classList.remove('hidden');
+        };
+
+        window.openHistory = async function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            historyScreen.classList.remove('hidden');
+            const hList = document.getElementById('history-list');
+            const hLoading = document.getElementById('history-loading');
+            hList.classList.add('hidden');
+            hLoading.classList.remove('hidden');
+
+            let records = [];
+            if (typeof window.__fetchPastLives === 'function') {
+                try { records = await window.__fetchPastLives(); } catch (e) {}
+            }
+            if (!records || records.length === 0) {
+                try { records = JSON.parse(localStorage.getItem('sengoku_past_lives') || '[]'); } catch (e) {}
+            }
+
+            hLoading.classList.add('hidden');
+            hList.classList.remove('hidden');
+            hList.innerHTML = '';
+
+            if (records.length === 0) {
+                hList.innerHTML = '<div class="text-center text-gray-500 mt-10 text-xs">魂の記録はまだ刻まれておりません。</div>';
+                return;
+            }
+
+            records.forEach(item => {
+                const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleDateString('ja-JP') : '';
+                const card = document.createElement('div');
+                card.className = 'bg-[#181513] border border-[#3A322A] p-3 rounded-sm relative shadow';
+                const ojBadge = item.age >= 60 ? '<span class="absolute top-2 right-2 text-[10px] bg-yellow-800 text-yellow-100 px-1.5 py-0.5 rounded-sm border border-yellow-600 font-bold">大往生</span>' : '';
+
+                card.innerHTML = `
+                    ${ojBadge}
+                    <div class="text-[10px] text-gray-500 mb-1">${dateStr}</div>
+                    <div class="text-sm font-bold text-gold mb-1">${item.title || '名もなき武者'}</div>
+                    <div class="flex items-baseline gap-3 text-xs text-gray-300 mb-2">
+                        <span>享年 <strong class="text-lg text-blood">${item.age}</strong> 歳</span>
+                        <span class="text-gray-400">[${item.faction || '浪人'}] ${item.className}</span>
+                    </div>
+                    <div class="text-xs text-gray-400 bg-black/60 p-2 rounded-sm border border-gray-800 leading-relaxed">
+                        死因: ${item.reason}
+                    </div>
+                `;
+                hList.appendChild(card);
+            });
+        };
+
+        window.closeHistory = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            historyScreen.classList.add('hidden');
+        };
+
+        function bindButton(id, handler) {
+            const btn = document.getElementById(id);
+            if (!btn) return;
+            btn.onclick = handler;
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                handler(e);
+            }, { passive: false });
+        }
+
+        function initApp() {
+            cacheElements();
+            window.updateStartScreenUI();
+
+            bindButton('start-btn', window.startGame);
+            bindButton('advance-btn', window.manualAdvance);
+            bindButton('history-btn', window.openHistory);
+            bindButton('close-history-btn', window.closeHistory);
+            bindButton('rinne-btn', window.resetGame);
+            bindButton('premium-rinne-btn', window.resetGame);
+
+            bindButton('market-toggle-btn', toggleMarket);
+            bindButton('buy-rice-btn', buyRiceAction);
+            bindButton('sell-rice-btn', sellRiceAction);
+
+            // リセット機能のバインド
+            bindButton('reset-data-btn', () => { if(resetConfirmScreen) resetConfirmScreen.classList.remove('hidden'); });
+            bindButton('cancel-reset-btn', () => { if(resetConfirmScreen) resetConfirmScreen.classList.add('hidden'); });
+            bindButton('execute-reset-btn', () => { 
+                if(resetConfirmScreen) resetConfirmScreen.classList.add('hidden'); 
+                window.resetAllData(); 
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+    })();
+    </script>
+
+    <!-- ================= Firebase連携 (安全フォールバック) ================= -->
+    <script type="module">
+        (async function() {
+            try {
+                const appId = typeof __app_id !== 'undefined' ? __app_id : 'sengoku-life-app';
+                const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+                let firebaseConfig = {};
+                try { firebaseConfig = JSON.parse(firebaseConfigStr); } catch (e) {}
+
+                if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) return;
+
+                const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js");
+                const { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js");
+                const { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDocs, deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js");
+
+                const app = initializeApp(firebaseConfig);
+                const auth = getAuth(app);
+                const db = getFirestore(app);
+
+                const initToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                try {
+                    if (initToken) await signInWithCustomToken(auth, initToken);
+                    else await signInAnonymously(auth);
+                } catch (authErr) {
+                    console.warn("Auth initialization fallback:", authErr);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        window.__currentUser = user;
+                        try {
+                            const countRef = doc(db, 'artifacts', appId, 'users', user.uid, 'stats', 'reincarnation');
+                            onSnapshot(countRef, (docSnap) => {
+                                if (docSnap.exists()) {
+                                    const data = docSnap.data();
+                                    if (typeof data.count === 'number') {
+                                        window.currentReincarnationCount = data.count;
+                                        window.activeHeirloom = data.nextHeirloom || null;
+                                        if (typeof window.updateStartScreenUI === 'function') {
+                                            window.updateStartScreenUI();
+                                        }
+                                    }
+                                }
+                            }, (err) => console.warn("Snapshot error:", err));
+                        } catch (snapErr) {
+                            console.warn("Firestore snapshot attach failed:", snapErr);
+                        }
+                    }
+                });
+
+                window.__saveDeathData = async (age, className, factionName, title, reason, finalState, newHeirloom) => {
+                    if (!window.__currentUser) return;
+                    const uid = window.__currentUser.uid;
+                    try {
+                        const countRef = doc(db, 'artifacts', appId, 'users', uid, 'stats', 'reincarnation');
+                        setDoc(countRef, { 
+                            count: window.currentReincarnationCount,
+                            nextHeirloom: newHeirloom
+                        }, { merge: true }).catch(() => {});
+
+                        const pastLivesRef = collection(db, 'artifacts', appId, 'users', uid, 'past_lives');
+                        addDoc(pastLivesRef, {
+                            age: age, className: className, faction: factionName, title: title, reason: reason, 
+                            valor: finalState.valor, karma: finalState.karma, 
+                            luck: finalState.luck, money: finalState.money,
+                            strategy: finalState.strategy, virtue: finalState.virtue,
+                            timestamp: Date.now()
+                        }).catch(() => {});
+                    } catch (e) {
+                        console.warn("Firebase save skipped:", e);
+                    }
+                };
+
+                window.__fetchPastLives = async () => {
+                    if (!window.__currentUser) return [];
+                    const pastLivesRef = collection(db, 'artifacts', appId, 'users', window.__currentUser.uid, 'past_lives');
+                    try {
+                        const snapshot = await getDocs(pastLivesRef);
+                        let lives = [];
+                        snapshot.forEach(d => lives.push({ id: d.id, ...d.data() }));
+                        lives.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                        return lives;
+                    } catch (e) {
+                        return [];
+                    }
+                };
+
+                // クラウド側のデータ完全初期化用関数
+                window.__resetCloudData = async () => {
+                    if (!window.__currentUser) return;
+                    const uid = window.__currentUser.uid;
+                    try {
+                        // 輪廻回数と家宝のみをリセット（図鑑には触れない）
+                        const countRef = doc(db, 'artifacts', appId, 'users', uid, 'stats', 'reincarnation');
+                        await setDoc(countRef, { 
+                            count: 0,
+                            nextHeirloom: null
+                        }, { merge: true });
+
+                    } catch (e) {
+                        console.warn("Firebase reset skipped:", e);
+                    }
+                };
+
+            } catch (initErr) {
+                console.warn("Firebase dynamic import skipped:", initErr);
+            }
+        })();
+    </script>
+</body>
+</html>
