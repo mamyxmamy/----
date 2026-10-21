@@ -176,20 +176,32 @@
             </div>
 
             <div class="w-full text-center my-2 space-y-2">
-                <div class="border-y border-[#3A322A] py-2 bg-black/45 rounded-sm">
-                    <span class="text-gray-400 text-xs font-bold block mb-0.5">輪廻の巡り</span>
-                    <div class="text-2xl font-black text-white"><span id="ui-reincarnations">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
+                <div class="border-y border-[#3A322A] py-2 bg-black/45 rounded-sm flex justify-around items-center">
+                    <div>
+                        <span class="text-gray-400 text-xs font-bold block mb-0.5">輪廻の巡り</span>
+                        <div class="text-2xl font-black text-white"><span id="ui-reincarnations">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
+                    </div>
+                    <div class="border-l border-[#3A322A] h-10"></div>
+                    <!-- ★NEW: 大往生実績と寿命上限の表示 -->
+                    <div>
+                        <span class="text-gold text-xs font-bold block mb-0.5">大往生の実績</span>
+                        <div class="text-xl font-black text-white"><span id="ui-great-deaths">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
+                    </div>
                 </div>
 
-                <!-- 天下の総輪廻数表示枠 -->
                 <div class="text-center mt-1 mb-2">
                     <span class="text-[10px] text-gray-500 tracking-widest">天下の総輪廻数</span>
                     <div class="text-sm font-bold text-gold"><span id="ui-global-reincarnations">---</span><span class="text-[10px] text-gray-500 font-normal ml-1">回</span></div>
                 </div>
 
+                <!-- ★NEW: 寿命上限の表示バー -->
+                <div class="bg-[#181512] border border-gray-800 rounded-sm py-1 mb-2">
+                    <span class="text-[10px] text-gray-400">現在の寿命限界: <span id="ui-max-age-limit" class="font-bold text-red-400">70</span> 歳 (老衰開始: <span id="ui-random-death-start" class="text-gray-300">60</span>歳)</span>
+                </div>
+
                 <!-- 家宝表示エリア -->
                 <div onclick="window.openHeirloomStorage()" class="bg-[#211C18] border border-gold/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#2A231D]">
-                    <span class="text-[11px] text-gold font-bold block mb-1.5 flex justify-between border-b border-gold/20 pb-1">
+                    <span class="text-[11px] text-gold font-bold mb-1.5 flex justify-between border-b border-gold/20 pb-1">
                         <span>【継承家宝】 <span class="text-gray-400 font-normal">(枠: <span id="hl-slots-count">0/1</span>)</span></span>
                         <span class="text-gray-500 font-normal hover:text-gold">変更 ▶</span>
                     </span>
@@ -200,7 +212,7 @@
                 
                 <!-- 持込道具エリア -->
                 <div onclick="window.openItemStorage()" class="bg-[#1A1821] border border-purple-900/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#23202C]">
-                    <span class="text-[11px] text-purple-300 font-bold block mb-1.5 flex justify-between border-b border-purple-900/40 pb-1">
+                    <span class="text-[11px] text-purple-300 font-bold mb-1.5 flex justify-between border-b border-purple-900/40 pb-1">
                         <span>【持込道具】 <span class="text-gray-400 font-normal">(1回使い切り)</span></span>
                         <span class="text-gray-500 font-normal hover:text-purple-300">変更 ▶</span>
                     </span>
@@ -211,7 +223,7 @@
             </div>
 
             <div class="w-full space-y-2 z-10">
-                <!-- ★NEW: 名前入力フォーム -->
+                <!-- 名前入力フォーム -->
                 <div class="w-full px-1 mb-2">
                     <input type="text" id="player-name-input" placeholder="御主の名（最大8文字）" maxlength="8" class="w-full bg-[#0D0B0A] border border-[#3A322A] text-white text-center py-2.5 rounded-sm focus:outline-none focus:border-gold transition-colors placeholder-gray-600 font-bold tracking-[0.2em] shadow-inner text-sm">
                 </div>
@@ -271,7 +283,6 @@
             <header class="shrink-0 bg-[#14110F] border-b border-[#3A322A] p-3 z-20 shadow-md transition-colors duration-300">
                 <div class="flex justify-between items-end mb-2.5">
                     <div>
-                        <!-- ★NEW: プレイヤー名の表示 -->
                         <div id="ui-player-name" class="text-[11px] text-gold font-bold mb-0.5 tracking-widest drop-shadow-md"></div>
                         <div class="flex items-center gap-1.5 mb-1">
                             <span id="ui-faction" class="text-[10px] font-bold px-2 py-0.5 rounded-sm border border-white/20 text-white bg-[#333] transition-colors duration-500">--</span>
@@ -340,7 +351,6 @@
             <p id="go-sub-title" class="text-[10px] text-gray-500 mb-2 tracking-widest">- 乱世の泡と消ゆ -</p>
 
             <div class="mb-3 w-full max-w-sm text-left border border-gray-800 p-3 bg-[#0D0B0A] shadow-2xl relative rounded-sm">
-                <!-- ★NEW: 死亡画面のプレイヤー名表示 -->
                 <div class="text-center mb-2 pb-2 border-b border-gray-800">
                     <span id="go-player-name" class="text-sm font-bold text-gray-300 tracking-[0.2em]"></span>
                 </div>
@@ -406,14 +416,12 @@
                 <h2 class="text-5xl sm:text-6xl font-black text-golden mb-2 tracking-widest anim-slide-up" style="animation-delay: 2.6s;">大往生</h2>
 
                 <div class="w-full max-w-sm border-y border-gold/70 py-3 px-4 mb-3 bg-black/80 anim-slide-up backdrop-blur-md" style="animation-delay: 3.2s;">
-                    
-                    <!-- ★NEW: 大往生画面のプレイヤー名表示 -->
                     <div class="text-center mb-2 pb-1.5 border-b border-gray-700">
                         <span id="premium-player-name" class="text-sm font-bold text-gray-200 tracking-[0.2em]"></span>
                     </div>
 
                     <p class="text-gold text-[11px] mb-1 font-bold tracking-widest" id="premium-title">【称号】</p>
-                    <p class="text-gray-400 text-[9px] mb-2">六十年の過酷なる乱世を完遂せし英傑</p>
+                    <p class="text-gray-400 text-[9px] mb-2">過酷なる乱世を完遂せし英傑</p>
 
                     <div class="flex justify-between items-end border-b border-gray-800 pb-2 mb-2">
                         <div class="text-left">
@@ -533,7 +541,7 @@
             <div class="flex-grow overflow-y-auto p-4 space-y-4 pb-8 text-gray-300 text-xs leading-relaxed">
                 <section>
                     <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 目的</h3>
-                    <p>過酷な戦国時代にランダムな身分で生まれ落ち、寿命（享年）を迎えるか、非業の死を遂げるまで生き抜くライフシミュレーションゲームです。「歳月を進める」ことで1年が経過し、様々なイベントが発生します。</p>
+                    <p>過酷な戦国時代にランダムな身分で生まれ落ち、寿命を迎えるか、非業の死を遂げるまで生き抜くライフシミュレーションゲームです。「歳月を進める」ことで1年が経過し、様々なイベントが発生します。</p>
                 </section>
                 <section>
                     <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 各種能力値</h3>
@@ -548,13 +556,13 @@
                 <section>
                     <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 引き継ぎ要素とロスト</h3>
                     <ul class="list-disc pl-4 space-y-1">
-                        <li><span class="text-gold font-bold">家宝</span>: 特定の条件を満たして死亡すると「家宝」を獲得します。家宝蔵で装備することで初期ステータスボーナスを得ますが、<span class="text-red-400 font-bold">大往生（60歳到達）できずに死亡すると、装備していた家宝は戦火に消え、完全にロスト（喪失）します。</span></li>
-                        <li><span class="text-purple-400 font-bold">冥銭・道具</span>: 生き抜いた年数や獲得した能力値に応じて、死後に「冥銭」を獲得します。冥府の商人で「持込道具」と交換し、1回使い切りの強力な効果を得られます。</li>
+                        <li><span class="text-gold font-bold">家宝</span>: 特定の条件を満たして死亡すると獲得します。家宝蔵で装備することで初期ステータスボーナスを得ますが、<span class="text-red-400 font-bold">大往生（60歳到達）できずに死亡すると完全にロスト（喪失）します。</span></li>
+                        <li><span class="text-purple-400 font-bold">冥銭・道具</span>: 生き抜いた年数や能力値に応じて死後に獲得します。冥府の商人で「持込道具」と交換し、1回使い切りの強力な効果を得られます。</li>
                     </ul>
                 </section>
                 <section>
-                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 大往生（プレミアムエンド）</h3>
-                    <p>享年60歳まで生き延びると、「大往生」となり特別な結末を迎えます。過酷な世界ですが、知恵と運を駆使して長寿を目指してください。</p>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 大往生と寿命の超越</h3>
+                    <p>享年60歳まで生き延びると、「大往生」となり特別な結末を迎えます。さらに<span class="text-gold font-bold">大往生を10回達成するごとに、老衰が始まる年齢と絶対寿命の限界が「5歳」ずつ延長され、より長く生きられるようになります。</span></p>
                 </section>
             </div>
         </div>
@@ -564,6 +572,8 @@
     <script>
     (function() {
         window.currentReincarnationCount = 0;
+        // ★NEW: 大往生回数をカウントする変数
+        window.greatDeathCount = 0;
         window.unlockedHeirlooms = [];
         window.activeHeirlooms = [];
         window.unlockedDeaths = [];
@@ -589,6 +599,7 @@
         function saveMetaProgress() {
             try {
                 localStorage.setItem('sengoku_rinne_count', window.currentReincarnationCount);
+                localStorage.setItem('sengoku_great_death_count', window.greatDeathCount); // ★NEW: 大往生回数の保存
                 localStorage.setItem('sengoku_unlocked_heirlooms', JSON.stringify(window.unlockedHeirlooms));
                 localStorage.setItem('sengoku_equipped_heirlooms', JSON.stringify(window.activeHeirlooms));
                 localStorage.setItem('sengoku_unlocked_deaths', JSON.stringify(window.unlockedDeaths));
@@ -602,6 +613,10 @@
         try {
             const savedCount = localStorage.getItem('sengoku_rinne_count');
             if (savedCount) window.currentReincarnationCount = parseInt(savedCount, 10) || 0;
+
+            // ★NEW: 大往生回数の読み込み
+            const savedGD = localStorage.getItem('sengoku_great_death_count');
+            if (savedGD) window.greatDeathCount = parseInt(savedGD, 10) || 0;
 
             const savedHeirlooms = localStorage.getItem('sengoku_unlocked_heirlooms');
             if (savedHeirlooms) window.unlockedHeirlooms = JSON.parse(savedHeirlooms);
@@ -1234,6 +1249,19 @@
             
             if (uiMeisen) uiMeisen.innerText = window.meisen;
 
+            // ★NEW: 大往生回数と限界年齢のUI更新
+            const gdElem = document.getElementById('ui-great-deaths');
+            if (gdElem) gdElem.innerText = window.greatDeathCount || 0;
+
+            const bonusAge = Math.floor((window.greatDeathCount || 0) / 10) * 5;
+            const absoluteMaxAge = 70 + bonusAge;
+            const randomDeathStart = 60 + bonusAge;
+
+            const maxAgeElem = document.getElementById('ui-max-age-limit');
+            if (maxAgeElem) maxAgeElem.innerText = absoluteMaxAge;
+            const randomDeathElem = document.getElementById('ui-random-death-start');
+            if (randomDeathElem) randomDeathElem.innerText = randomDeathStart;
+
             const maxSlots = window.getMaxHeirloomSlots();
             const slotsCountEl = document.getElementById('hl-slots-count');
             if(slotsCountEl) slotsCountEl.innerText = `${window.activeHeirlooms.length}/${maxSlots}`;
@@ -1521,7 +1549,6 @@
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (isProcessing) return;
 
-            // ★NEW: 名前を保存
             const nameInputVal = document.getElementById('player-name-input').value.trim();
             const finalName = nameInputVal || '名無しの権兵衛';
             localStorage.setItem('sengoku_player_name', finalName);
@@ -1782,7 +1809,6 @@
 
         function updateUI() {
             if (!uiAge) return;
-            // ★NEW: UIにプレイヤー名を反映
             if (uiPlayerName) uiPlayerName.innerText = `【 ${state.playerName} 】`;
             
             uiAge.innerText = state.age; uiClass.innerText = state.classInfo ? state.classInfo.name : '--'; uiHealth.innerText = Math.max(0, state.health); uiMoney.innerText = state.money;
@@ -1818,11 +1844,23 @@
             requestAnimationFrame(() => { if (logContainer) logContainer.scrollTop = logContainer.scrollHeight; });
         }
 
+        // ★NEW: 寿命限界と老衰チェックの変更
         function checkSurvival() {
             if (!state.isAlive) return;
 
-            if (state.age >= 70) { state.health = 0; state.lastDamageEvent = '天寿'; state.deathCause = 'oldage'; addLog(`<span class="text-gold font-bold">過酷な戦乱を生き抜き、天寿を全うして静かに目を閉じた……。</span>`); }
-            else if (state.age >= 60 && Math.random() < (state.age - 59) * 0.08) { state.health = 0; state.lastDamageEvent = '老衰'; state.deathCause = 'oldage'; addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた老躯が限界を迎え、静かに眠りについた。</span>`); }
+            // 10回ごとに5歳寿命が延びるボーナス計算
+            const bonusAge = Math.floor((window.greatDeathCount || 0) / 10) * 5;
+            const absoluteMaxAge = 70 + bonusAge;
+            const randomDeathStart = 60 + bonusAge;
+
+            if (state.age >= absoluteMaxAge) { 
+                state.health = 0; state.lastDamageEvent = '天寿'; state.deathCause = 'oldage'; 
+                addLog(`<span class="text-gold font-bold">過酷な戦乱を生き抜き、真の天寿（${absoluteMaxAge}歳）を全うして静かに目を閉じた……。</span>`); 
+            }
+            else if (state.age >= randomDeathStart && Math.random() < (state.age - (randomDeathStart - 1)) * 0.08) { 
+                state.health = 0; state.lastDamageEvent = '老衰'; state.deathCause = 'oldage'; 
+                addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた老躯が限界を迎え、静かに眠りについた。</span>`); 
+            }
 
             if (state.health <= 0 && state.flags.migawari) {
                 state.health = 1; state.flags.migawari = false; state.deathCause = '';
@@ -1833,6 +1871,11 @@
             if (state.health <= 0) {
                 state.isAlive = false; stopAutoPlay(); isWaitingForChoice = false; isProcessing = false;
                 recordChronology("この世を去る"); localStorage.removeItem('sengoku_current_run');
+
+                // 死亡時の年齢が60以上なら大往生回数を+1する
+                if (state.age >= 60) {
+                    window.greatDeathCount = (window.greatDeathCount || 0) + 1;
+                }
 
                 const earnedMeisen = Math.floor((state.age + state.valor + state.karma + state.luck + state.strategy + state.virtue) / 10);
                 window.meisen += earnedMeisen;
@@ -1866,7 +1909,6 @@
 
                 try {
                     const past = JSON.parse(localStorage.getItem('sengoku_past_lives') || '[]');
-                    // ★NEW: pastLivesにも名前を保存
                     past.unshift({ playerName: state.playerName, age: state.age, className: state.classInfo ? state.classInfo.name : '不明', faction: state.faction ? state.faction.name : '不明', title: finalTitle, reason: reason, valor: state.valor, karma: state.karma, luck: state.luck, money: state.money, strategy: state.strategy, virtue: state.virtue, timestamp: Date.now(), chronology: state.chronology });
                     localStorage.setItem('sengoku_past_lives', JSON.stringify(past.slice(0, 30)));
                 } catch (e) {}
@@ -1890,7 +1932,6 @@
             else if (deathCause === 'plague') { screen.classList.add('death-bg-plague'); mainTitle.classList.add('death-text-plague'); mainTitle.innerText = '病死'; subTitle.innerText = '- 疫病に蝕まれ、志半ばで倒る -'; }
             else { screen.classList.add('death-bg-battle'); mainTitle.classList.add('death-text-battle'); mainTitle.innerText = '討死'; subTitle.innerText = '- 乱世の泡と消ゆ -'; }
 
-            // ★NEW: 死亡画面にプレイヤー名を反映
             const goNameEl = document.getElementById('go-player-name');
             if(goNameEl) goNameEl.innerText = state.playerName || '名無しの権兵衛';
 
@@ -1918,7 +1959,6 @@
             const screen = document.getElementById('premium-screen'); const content = document.getElementById('premium-content');
             screen.classList.remove('hidden'); content.classList.remove('opacity-100'); content.classList.add('opacity-0');
 
-            // ★NEW: プレミアム画面にプレイヤー名を反映
             const premNameEl = document.getElementById('premium-player-name');
             if(premNameEl) premNameEl.innerText = state.playerName || '名無しの権兵衛';
 
@@ -1955,8 +1995,9 @@
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (confirm("これまでの輪廻の記録と獲得した家宝蔵をすべて完全に消去します。\nよろしいですか？")) {
                 localStorage.removeItem('sengoku_rinne_count'); localStorage.removeItem('sengoku_heirloom'); localStorage.removeItem('sengoku_equipped_heirlooms'); localStorage.removeItem('sengoku_unlocked_heirlooms'); localStorage.removeItem('sengoku_unlocked_deaths'); localStorage.removeItem('sengoku_past_lives'); localStorage.removeItem('sengoku_current_run'); localStorage.removeItem('sengoku_meisen'); localStorage.removeItem('sengoku_inventory'); localStorage.removeItem('sengoku_active_consumable');
-                // プレイヤー名は消さないでおく（消したい場合はここに追加）
-                window.currentReincarnationCount = 0; window.unlockedHeirlooms = []; window.activeHeirlooms = []; window.unlockedDeaths = []; window.meisen = 0; window.inventory = {}; window.activeConsumable = null;
+                localStorage.removeItem('sengoku_great_death_count'); // 大往生回数もリセット
+                
+                window.currentReincarnationCount = 0; window.greatDeathCount = 0; window.unlockedHeirlooms = []; window.activeHeirlooms = []; window.unlockedDeaths = []; window.meisen = 0; window.inventory = {}; window.activeConsumable = null;
                 window.updateStartScreenUI(); alert("すべての記録を初期化しました。");
             }
         };
@@ -1986,7 +2027,6 @@
                     chronoHtml += '</div>';
                 }
                 
-                // ★NEW: 回想にもプレイヤー名を表示するように変更
                 const dispName = item.playerName || '名無し';
                 
                 card.innerHTML = `
@@ -2017,7 +2057,6 @@
 
         function initApp() { 
             cacheElements(); 
-            // ★NEW: 起動時に保存された名前を復元
             const savedName = localStorage.getItem('sengoku_player_name');
             if (savedName && playerNameInput) {
                 playerNameInput.value = savedName;
@@ -2084,7 +2123,6 @@
                     const countRef = db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('stats').doc('reincarnation');
                     await countRef.set({ count: window.currentReincarnationCount, equippedHeirlooms: window.activeHeirlooms }, { merge: true });
 
-                    // ★NEW: オンラインデータベース（Firebase）にもプレイヤー名を保存
                     const pastLivesRef = db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('past_lives');
                     await pastLivesRef.add({ playerName: finalState.playerName || '名無し', age: age, className: className, faction: factionName, title: title, reason: reason, valor: finalState.valor, karma: finalState.karma, luck: finalState.luck, money: finalState.money, strategy: finalState.strategy, virtue: finalState.virtue, timestamp: Date.now(), chronology: finalState.chronology });
 
