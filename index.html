@@ -371,8 +371,9 @@
                 <button type="button" onclick="window.closeEncyclopedia(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
             <div class="flex border-b border-[#3A322A] bg-[#1A1613] shrink-0">
-                <button type="button" onclick="window.switchEncycTab('heirloom')" id="tab-heirloom" class="flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors">お宝図鑑</button>
-                <button type="button" onclick="window.switchEncycTab('death')" id="tab-death" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">死因図鑑</button>
+                <button type="button" onclick="window.switchEncycTab('heirloom')" id="tab-heirloom" class="flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors">お宝</button>
+                <button type="button" onclick="window.switchEncycTab('title')" id="tab-title" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">二つ名</button>
+                <button type="button" onclick="window.switchEncycTab('death')" id="tab-death" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">死因</button>
             </div>
             <div id="encyc-content" class="flex-grow overflow-y-auto p-4 pb-8 space-y-3"></div>
         </div>
@@ -422,7 +423,7 @@
             <div id="rank-content" class="flex-grow overflow-y-auto p-4 pb-8 bg-[#090807]"></div>
         </div>
 
-        <!-- 作者応援・投げ銭モーダル（OFUSE削除版） -->
+        <!-- 作者応援・投げ銭モーダル -->
         <div id="support-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-gray-800 bg-[#111] flex justify-between items-center shrink-0">
                 <h2 class="text-base font-bold text-white tracking-widest">作者録・支援</h2>
@@ -451,6 +452,7 @@
         window.unlockedHeirlooms = [];
         window.activeHeirlooms = [];
         window.unlockedDeaths = [];
+        window.unlockedTitles = []; // 追加：称号の保存用
         
         window.meisen = 0;
         window.inventory = {}; 
@@ -477,6 +479,7 @@
                 localStorage.setItem('sengoku_unlocked_heirlooms', JSON.stringify(window.unlockedHeirlooms));
                 localStorage.setItem('sengoku_equipped_heirlooms', JSON.stringify(window.activeHeirlooms));
                 localStorage.setItem('sengoku_unlocked_deaths', JSON.stringify(window.unlockedDeaths));
+                localStorage.setItem('sengoku_unlocked_titles', JSON.stringify(window.unlockedTitles)); // 追加：称号セーブ
                 localStorage.setItem('sengoku_meisen', window.meisen);
                 localStorage.setItem('sengoku_inventory', JSON.stringify(window.inventory));
                 if (window.activeConsumable) localStorage.setItem('sengoku_active_consumable', JSON.stringify(window.activeConsumable));
@@ -497,6 +500,8 @@
             if (window.activeHeirlooms.length > maxSlots) window.activeHeirlooms = window.activeHeirlooms.slice(0, maxSlots);
             const savedDeaths = localStorage.getItem('sengoku_unlocked_deaths');
             if (savedDeaths) window.unlockedDeaths = JSON.parse(savedDeaths);
+            const savedTitles = localStorage.getItem('sengoku_unlocked_titles');
+            if (savedTitles) window.unlockedTitles = JSON.parse(savedTitles); // 追加：称号ロード
             const savedMeisen = localStorage.getItem('sengoku_meisen');
             if (savedMeisen) window.meisen = parseInt(savedMeisen, 10) || 0;
             const savedInv = localStorage.getItem('sengoku_inventory');
@@ -571,6 +576,54 @@
             { id: 'battle', name: '討死', hint: '戦場で名誉ある、あるいは無残な最期を遂げる。' }, { id: 'starvation', name: '餓死', hint: '極限の飢えに苦しみ、泥を啜って命を落とす。' },
             { id: 'execution', name: '斬首・処刑', hint: '権力者の怒りを買うか、捕縛されて首を刎ねられる。' }, { id: 'hunted', name: '野垂死', hint: '落武者狩りなどに遭い、路傍で息絶える。' },
             { id: 'plague', name: '病死', hint: '恐ろしい病魔に蝕まれ、病床で果てる。' }, { id: 'oldage', name: '大往生・老衰', hint: '天寿を全うし、畳の上で穏やかに生涯を閉じる。' }
+        ];
+
+        const TITLES_DB = [
+            { name: "伝説の素寒貧", hint: "持たざる者として大往生を遂げる" },
+            { name: "不老不死の化身", hint: "百の歳を越える" },
+            { name: "伝説の仙人", hint: "九十の歳を越える" },
+            { name: "生き字引の翁", hint: "八十の歳を越える" },
+            { name: "智勇兼備の神将", hint: "武功と知略の頂に立つ(各150)" },
+            { name: "天下無双の軍神", hint: "武功の頂に立つ(150)" },
+            { name: "神算鬼謀の伏龍", hint: "知略の頂に立つ(150)" },
+            { name: "現人神の如き菩薩", hint: "人徳の頂に立つ(150)" },
+            { name: "極悪非道の修羅", hint: "悪逆の頂に立つ(150)" },
+            { name: "日ノ本を買い占めし者", hint: "途方もない富を築く(5000文)" },
+            { name: "天に愛されし御子", hint: "究極の強運を持つ(運100)" },
+            { name: "天下の仁君", hint: "人徳ある大名となる" },
+            { name: "血塗られた覇王", hint: "悪逆なる大名となる" },
+            { name: "天下の覇者", hint: "大名の座に君臨する" },
+            { name: "闇夜の死神", hint: "武功高き忍者となる" },
+            { name: "幻術の影", hint: "知略高き忍者となる" },
+            { name: "影を統べる者", hint: "忍者の道を極める" },
+            { name: "堕ちた破戒僧", hint: "悪逆なる僧侶となる" },
+            { name: "生き仏", hint: "人徳高き僧侶となる" },
+            { name: "高名なる僧侶", hint: "僧侶の道を極める" },
+            { name: "天下の豪商", hint: "豪商として名を馳せる" },
+            { name: "死の商人", hint: "悪逆なる商人となる" },
+            { name: "名物商人", hint: "商人の道を歩む" },
+            { name: "天下無双の剣豪", hint: "武功高き浪人となる" },
+            { name: "血に飢えた辻斬り", hint: "悪逆なる浪人となる" },
+            { name: "流浪の剣客", hint: "浪人の道を歩む" },
+            { name: "伝説の大盗賊", hint: "富を築いた野盗となる" },
+            { name: "山河の凶魁", hint: "野盗の道を歩む" },
+            { name: "成金の大地主", hint: "富を築いた農民となる" },
+            { name: "暗躍する黒幕", hint: "知略高き公家となる" },
+            { name: "天下の名将", hint: "武功と知略に優れる(各100)" },
+            { name: "一騎当千の剛将", hint: "武功に優れる(100)" },
+            { name: "稀代の知将", hint: "知略に優れる(100)" },
+            { name: "徳高き聖将", hint: "人徳に優れる(100)" },
+            { name: "乱世の梟雄", hint: "悪逆に優れる(100)" },
+            { name: "富国豪商", hint: "大いなる富を築く(2000文)" },
+            { name: "豪運の持ち主", hint: "強運に恵まれる(80)" },
+            { name: "第六天魔王", hint: "武と悪逆を兼ね備える(武80/悪60)" },
+            { name: "無双の剛槍", hint: "武功を示す(70)" },
+            { name: "王佐の才", hint: "知略を示す(70)" },
+            { name: "慈愛の士", hint: "人徳を示す(70)" },
+            { name: "冷酷なる野心家", hint: "悪逆を示す(70)" },
+            { name: "大往生の傑物", hint: "七十の歳を越える" },
+            { name: "戦乱を生き抜きし者", hint: "六十の歳を越える" },
+            { name: "名もなき草奔", hint: "戦国の世に生きる" }
         ];
 
         const WIFE_NAMES = ['千代', 'まつ', '寧々', 'お市', '濃姫', '小松', '妙玖', '早川殿', '甲斐姫', 'お田鶴'];
@@ -1258,63 +1311,50 @@
 
         window.switchEncycTab = function(tabName) {
             const tabH = document.getElementById('tab-heirloom');
+            const tabT = document.getElementById('tab-title');
             const tabD = document.getElementById('tab-death');
             const content = document.getElementById('encyc-content');
             
+            tabH.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+            tabT.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+            tabD.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+
             if(tabName === 'heirloom') {
                 tabH.className = "flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors";
-                tabD.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
-                
                 let html = '<div class="text-[10px] text-gray-400 mb-2">※未取得の家宝はヒントのみ表示されます</div>';
                 HEIRLOOMS_DB.forEach(hl => {
                     const isUnlocked = window.unlockedHeirlooms.some(u => u.id === hl.id);
                     if(isUnlocked) {
                         const actual = window.unlockedHeirlooms.find(u => u.id === hl.id) || hl;
-                        html += `
-                        <div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md">
-                            <div class="w-10 h-10 bg-gold/20 border border-gold flex items-center justify-center rounded text-lg flex-shrink-0">✨</div>
-                            <div>
-                                <div class="font-bold text-gold text-sm">${actual.name || hl.name}</div>
-                                <div class="text-xs text-gray-300 mt-0.5">${actual.desc || '取得済み'}</div>
-                            </div>
-                        </div>`;
+                        html += `<div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md"><div class="w-10 h-10 bg-gold/20 border border-gold flex items-center justify-center rounded text-lg flex-shrink-0">✨</div><div><div class="font-bold text-gold text-sm">${actual.name || hl.name}</div><div class="text-xs text-gray-300 mt-0.5">${actual.desc || '取得済み'}</div></div></div>`;
                     } else {
-                        html += `
-                        <div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60">
-                            <div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-lg flex-shrink-0">？</div>
-                            <div>
-                                <div class="font-bold text-gray-500 text-sm">？？？</div>
-                                <div class="text-[10px] text-gray-600 mt-0.5">【取得条件】 ${hl.hint}</div>
-                            </div>
-                        </div>`;
+                        html += `<div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60"><div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-lg flex-shrink-0">？</div><div><div class="font-bold text-gray-500 text-sm">？？？</div><div class="text-[10px] text-gray-600 mt-0.5">【取得条件】 ${hl.hint}</div></div></div>`;
                     }
                 });
                 content.innerHTML = html;
+
+            } else if (tabName === 'title') {
+                tabT.className = "flex-1 py-3 text-xs font-bold text-blue-400 border-b-2 border-blue-400 transition-colors";
+                let html = '<div class="text-[10px] text-gray-400 mb-2">※これまでの輪廻で獲得した称号（全45種）が記録されます</div>';
+                TITLES_DB.forEach(t => {
+                    const isUnlocked = window.unlockedTitles && window.unlockedTitles.includes(t.name);
+                    if(isUnlocked) {
+                        html += `<div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md"><div class="w-10 h-10 bg-blue-900/30 border border-blue-800 flex items-center justify-center rounded text-blue-400 font-bold text-sm flex-shrink-0">銘</div><div><div class="font-bold text-blue-300 text-sm">${t.name}</div><div class="text-xs text-gray-300 mt-0.5">取得済み</div></div></div>`;
+                    } else {
+                        html += `<div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60"><div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-sm font-bold flex-shrink-0">？</div><div><div class="font-bold text-gray-500 text-sm">未収得の称号</div><div class="text-[10px] text-gray-600 mt-0.5">【ヒント】 ${t.hint}</div></div></div>`;
+                    }
+                });
+                content.innerHTML = html;
+
             } else {
-                tabH.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
                 tabD.className = "flex-1 py-3 text-xs font-bold text-red-500 border-b-2 border-red-500 transition-colors";
-                
                 let html = '<div class="text-[10px] text-gray-400 mb-2">※これまで迎えた最期が記録されます</div>';
                 DEATH_CAUSES_DB.forEach(dc => {
                     const isUnlocked = window.unlockedDeaths.includes(dc.id);
                     if(isUnlocked) {
-                        html += `
-                        <div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md">
-                            <div class="w-10 h-10 bg-red-900/30 border border-red-800 flex items-center justify-center rounded text-lg flex-shrink-0">💀</div>
-                            <div>
-                                <div class="font-bold text-red-400 text-sm">${dc.name}</div>
-                                <div class="text-xs text-gray-300 mt-0.5">${dc.hint}</div>
-                            </div>
-                        </div>`;
+                        html += `<div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md"><div class="w-10 h-10 bg-red-900/30 border border-red-800 flex items-center justify-center rounded text-lg flex-shrink-0">💀</div><div><div class="font-bold text-red-400 text-sm">${dc.name}</div><div class="text-xs text-gray-300 mt-0.5">${dc.hint}</div></div></div>`;
                     } else {
-                        html += `
-                        <div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60">
-                            <div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-lg flex-shrink-0">？</div>
-                            <div>
-                                <div class="font-bold text-gray-500 text-sm">未到達の死</div>
-                                <div class="text-[10px] text-gray-600 mt-0.5">まだこの結末を迎えていない</div>
-                            </div>
-                        </div>`;
+                        html += `<div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60"><div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-lg flex-shrink-0">？</div><div><div class="font-bold text-gray-500 text-sm">未到達の死</div><div class="text-[10px] text-gray-600 mt-0.5">まだこの結末を迎えていない</div></div></div>`;
                     }
                 });
                 content.innerHTML = html;
@@ -1835,7 +1875,7 @@
             if (state.deathCause !== 'oldage' && state.flags.autoHeal) {
                 if (state.health <= 30 && state.health > 0) {
                     state.health += state.flags.autoHeal;
-                    addLog(`<span class="text-green-400 font-bold">【秘伝の傷薬】体力が危険域に達したため、持参した傷薬を飲み体力を ${state.flags.autoHeal} 回復した！</span>`);
+                    addLog(`<span class="text-green-400 font-bold">【秘伝の傷薬】体력이危険域に達したため、持参した傷薬を飲み体力を ${state.flags.autoHeal} 回復した！</span>`);
                     state.flags.autoHeal = 0;
                     updateUI();
                 } else if (state.health <= 0) {
@@ -1888,6 +1928,11 @@
                     const exists = window.unlockedHeirlooms.find(h => h.id === nextHeirloom.id);
                     if (!exists) window.unlockedHeirlooms.push(nextHeirloom);
                 }
+                
+                // 追加：称号の保存
+                if (!window.unlockedTitles) window.unlockedTitles = [];
+                if (!window.unlockedTitles.includes(finalTitle)) window.unlockedTitles.push(finalTitle);
+
                 saveMetaProgress();
 
                 try {
@@ -1980,10 +2025,10 @@
         window.resetSaveData = function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (confirm("これまでの輪廻の記録と獲得した家宝蔵をすべて完全に消去します。\nよろしいですか？")) {
-                localStorage.removeItem('sengoku_rinne_count'); localStorage.removeItem('sengoku_heirloom'); localStorage.removeItem('sengoku_equipped_heirlooms'); localStorage.removeItem('sengoku_unlocked_heirlooms'); localStorage.removeItem('sengoku_unlocked_deaths'); localStorage.removeItem('sengoku_past_lives'); localStorage.removeItem('sengoku_current_run'); localStorage.removeItem('sengoku_meisen'); localStorage.removeItem('sengoku_inventory'); localStorage.removeItem('sengoku_active_consumable');
+                localStorage.removeItem('sengoku_rinne_count'); localStorage.removeItem('sengoku_heirloom'); localStorage.removeItem('sengoku_equipped_heirlooms'); localStorage.removeItem('sengoku_unlocked_heirlooms'); localStorage.removeItem('sengoku_unlocked_deaths'); localStorage.removeItem('sengoku_unlocked_titles'); localStorage.removeItem('sengoku_past_lives'); localStorage.removeItem('sengoku_current_run'); localStorage.removeItem('sengoku_meisen'); localStorage.removeItem('sengoku_inventory'); localStorage.removeItem('sengoku_active_consumable');
                 localStorage.removeItem('sengoku_great_death_count'); 
                 
-                window.currentReincarnationCount = 0; window.greatDeathCount = 0; window.unlockedHeirlooms = []; window.activeHeirlooms = []; window.unlockedDeaths = []; window.meisen = 0; window.inventory = {}; window.activeConsumable = null;
+                window.currentReincarnationCount = 0; window.greatDeathCount = 0; window.unlockedHeirlooms = []; window.activeHeirlooms = []; window.unlockedDeaths = []; window.unlockedTitles = []; window.meisen = 0; window.inventory = {}; window.activeConsumable = null;
                 window.updateStartScreenUI(); alert("すべての記録を初期化しました。");
             }
         };
@@ -2044,6 +2089,58 @@
         };
         window.closeHistory = function(e) { if (e) { e.preventDefault(); e.stopPropagation(); } historyScreen.classList.add('hidden'); };
 
+        window.switchEncycTab = function(tabName) {
+            const tabH = document.getElementById('tab-heirloom');
+            const tabT = document.getElementById('tab-title');
+            const tabD = document.getElementById('tab-death');
+            const content = document.getElementById('encyc-content');
+            
+            tabH.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+            tabT.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+            tabD.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors";
+
+            if(tabName === 'heirloom') {
+                tabH.className = "flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors";
+                let html = '<div class="text-[10px] text-gray-400 mb-2">※未取得の家宝はヒントのみ表示されます</div>';
+                HEIRLOOMS_DB.forEach(hl => {
+                    const isUnlocked = window.unlockedHeirlooms.some(u => u.id === hl.id);
+                    if(isUnlocked) {
+                        const actual = window.unlockedHeirlooms.find(u => u.id === hl.id) || hl;
+                        html += `<div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md"><div class="w-10 h-10 bg-gold/20 border border-gold flex items-center justify-center rounded text-lg flex-shrink-0">✨</div><div><div class="font-bold text-gold text-sm">${actual.name || hl.name}</div><div class="text-xs text-gray-300 mt-0.5">${actual.desc || '取得済み'}</div></div></div>`;
+                    } else {
+                        html += `<div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60"><div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-lg flex-shrink-0">？</div><div><div class="font-bold text-gray-500 text-sm">？？？</div><div class="text-[10px] text-gray-600 mt-0.5">【取得条件】 ${hl.hint}</div></div></div>`;
+                    }
+                });
+                content.innerHTML = html;
+
+            } else if (tabName === 'title') {
+                tabT.className = "flex-1 py-3 text-xs font-bold text-blue-400 border-b-2 border-blue-400 transition-colors";
+                let html = '<div class="text-[10px] text-gray-400 mb-2">※これまでの輪廻で獲得した称号（全45種）が記録されます</div>';
+                TITLES_DB.forEach(t => {
+                    const isUnlocked = window.unlockedTitles && window.unlockedTitles.includes(t.name);
+                    if(isUnlocked) {
+                        html += `<div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md"><div class="w-10 h-10 bg-blue-900/30 border border-blue-800 flex items-center justify-center rounded text-blue-400 font-bold text-sm flex-shrink-0">銘</div><div><div class="font-bold text-blue-300 text-sm">${t.name}</div><div class="text-xs text-gray-300 mt-0.5">取得済み</div></div></div>`;
+                    } else {
+                        html += `<div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60"><div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-sm font-bold flex-shrink-0">？</div><div><div class="font-bold text-gray-500 text-sm">未収得の称号</div><div class="text-[10px] text-gray-600 mt-0.5">【ヒント】 ${t.hint}</div></div></div>`;
+                    }
+                });
+                content.innerHTML = html;
+
+            } else {
+                tabD.className = "flex-1 py-3 text-xs font-bold text-red-500 border-b-2 border-red-500 transition-colors";
+                let html = '<div class="text-[10px] text-gray-400 mb-2">※これまで迎えた最期が記録されます</div>';
+                DEATH_CAUSES_DB.forEach(dc => {
+                    const isUnlocked = window.unlockedDeaths.includes(dc.id);
+                    if(isUnlocked) {
+                        html += `<div class="bg-[#181513] border border-[#3A322A] p-3 rounded-sm flex items-center gap-3 shadow-md"><div class="w-10 h-10 bg-red-900/30 border border-red-800 flex items-center justify-center rounded text-lg flex-shrink-0">💀</div><div><div class="font-bold text-red-400 text-sm">${dc.name}</div><div class="text-xs text-gray-300 mt-0.5">${dc.hint}</div></div></div>`;
+                    } else {
+                        html += `<div class="bg-[#12100E] border border-[#221E19] p-3 rounded-sm flex items-center gap-3 opacity-60"><div class="w-10 h-10 bg-gray-900 border border-gray-700 flex items-center justify-center rounded text-gray-600 text-lg flex-shrink-0">？</div><div><div class="font-bold text-gray-500 text-sm">未到達の死</div><div class="text-[10px] text-gray-600 mt-0.5">まだこの結末を迎えていない</div></div></div>`;
+                    }
+                });
+                content.innerHTML = html;
+            }
+        };
+
         function initApp() { 
             cacheElements(); 
             const savedName = localStorage.getItem('sengoku_player_name');
@@ -2057,7 +2154,7 @@
     })();
     </script>
 
-    <!-- ================= Firebase連携（スマホのローカルファイル対応版） ================= -->
+    <!-- ================= Firebase連携 ================= -->
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
