@@ -205,6 +205,10 @@
                         <span class="text-base leading-none">🏆</span> 天下の番付 <span class="text-[10px] font-normal text-yellow-600/80">(オンライン)</span> <span class="text-base leading-none">🏆</span>
                     </button>
                 </div>
+                
+                <button type="button" onclick="window.openSupport(event)" class="w-full bg-transparent text-gray-600 hover:text-gray-300 py-1.5 text-[10px] underline tracking-widest transition-colors">
+                    作者への応援・投げ銭はこちら
+                </button>
             </div>
         </div>
 
@@ -284,7 +288,7 @@
                 <div class="text-center mb-2 pb-2 border-b border-gray-800"><span id="go-player-name" class="text-sm font-bold text-gray-300 tracking-[0.2em]"></span></div>
                 <div class="flex justify-between items-end mb-1.5"><span class="text-xs text-gray-400">享年</span><span class="text-3xl font-black text-white"><span id="go-age">--</span><span class="text-sm font-normal text-gray-400 ml-1">歳</span></span></div>
                 <div class="flex justify-between items-end mb-1"><span class="text-xs text-gray-400">身分</span><span class="text-base font-bold text-white"><span id="go-faction" class="text-xs text-gray-400 mr-1.5"></span><span id="go-class">--</span></span></div>
-                <div class="flex justify-between items-end mb-2"><span class="text-xs text-gray-400">二つ名</span><span class="text-sm font-black text-gold" id="go-title">--</span></div>
+                <div class="flex justify-between items-end mb-2"><span class="text-xs text-gray-400">二つ名</span><span id="go-title" class="text-sm font-black text-gold">--</span></div>
                 <div class="bg-black/70 p-2 border border-gray-800 rounded-sm mb-2">
                     <div class="grid grid-cols-3 gap-y-1 text-[10px] text-gray-400 text-center">
                         <div>武功: <span id="go-valor" class="font-bold text-white">0</span></div><div>悪逆: <span id="go-karma" class="font-bold text-white">0</span></div><div>運: <span id="go-luck" class="font-bold text-white">0</span></div>
@@ -301,6 +305,10 @@
             <div id="new-heirloom-notice" class="hidden mb-3 w-full max-w-sm border border-gold/60 bg-yellow-950/20 p-1.5 text-center rounded-sm">
                 <span class="text-[10px] text-gold font-bold mb-0.5">【次世への家宝】を感得！</span><span id="new-heirloom-text" class="text-white text-[11px] font-bold"></span>
             </div>
+            
+            <button type="button" onclick="window.shareToX(false)" class="mb-3 action-button-main w-full max-w-sm bg-black border border-gray-600 text-white hover:bg-gray-900 py-2.5 text-sm font-bold tracking-widest rounded-sm shadow-md transition-all flex items-center justify-center gap-2 z-50">
+                𝕏 己の生き様を刻む
+            </button>
             <button type="button" onclick="window.resetGame(event)" class="action-button-main w-full max-w-sm border-2 border-red-700 bg-red-950/80 hover:bg-red-900 text-white py-3.5 text-base font-bold tracking-widest rounded-sm transition-all active:scale-95 shadow-[0_0_15px_rgba(139,0,0,0.6)] z-50">次なる輪廻へ</button>
         </div>
 
@@ -312,8 +320,8 @@
                 <h2 class="text-5xl sm:text-6xl font-black text-golden mb-2 tracking-widest anim-slide-up" style="animation-delay: 2.6s;">大往生</h2>
                 <div class="w-full max-w-sm border-y border-gold/70 py-3 px-4 mb-3 bg-black/80 anim-slide-up backdrop-blur-md" style="animation-delay: 3.2s;">
                     <div class="text-center mb-2 pb-1.5 border-b border-gray-700"><span id="premium-player-name" class="text-sm font-bold text-gray-200 tracking-[0.2em]"></span></div>
-                    <p class="text-gold text-[11px] mb-1 font-bold tracking-widest" id="premium-title">【称号】</p>
-                    <p class="text-gray-400 text-[9px] mb-2">過酷なる乱世を完遂せし英傑</p>
+                    <p class="text-gold text-[11px] mb-1 font-bold tracking-widest" id="premium-title-label">【称号】</p>
+                    <p class="text-gold text-[16px] mb-2 font-black" id="premium-title">称号名</p>
                     <div class="flex justify-between items-end border-b border-gray-800 pb-2 mb-2">
                         <div class="text-left"><span class="block text-[9px] text-gold">最終身分</span><span class="text-sm font-bold text-white"><span id="premium-faction" class="text-[10px] text-gray-400 mr-1"></span><span id="premium-class">--</span></span></div>
                         <div class="text-right"><span class="block text-[9px] text-gold">享年</span><span class="text-3xl font-black text-white"><span id="premium-age">--</span></span> <span class="text-[10px] text-gray-400">歳</span></div>
@@ -328,6 +336,10 @@
                 <div id="premium-heirloom-notice" class="hidden anim-slide-up mb-3 border border-gold bg-yellow-950/40 px-5 py-1.5 rounded-sm" style="animation-delay: 3.6s;">
                     <span class="text-[11px] text-gold font-bold block">名家宝を授与: <span id="premium-heirloom-text" class="text-white"></span></span>
                 </div>
+                
+                <button type="button" onclick="window.shareToX(true)" class="anim-slide-up mb-2 action-button-main w-full max-w-sm bg-black border border-gray-600 text-white hover:bg-gray-900 py-2.5 text-sm font-bold tracking-widest rounded-sm shadow-md transition-all flex items-center justify-center gap-2 z-30" style="animation-delay: 3.8s;">
+                    𝕏 己の生き様を刻む
+                </button>
                 <button type="button" onclick="window.resetGame(event)" class="action-button-main w-full max-w-sm anim-slide-up border-2 border-gold bg-black text-gold hover:bg-gold hover:text-black py-3 text-base font-bold tracking-widest rounded-sm shadow-[0_0_20px_rgba(197,160,89,0.5)] active:scale-95 transition-all z-30" style="animation-delay: 4.0s;">新時代へ輪廻する</button>
             </div>
         </div>
@@ -408,6 +420,30 @@
                 <button type="button" onclick="window.switchRankTab('valor')" id="tab-rank-valor" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">修羅の道</button>
             </div>
             <div id="rank-content" class="flex-grow overflow-y-auto p-4 pb-8 bg-[#090807]"></div>
+        </div>
+
+        <!-- 作者応援・投げ銭モーダル -->
+        <div id="support-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
+            <div class="p-3 border-b border-gray-800 bg-[#111] flex justify-between items-center shrink-0">
+                <h2 class="text-base font-bold text-white tracking-widest">作者録・支援</h2>
+                <button type="button" onclick="window.closeSupport(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-5 pb-8 flex flex-col items-center justify-center text-center">
+                <p class="text-gray-300 text-xs sm:text-sm leading-relaxed mb-6">
+                    『乱世の輪廻』を遊んでいただき<br>本当にありがとうございます！<br><br>
+                    本作を楽しんでいただけたなら、<br>一杯の酒（投げ銭）を奢っていただけると<br>次なるアップデートや新作開発の<br>大きな励みになります！
+                </p>
+                <div class="w-full max-w-xs space-y-3">
+                    <!-- ★ ここに頂いたURLを反映しました -->
+                    <a href="https://www.amazon.jp/hz/wishlist/ls/92FAL8ZA3MU2?ref_=wl_share" target="_blank" class="block w-full bg-yellow-600 hover:bg-yellow-500 text-white py-3 rounded font-bold text-sm shadow-md transition-colors">
+                        🎁 Amazonほしい物リストで支援
+                    </a>
+                    <a href="https://ofuse.me/" target="_blank" class="block w-full bg-pink-600 hover:bg-pink-500 text-white py-3 rounded font-bold text-sm shadow-md transition-colors">
+                        💌 OFUSEでメッセージを送る
+                    </a>
+                </div>
+                <p class="text-gray-500 text-[10px] mt-6">※上記ボタンを押すと外部サイトへ移動します。</p>
+            </div>
         </div>
 
     </div>
@@ -503,7 +539,6 @@
         ];
 
         const HEIRLOOMS_DB = [
-            // 武器
             { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" },
             { id: 'hl_dojigiri', name: "天下五剣・童子切安綱", hint: "武功極まり、長寿を全うした者の元へ" },
             { id: 'hl_mikazuki', name: "天下五剣・三日月宗近", hint: "高き武芸を誇る剣豪が手にする" },
@@ -511,18 +546,15 @@
             { id: 'hl_muramasa', name: "妖刀・千子村正", hint: "血塗られた悪逆の道を歩む者が振るう" },
             { id: 'hl_hasebe', name: "へし切長谷部", hint: "冷徹なる武功を挙げし者の愛刀" },
             { id: 'hl_hannya', name: "名刀・大般若長光", hint: "武功と富を併せ持つ者が手に入れる" },
-            // 防具・馬
             { id: 'hl_nanbandou', name: "南蛮胴具足", hint: "数多の死線を越え、長寿を全うせし者が得る" },
             { id: 'hl_kindami', name: "金陀美具足", hint: "富と健康を兼ね備えた者が纏う" },
             { id: 'hl_ageha', name: "陣羽織・揚羽蝶", hint: "人徳と知略に優れた名将が羽織る" },
             { id: 'hl_matsukaze', name: "名馬・松風", hint: "人望厚き将の元へ駆けつける名馬" },
-            // 書物
             { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
             { id: 'hl_gorin', name: "五輪書", hint: "武の道と兵法を極めし者が著す" },
             { id: 'hl_koyogunkan', name: "甲陽軍鑑", hint: "優れた軍略を遺せし者が著す" },
             { id: 'hl_sonshi', name: "孫子の古伝書", hint: "高い兵法と知略を備えし者が受け継ぐ" },
             { id: 'hl_bansenshukai', name: "万川集海", hint: "知略と運を兼ね備えた影の者が遺す" },
-            // 茶器・香木
             { id: 'hl_ranjyatai', name: "名香・蘭奢待", hint: "天下の万民から敬愛されし者が賜る" },
             { id: 'hl_hiragumo', name: "古天明平蜘蛛", hint: "非道と悪逆の果て、魔道を往く者が手にする" },
             { id: 'hl_tsukumo', name: "九十九髪茄子", hint: "途方もない巨万の富を築きし商人が落とす" },
@@ -530,7 +562,6 @@
             { id: 'hl_yohen', name: "曜変天目茶碗", hint: "並外れた強運を持つ者が偶然手に入れる" },
             { id: 'hl_hatsuhana', name: "初花肩衝", hint: "富と人望を集めた者が愛用する" },
             { id: 'hl_ido', name: "大井戸茶碗", hint: "清らかなる人徳を持つ者が手にする" },
-            // その他
             { id: 'hl_furo', name: "南蛮不老薬", hint: "還暦を越える長寿を成せし者が秘蔵する" },
             { id: 'hl_tenkyugi', name: "異国の天球儀", hint: "知略と強運で世界を見通す者が持つ" },
             { id: 'hl_cross', name: "黄金の十字架", hint: "人徳と運の導きにより授かる" },
@@ -1334,6 +1365,33 @@
             }
         };
 
+        window.openSupport = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('support-screen').classList.remove('hidden');
+        };
+        window.closeSupport = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('support-screen').classList.add('hidden');
+        };
+
+        window.shareToX = function(isPremium) {
+            const pName = state.playerName || "名無しの権兵衛";
+            const fName = state.faction ? state.faction.name : "浪人";
+            const cName = state.classInfo ? state.classInfo.name : "不明";
+            const age = state.age;
+            const title = document.getElementById(isPremium ? 'premium-title' : 'go-title').innerText.replace('【称号】\n', '').trim();
+            const deathText = isPremium ? "大往生" : document.getElementById('go-main-title').innerText;
+
+            let text = `【${pName}】は [${fName}] ${cName} として生き、享年${age}歳で [${deathText}] した。\n`;
+            text += `称号：${title}\n\n`;
+            text += `天下の番付に挑戦せよ！\n`;
+            text += `#乱世の輪廻\n`;
+            text += `https://mamyxmamy.github.io/----/`; // ← ※本番の際はここを正しいURLに書き換えてください
+
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        };
+
         function resetAllStateAndUI() {
             stopAutoPlay(); isWaitingForChoice = false; isProcessing = false; state.isAlive = false;
             if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
@@ -1350,6 +1408,7 @@
             if (document.getElementById('shop-screen')) document.getElementById('shop-screen').classList.add('hidden');
             if (document.getElementById('item-screen')) document.getElementById('item-screen').classList.add('hidden');
             if (document.getElementById('help-screen')) document.getElementById('help-screen').classList.add('hidden');
+            if (document.getElementById('support-screen')) document.getElementById('support-screen').classList.add('hidden');
             if (document.getElementById('lost-heirloom-notice')) document.getElementById('lost-heirloom-notice').classList.add('hidden');
             if (document.getElementById('ranking-screen')) document.getElementById('ranking-screen').classList.add('hidden');
 
@@ -1866,7 +1925,7 @@
             const premNameEl = document.getElementById('premium-player-name');
             if(premNameEl) premNameEl.innerText = state.playerName || '名無しの権兵衛';
 
-            document.getElementById('premium-title').innerText = `【称号: ${title}】`; document.getElementById('premium-age').innerText = state.age; document.getElementById('premium-class').innerText = state.classInfo ? state.classInfo.name : '--'; document.getElementById('premium-faction').innerText = state.faction ? `[${state.faction.name}]` : '';
+            document.getElementById('premium-title').innerText = title; document.getElementById('premium-age').innerText = state.age; document.getElementById('premium-class').innerText = state.classInfo ? state.classInfo.name : '--'; document.getElementById('premium-faction').innerText = state.faction ? `[${state.faction.name}]` : '';
             document.getElementById('premium-valor').innerText = state.valor; document.getElementById('premium-karma').innerText = state.karma; document.getElementById('premium-luck').innerText = state.luck; document.getElementById('premium-strategy').innerText = state.strategy; document.getElementById('premium-virtue').innerText = state.virtue; document.getElementById('premium-money').innerText = state.money;
             const premMeisen = document.getElementById('premium-meisen'); if (premMeisen) premMeisen.innerText = `+${earnedMeisen} 冥銭`;
             renderChronologyToList('premium-chronology-list');
