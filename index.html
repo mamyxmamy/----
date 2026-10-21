@@ -18,26 +18,16 @@
             --wafu-border: #3A322A;
         }
 
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Noto Serif JP', serif;
             background-color: var(--wafu-bg);
             color: var(--wafu-text);
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            -webkit-user-select: none;
+            margin: 0; padding: 0; overflow: hidden;
+            width: 100vw; height: 100vh; height: 100dvh;
+            display: flex; align-items: center; justify-content: center;
+            user-select: none; -webkit-user-select: none;
         }
 
         #app-container {
@@ -60,26 +50,17 @@
         .text-blood { color: #EF4444; text-shadow: 0 0 10px rgba(239,68,68,0.45); }
 
         .log-entry {
-            border-bottom: 1px dashed rgba(70,60,50,0.4);
-            padding-bottom: 0.75rem;
-            margin-bottom: 0.75rem;
-            color: #A9A297;
-            font-size: 0.85rem;
-            line-height: 1.65;
+            border-bottom: 1px dashed rgba(70,60,50,0.4); padding-bottom: 0.75rem; margin-bottom: 0.75rem;
+            color: #A9A297; font-size: 0.85rem; line-height: 1.65;
             animation: fadeInLog 0.22s ease-out forwards;
         }
-        @keyframes fadeInLog {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInLog { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
         .event-active-card {
             background: linear-gradient(180deg, rgba(38,32,27,0.95) 0%, rgba(20,17,14,0.98) 100%);
             border: 1px solid var(--wafu-gold);
             box-shadow: 0 4px 18px rgba(0,0,0,0.6), inset 0 0 15px rgba(197,160,89,0.1);
-            border-radius: 4px;
-            padding: 1rem 0.85rem;
-            margin: 0.8rem 0 1rem 0;
+            border-radius: 4px; padding: 1rem 0.85rem; margin: 0.8rem 0 1rem 0;
             animation: pulseEventCard 2.5s infinite alternate;
         }
         @keyframes pulseEventCard {
@@ -88,11 +69,8 @@
         }
 
         .choice-btn {
-            background: linear-gradient(180deg, #26211C 0%, #1A1613 100%);
-            border: 1px solid #4D4236;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-            touch-action: manipulation;
-            transition: all 0.12s ease;
+            background: linear-gradient(180deg, #26211C 0%, #1A1613 100%); border: 1px solid #4D4236;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); touch-action: manipulation; transition: all 0.12s ease;
         }
         .choice-btn:hover { border-color: var(--wafu-gold); background: linear-gradient(180deg, #332B24 0%, #221D19 100%); }
         .choice-btn:active { transform: scale(0.985); background: #4A1919; border-color: #8B0000; }
@@ -113,16 +91,8 @@
         .anim-slide-up { opacity: 0; transform: translateY(14px); animation: slideUp 0.75s ease-out forwards; }
         @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
 
-        .roulette-impact {
-            animation: impactPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            color: var(--wafu-gold-bright) !important;
-            text-shadow: 0 0 30px rgba(197,160,89,0.8);
-        }
-        @keyframes impactPop {
-            0% { transform: scale(3) rotate(-5deg); opacity: 0; filter: blur(8px); }
-            40% { transform: scale(0.9) rotate(2deg); opacity: 1; filter: blur(0px); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0px); }
-        }
+        .roulette-impact { animation: impactPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; color: var(--wafu-gold-bright) !important; text-shadow: 0 0 30px rgba(197,160,89,0.8); }
+        @keyframes impactPop { 0% { transform: scale(3) rotate(-5deg); opacity: 0; filter: blur(8px); } 40% { transform: scale(0.9) rotate(2deg); opacity: 1; filter: blur(0px); } 100% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0px); } }
 
         .death-bg-battle { background-color: rgba(20, 0, 0, 0.95); box-shadow: inset 0 0 100px rgba(150,0,0,0.5); }
         .death-bg-starvation { background-color: rgba(15, 15, 10, 0.95); filter: sepia(0.6) grayscale(0.5); }
@@ -138,24 +108,17 @@
         .death-text-oldage { color: #B0B0B0; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         .death-text-plague { color: #8FBC8F; text-shadow: 0 0 15px rgba(143,188,143,0.6); }
         
-        .chronology-list {
-            max-height: 120px;
-            overflow-y: auto;
-            border-top: 1px solid rgba(150, 150, 150, 0.2);
-            padding-top: 0.5rem;
-            margin-top: 0.5rem;
-        }
+        .chronology-list { max-height: 120px; overflow-y: auto; border-top: 1px solid rgba(150, 150, 150, 0.2); padding-top: 0.5rem; margin-top: 0.5rem; }
         .chronology-item { display: flex; gap: 0.5rem; margin-bottom: 0.25rem; font-size: 0.65rem; }
         .chronology-age { color: var(--wafu-gold); font-weight: bold; min-width: 2.2rem; flex-shrink: 0; }
         .chronology-text { color: #D1D5DB; line-height: 1.3; }
-        
         .fade-text { transition: opacity 1.5s ease-in-out; }
     </style>
 </head>
 <body>
-
     <div id="app-container" class="w-full h-full sm:h-[95vh] sm:max-h-[850px] max-w-md mx-auto relative flex flex-col sm:border sm:border-[#3A322A] sm:rounded-lg overflow-hidden">
-
+        
+        <!-- スタート画面 -->
         <div id="start-screen" class="absolute inset-0 z-30 bg-[#161311] flex flex-col px-5 py-5 overflow-y-auto pb-8 scroll-smooth">
             <div class="flex justify-between items-start w-full flex-shrink-0 z-20 mb-2">
                 <button type="button" onclick="window.resetSaveData(event)" class="bg-red-950/40 text-red-500 hover:text-white border border-red-900/50 hover:bg-red-900 px-2 py-1.5 rounded-sm shadow-md text-[10px] transition-colors">
@@ -261,15 +224,12 @@
         </div>
 
         <div id="intro-screen" class="hidden absolute inset-0 z-40 bg-black flex flex-col items-center justify-center p-6 cursor-pointer" onclick="window.finishIntro()">
-            <div id="intro-text" class="text-white text-[13px] sm:text-sm leading-[2.2] font-bold tracking-[0.15em] text-center space-y-5 fade-text opacity-0 w-full">
-            </div>
-            <div id="intro-tap-prompt" class="absolute bottom-10 text-gray-500 text-xs tracking-widest animate-pulse fade-text opacity-0">
-                画面をタップして進む
-            </div>
+            <div id="intro-text" class="text-white text-[13px] sm:text-sm leading-[2.2] font-bold tracking-[0.15em] text-center space-y-5 fade-text opacity-0 w-full"></div>
+            <div id="intro-tap-prompt" class="absolute bottom-10 text-gray-500 text-xs tracking-widest animate-pulse fade-text opacity-0">画面をタップして進む</div>
         </div>
 
+        <!-- ゲーム画面 -->
         <div id="game-screen" class="hidden h-full w-full flex flex-col relative z-10 overflow-hidden">
-            
             <header class="shrink-0 bg-[#14110F] border-b border-[#3A322A] p-3 z-20 shadow-md transition-colors duration-300">
                 <div class="flex justify-between items-end mb-2.5">
                     <div>
@@ -285,7 +245,6 @@
                         <div class="text-2xl font-black text-white"><span id="ui-age">15</span><span class="text-xs text-gray-400 font-normal ml-0.5">歳</span></div>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-2.5">
                     <div id="health-box" class="bg-[#201C18] p-2 text-center border border-[#3A322A] rounded-sm transition-colors">
                         <span class="block text-[11px] text-gray-400 font-bold">体力 <span id="ui-max-health" class="text-[9px] text-gray-600 font-normal">/ 150</span></span>
@@ -296,37 +255,19 @@
                         <span id="ui-money" class="text-xl font-bold text-gold">0</span><span class="text-[10px] text-gray-400 ml-0.5">文</span>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-5 gap-1 mt-2">
-                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm">
-                        <span class="block text-[9px] text-gray-500 font-bold mb-0.5">武功</span>
-                        <span id="ui-valor" class="text-[12px] font-bold text-red-200">0</span>
-                    </div>
-                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm">
-                        <span class="block text-[9px] text-gray-500 font-bold mb-0.5">悪逆</span>
-                        <span id="ui-karma" class="text-[12px] font-bold text-purple-200">0</span>
-                    </div>
-                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm">
-                        <span class="block text-[9px] text-gray-500 font-bold mb-0.5">知略</span>
-                        <span id="ui-strategy" class="text-[12px] font-bold text-blue-200">0</span>
-                    </div>
-                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm">
-                        <span class="block text-[9px] text-gray-500 font-bold mb-0.5">人徳</span>
-                        <span id="ui-virtue" class="text-[12px] font-bold text-green-200">0</span>
-                    </div>
-                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm">
-                        <span class="block text-[9px] text-gray-500 font-bold mb-0.5">運</span>
-                        <span id="ui-luck" class="text-[12px] font-bold text-yellow-200">0</span>
-                    </div>
+                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm"><span class="block text-[9px] text-gray-500 font-bold mb-0.5">武功</span><span id="ui-valor" class="text-[12px] font-bold text-red-200">0</span></div>
+                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm"><span class="block text-[9px] text-gray-500 font-bold mb-0.5">悪逆</span><span id="ui-karma" class="text-[12px] font-bold text-purple-200">0</span></div>
+                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm"><span class="block text-[9px] text-gray-500 font-bold mb-0.5">知略</span><span id="ui-strategy" class="text-[12px] font-bold text-blue-200">0</span></div>
+                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm"><span class="block text-[9px] text-gray-500 font-bold mb-0.5">人徳</span><span id="ui-virtue" class="text-[12px] font-bold text-green-200">0</span></div>
+                    <div class="bg-[#1A1613] p-1.5 text-center border border-[#3A322A] rounded-sm"><span class="block text-[9px] text-gray-500 font-bold mb-0.5">運</span><span id="ui-luck" class="text-[12px] font-bold text-yellow-200">0</span></div>
                 </div>
             </header>
 
-            <main id="log-container" class="flex-1 overflow-y-auto px-4 py-3 flex flex-col relative scroll-smooth overscroll-contain">
-            </main>
+            <main id="log-container" class="flex-1 overflow-y-auto px-4 py-3 flex flex-col relative scroll-smooth overscroll-contain"></main>
 
             <footer id="action-bar" class="shrink-0 bg-[#161311] border-t border-[#3A322A] p-3 shadow-[0_-8px_20px_rgba(0,0,0,0.85)] z-20">
                 <div id="choices-container" class="hidden flex-col gap-2 w-full max-h-[190px] overflow-y-auto pr-0.5"></div>
-                
                 <div id="advance-container" class="w-full">
                     <button id="advance-btn" type="button" onclick="window.manualAdvance(event)" class="action-button-main w-full bg-[#6B1717] hover:bg-[#8B0000] text-white py-3.5 px-4 text-base font-bold border border-[#8B0000] rounded-sm active:scale-98 transition-all tracking-widest shadow-md flex items-center justify-center">
                         <span id="advance-btn-text">歳 月 を 進 め る</span>
@@ -335,121 +276,63 @@
             </footer>
         </div>
 
+        <!-- 死亡画面群 -->
         <div id="gameover-screen" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center p-5 text-white text-center backdrop-blur-md overflow-y-auto pointer-events-auto transition-colors duration-700">
             <h2 id="go-main-title" class="text-5xl sm:text-6xl font-black mb-1 mt-2 tracking-[0.25em]">討死</h2>
             <p id="go-sub-title" class="text-[10px] text-gray-500 mb-2 tracking-widest">- 乱世の泡と消ゆ -</p>
-
             <div class="mb-3 w-full max-w-sm text-left border border-gray-800 p-3 bg-[#0D0B0A] shadow-2xl relative rounded-sm">
-                <div class="text-center mb-2 pb-2 border-b border-gray-800">
-                    <span id="go-player-name" class="text-sm font-bold text-gray-300 tracking-[0.2em]"></span>
-                </div>
-
-                <div class="flex justify-between items-end mb-1.5">
-                    <span class="text-xs text-gray-400">享年</span>
-                    <span class="text-3xl font-black text-white"><span id="go-age">--</span><span class="text-sm font-normal text-gray-400 ml-1">歳</span></span>
-                </div>
-                <div class="flex justify-between items-end mb-1">
-                    <span class="text-xs text-gray-400">身分</span>
-                    <span class="text-base font-bold text-white"><span id="go-faction" class="text-xs text-gray-400 mr-1.5"></span><span id="go-class">--</span></span>
-                </div>
-                <div class="flex justify-between items-end mb-2">
-                    <span class="text-xs text-gray-400">二つ名</span>
-                    <span class="text-sm font-black text-gold" id="go-title">--</span>
-                </div>
-
+                <div class="text-center mb-2 pb-2 border-b border-gray-800"><span id="go-player-name" class="text-sm font-bold text-gray-300 tracking-[0.2em]"></span></div>
+                <div class="flex justify-between items-end mb-1.5"><span class="text-xs text-gray-400">享年</span><span class="text-3xl font-black text-white"><span id="go-age">--</span><span class="text-sm font-normal text-gray-400 ml-1">歳</span></span></div>
+                <div class="flex justify-between items-end mb-1"><span class="text-xs text-gray-400">身分</span><span class="text-base font-bold text-white"><span id="go-faction" class="text-xs text-gray-400 mr-1.5"></span><span id="go-class">--</span></span></div>
+                <div class="flex justify-between items-end mb-2"><span class="text-xs text-gray-400">二つ名</span><span class="text-sm font-black text-gold" id="go-title">--</span></div>
                 <div class="bg-black/70 p-2 border border-gray-800 rounded-sm mb-2">
                     <div class="grid grid-cols-3 gap-y-1 text-[10px] text-gray-400 text-center">
-                        <div>武功: <span id="go-valor" class="font-bold text-white">0</span></div>
-                        <div>悪逆: <span id="go-karma" class="font-bold text-white">0</span></div>
-                        <div>運: <span id="go-luck" class="font-bold text-white">0</span></div>
-                        <div>知略: <span id="go-strategy" class="font-bold text-white">0</span></div>
-                        <div>人徳: <span id="go-virtue" class="font-bold text-white">0</span></div>
-                        <div>銭: <span id="go-money" class="font-bold text-gold">0</span></div>
+                        <div>武功: <span id="go-valor" class="font-bold text-white">0</span></div><div>悪逆: <span id="go-karma" class="font-bold text-white">0</span></div><div>運: <span id="go-luck" class="font-bold text-white">0</span></div>
+                        <div>知略: <span id="go-strategy" class="font-bold text-white">0</span></div><div>人徳: <span id="go-virtue" class="font-bold text-white">0</span></div><div>銭: <span id="go-money" class="font-bold text-gold">0</span></div>
                     </div>
                 </div>
-                
-                <div class="flex justify-between items-end border-t border-gray-800 pt-1.5 mt-2">
-                    <span class="text-[10px] text-gray-400">獲得冥銭</span>
-                    <span class="text-sm font-bold text-purple-300"><span id="go-meisen">+0</span></span>
-                </div>
-
+                <div class="flex justify-between items-end border-t border-gray-800 pt-1.5 mt-2"><span class="text-[10px] text-gray-400">獲得冥銭</span><span class="text-sm font-bold text-purple-300"><span id="go-meisen">+0</span></span></div>
                 <div class="chronology-list" id="go-chronology-list"></div>
             </div>
-
-            <div class="w-full max-w-sm mb-3">
-                <p id="go-reason" class="text-[11px] leading-relaxed text-gray-300 text-left border-l-2 border-red-900 pl-2.5 py-1"></p>
-            </div>
-
+            <div class="w-full max-w-sm mb-3"><p id="go-reason" class="text-[11px] leading-relaxed text-gray-300 text-left border-l-2 border-red-900 pl-2.5 py-1"></p></div>
             <div id="lost-heirloom-notice" class="hidden mb-3 w-full max-w-sm border border-red-800 bg-red-950/40 p-1.5 text-center rounded-sm shadow-md">
-                <span class="text-[10px] text-red-500 font-bold mb-0.5">【家宝喪失】無念…</span>
-                <span id="lost-heirloom-text" class="text-gray-300 text-[11px]"></span>
+                <span class="text-[10px] text-red-500 font-bold mb-0.5">【家宝喪失】無念…</span><span id="lost-heirloom-text" class="text-gray-300 text-[11px]"></span>
             </div>
-
             <div id="new-heirloom-notice" class="hidden mb-3 w-full max-w-sm border border-gold/60 bg-yellow-950/20 p-1.5 text-center rounded-sm">
-                <span class="text-[10px] text-gold font-bold mb-0.5">【次世への家宝】を感得！</span>
-                <span id="new-heirloom-text" class="text-white text-[11px] font-bold"></span>
+                <span class="text-[10px] text-gold font-bold mb-0.5">【次世への家宝】を感得！</span><span id="new-heirloom-text" class="text-white text-[11px] font-bold"></span>
             </div>
-
-            <button type="button" onclick="window.resetGame(event)" class="action-button-main w-full max-w-sm border-2 border-red-700 bg-red-950/80 hover:bg-red-900 text-white py-3.5 text-base font-bold tracking-widest rounded-sm transition-all active:scale-95 shadow-[0_0_15px_rgba(139,0,0,0.6)] z-50">
-                次なる輪廻へ
-            </button>
+            <button type="button" onclick="window.resetGame(event)" class="action-button-main w-full max-w-sm border-2 border-red-700 bg-red-950/80 hover:bg-red-900 text-white py-3.5 text-base font-bold tracking-widest rounded-sm transition-all active:scale-95 shadow-[0_0_15px_rgba(139,0,0,0.6)] z-50">次なる輪廻へ</button>
         </div>
 
         <div id="premium-screen" class="hidden absolute inset-0 z-50 premium-bg flex flex-col items-center justify-center text-center overflow-hidden pointer-events-auto">
             <canvas id="particle-canvas" class="absolute inset-0 z-0 pointer-events-none"></canvas>
             <div id="freeze-overlay" class="freeze-overlay"></div>
-
             <div id="premium-content" class="z-20 w-full px-6 opacity-0 flex flex-col items-center pointer-events-auto">
                 <p class="text-sm sm:text-base text-yellow-200 mb-2 font-bold tracking-[0.3em] anim-slide-up" style="animation-delay: 2.0s;">人生六十年、化天のうちを比ぶれば</p>
                 <h2 class="text-5xl sm:text-6xl font-black text-golden mb-2 tracking-widest anim-slide-up" style="animation-delay: 2.6s;">大往生</h2>
-
                 <div class="w-full max-w-sm border-y border-gold/70 py-3 px-4 mb-3 bg-black/80 anim-slide-up backdrop-blur-md" style="animation-delay: 3.2s;">
-                    
-                    <div class="text-center mb-2 pb-1.5 border-b border-gray-700">
-                        <span id="premium-player-name" class="text-sm font-bold text-gray-200 tracking-[0.2em]"></span>
-                    </div>
-
+                    <div class="text-center mb-2 pb-1.5 border-b border-gray-700"><span id="premium-player-name" class="text-sm font-bold text-gray-200 tracking-[0.2em]"></span></div>
                     <p class="text-gold text-[11px] mb-1 font-bold tracking-widest" id="premium-title">【称号】</p>
                     <p class="text-gray-400 text-[9px] mb-2">過酷なる乱世を完遂せし英傑</p>
-
                     <div class="flex justify-between items-end border-b border-gray-800 pb-2 mb-2">
-                        <div class="text-left">
-                            <span class="block text-[9px] text-gold">最終身分</span>
-                            <span class="text-sm font-bold text-white"><span id="premium-faction" class="text-[10px] text-gray-400 mr-1"></span><span id="premium-class">--</span></span>
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-[9px] text-gold">享年</span>
-                            <span class="text-3xl font-black text-white"><span id="premium-age">--</span></span> <span class="text-[10px] text-gray-400">歳</span>
-                        </div>
+                        <div class="text-left"><span class="block text-[9px] text-gold">最終身分</span><span class="text-sm font-bold text-white"><span id="premium-faction" class="text-[10px] text-gray-400 mr-1"></span><span id="premium-class">--</span></span></div>
+                        <div class="text-right"><span class="block text-[9px] text-gold">享年</span><span class="text-3xl font-black text-white"><span id="premium-age">--</span></span> <span class="text-[10px] text-gray-400">歳</span></div>
                     </div>
-
                     <div class="grid grid-cols-6 gap-1 text-center text-gray-400 text-[9px] mb-2">
-                        <div>武功<br><span id="premium-valor" class="text-white font-bold">0</span></div>
-                        <div>悪逆<br><span id="premium-karma" class="text-white font-bold">0</span></div>
-                        <div>知略<br><span id="premium-strategy" class="text-white font-bold">0</span></div>
-                        <div>人徳<br><span id="premium-virtue" class="text-white font-bold">0</span></div>
-                        <div>運<br><span id="premium-luck" class="text-white font-bold">0</span></div>
-                        <div>銭<br><span id="premium-money" class="text-gold font-bold">0</span></div>
+                        <div>武功<br><span id="premium-valor" class="text-white font-bold">0</span></div><div>悪逆<br><span id="premium-karma" class="text-white font-bold">0</span></div><div>知略<br><span id="premium-strategy" class="text-white font-bold">0</span></div>
+                        <div>人徳<br><span id="premium-virtue" class="text-white font-bold">0</span></div><div>運<br><span id="premium-luck" class="text-white font-bold">0</span></div><div>銭<br><span id="premium-money" class="text-gold font-bold">0</span></div>
                     </div>
-                    
-                    <div class="flex justify-between items-end border-t border-gray-800 pt-1.5 mt-2 text-left">
-                        <span class="text-[10px] text-gray-400">獲得冥銭</span>
-                        <span class="text-sm font-bold text-purple-300"><span id="premium-meisen">+0</span></span>
-                    </div>
-
+                    <div class="flex justify-between items-end border-t border-gray-800 pt-1.5 mt-2 text-left"><span class="text-[10px] text-gray-400">獲得冥銭</span><span class="text-sm font-bold text-purple-300"><span id="premium-meisen">+0</span></span></div>
                     <div class="chronology-list text-left" id="premium-chronology-list"></div>
                 </div>
-
                 <div id="premium-heirloom-notice" class="hidden anim-slide-up mb-3 border border-gold bg-yellow-950/40 px-5 py-1.5 rounded-sm" style="animation-delay: 3.6s;">
                     <span class="text-[11px] text-gold font-bold block">名家宝を授与: <span id="premium-heirloom-text" class="text-white"></span></span>
                 </div>
-
-                <button type="button" onclick="window.resetGame(event)" class="action-button-main w-full max-w-sm anim-slide-up border-2 border-gold bg-black text-gold hover:bg-gold hover:text-black py-3 text-base font-bold tracking-widest rounded-sm shadow-[0_0_20px_rgba(197,160,89,0.5)] active:scale-95 transition-all z-30" style="animation-delay: 4.0s;">
-                    新時代へ輪廻する
-                </button>
+                <button type="button" onclick="window.resetGame(event)" class="action-button-main w-full max-w-sm anim-slide-up border-2 border-gold bg-black text-gold hover:bg-gold hover:text-black py-3 text-base font-bold tracking-widest rounded-sm shadow-[0_0_20px_rgba(197,160,89,0.5)] active:scale-95 transition-all z-30" style="animation-delay: 4.0s;">新時代へ輪廻する</button>
             </div>
         </div>
 
+        <!-- モーダル群 -->
         <div id="history-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
                 <h2 class="text-base font-bold text-white tracking-widest">輪廻の回想</h2>
@@ -461,15 +344,11 @@
 
         <div id="heirloom-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
-                <div>
-                    <h2 class="text-base font-bold text-gold tracking-widest">家宝蔵</h2>
-                    <p class="text-[10px] text-gray-400 mt-1">次回の輪廻に持ち込む家宝を選んでください。</p>
-                </div>
+                <div><h2 class="text-base font-bold text-gold tracking-widest">家宝蔵</h2><p class="text-[10px] text-gray-400 mt-1">次回の輪廻に持ち込む家宝を選んでください。</p></div>
                 <button type="button" onclick="window.closeHeirloomStorage(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
             <div class="bg-[#1A1613] p-2 border-b border-[#3A322A] flex justify-between items-center">
-                <span class="text-xs text-gray-300">装備可能な枠数:</span>
-                <span class="text-sm font-bold text-gold" id="modal-slots-count">0/1</span>
+                <span class="text-xs text-gray-300">装備可能な枠数:</span><span class="text-sm font-bold text-gold" id="modal-slots-count">0/1</span>
             </div>
             <div id="heirloom-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
@@ -483,31 +362,23 @@
                 <button type="button" onclick="window.switchEncycTab('heirloom')" id="tab-heirloom" class="flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors">お宝図鑑</button>
                 <button type="button" onclick="window.switchEncycTab('death')" id="tab-death" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">死因図鑑</button>
             </div>
-            <div id="encyc-content" class="flex-grow overflow-y-auto p-4 pb-8 space-y-3">
-            </div>
+            <div id="encyc-content" class="flex-grow overflow-y-auto p-4 pb-8 space-y-3"></div>
         </div>
 
         <div id="shop-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
-                <div>
-                    <h2 class="text-base font-bold text-purple-400 tracking-widest">冥府の商人</h2>
-                    <p class="text-[10px] text-gray-400 mt-1">死して残るは業ばかり。冥銭と引き換えに道具を授けよう。</p>
-                </div>
+                <div><h2 class="text-base font-bold text-purple-400 tracking-widest">冥府の商人</h2><p class="text-[10px] text-gray-400 mt-1">死して残るは業ばかり。冥銭と引き換えに道具を授けよう。</p></div>
                 <button type="button" onclick="window.closeShop(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
             <div class="bg-[#181522] p-3 border-b border-[#2A1833] flex justify-between items-center shadow-md">
-                <span class="text-xs text-gray-300">所持冥銭:</span>
-                <span class="text-lg font-bold text-purple-300" id="shop-meisen">0</span>
+                <span class="text-xs text-gray-300">所持冥銭:</span><span class="text-lg font-bold text-purple-300" id="shop-meisen">0</span>
             </div>
             <div id="shop-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
         <div id="item-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
-                <div>
-                    <h2 class="text-base font-bold text-purple-400 tracking-widest">持込道具</h2>
-                    <p class="text-[10px] text-gray-400 mt-1">次回の輪廻に持ち込む道具（1回使い切り）を選んでください。</p>
-                </div>
+                <div><h2 class="text-base font-bold text-purple-400 tracking-widest">持込道具</h2><p class="text-[10px] text-gray-400 mt-1">次回の輪廻に持ち込む道具を選んでください。</p></div>
                 <button type="button" onclick="window.closeItemStorage(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
             <div id="item-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
@@ -515,39 +386,14 @@
 
         <div id="help-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-green-900/60 bg-[#111613] flex justify-between items-center shrink-0">
-                <div>
-                    <h2 class="text-base font-bold text-green-400 tracking-widest">遊戯指南</h2>
-                    <p class="text-[10px] text-gray-400 mt-1">この乱世を生き抜くための基礎知識。</p>
-                </div>
+                <div><h2 class="text-base font-bold text-green-400 tracking-widest">遊戯指南</h2><p class="text-[10px] text-gray-400 mt-1">この乱世を生き抜くための基礎知識。</p></div>
                 <button type="button" onclick="window.closeHelp(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
             <div class="flex-grow overflow-y-auto p-4 space-y-4 pb-8 text-gray-300 text-xs leading-relaxed">
-                <section>
-                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 目的</h3>
-                    <p>過酷な戦国時代にランダムな身分で生まれ落ち、寿命を迎えるか、非業の死を遂げるまで生き抜くライフシミュレーションゲームです。「歳月を進める」ことで1年が経過し、様々なイベントが発生します。</p>
-                </section>
-                <section>
-                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 各種能力値</h3>
-                    <ul class="list-disc pl-4 space-y-1">
-                        <li><span class="text-red-300 font-bold">武功</span>: 戦での強さ。高いと合戦や御前試合で有利になります。</li>
-                        <li><span class="text-purple-300 font-bold">悪逆</span>: 業の深さ。非道な選択肢（裏切り、略奪など）を選ぶと上がります。</li>
-                        <li><span class="text-blue-300 font-bold">知略</span>: 頭の良さ。策略で危機を回避したり、商売で得をしたりします。</li>
-                        <li><span class="text-green-300 font-bold">人徳</span>: 人望の厚さ。高いと人から助けられたり、名声を得やすくなります。</li>
-                        <li><span class="text-yellow-300 font-bold">運</span>: 生死を分ける究極の確率に関わります。</li>
-                    </ul>
-                </section>
-                <section>
-                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 引き継ぎ要素とロスト</h3>
-                    <ul class="list-disc pl-4 space-y-1">
-                        <li><span class="text-gold font-bold">家宝</span>: 特定の条件を満たして死亡すると獲得します。家宝蔵で装備することで初期ステータスボーナスを得ますが、<span class="text-red-400 font-bold">大往生（60歳到達）できずに死亡すると完全にロスト（喪失）します。</span></li>
-                        <li><span class="text-purple-400 font-bold">冥銭・道具</span>: 生き抜いた年数や能力値に応じて死後に獲得します。冥府の商人で「持込道具」と交換し、1回使い切りの強力な効果を得られます。</li>
-                    </ul>
-                </section>
-                <section>
-                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 大往生と時間の流れ</h3>
-                    <p>享年60歳まで生き延びると、「大往生」となり特別な結末を迎えます。大往生を10回達成するごとに寿命の限界が「5歳」ずつ延長されます。</p>
-                    <p class="text-red-300 font-bold mt-1">※平和な日常は1年単位で進みますが、合戦や逃亡中などの特殊な状態では、より短い期間（月・日単位）で時間が濃密に進みます。</p>
-                </section>
+                <section><h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 目的</h3><p>過酷な戦国時代にランダムな身分で生まれ落ち、寿命を迎えるか、非業の死を遂げるまで生き抜くライフシミュレーションゲームです。「歳月を進める」ことで時間が経過し、様々なイベントが発生します。</p></section>
+                <section><h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 各種能力値</h3><ul class="list-disc pl-4 space-y-1"><li><span class="text-red-300 font-bold">武功</span>: 戦での強さ。合戦や御前試合で有利になります。</li><li><span class="text-purple-300 font-bold">悪逆</span>: 業の深さ。非道な選択肢を選ぶと上がります。</li><li><span class="text-blue-300 font-bold">知略</span>: 頭の良さ。策略で危機を回避したり、商売で得をします。</li><li><span class="text-green-300 font-bold">人徳</span>: 人望の厚さ。高いと人から助けられたりします。</li><li><span class="text-yellow-300 font-bold">運</span>: 生死を分ける究極の確率に関わります。</li></ul></section>
+                <section><h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 引き継ぎ要素とロスト</h3><ul class="list-disc pl-4 space-y-1"><li><span class="text-gold font-bold">家宝</span>: 特定の条件を満たして死亡すると獲得します。装備することでボーナスを得ますが、<span class="text-red-400 font-bold">大往生（60歳到達）できずに死亡すると完全にロストします。</span></li><li><span class="text-purple-400 font-bold">冥銭・道具</span>: 生き抜いた年数や能力値に応じて死後に獲得します。冥府の商人で「持込道具」と交換できます。</li></ul></section>
+                <section><h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 大往生と時間の流れ</h3><p>享年60歳まで生き延びると、「大往生」となり特別な結末を迎えます。大往生を10回達成するごとに寿命の限界が「5歳」ずつ延長されます。</p><p class="text-red-300 font-bold mt-1">※平和な日常は1年単位で進みますが、合戦や逃亡中などの特殊な状態では、より短い期間（月・日単位）で時間が濃密に進みます。</p></section>
             </div>
         </div>
 
@@ -561,8 +407,7 @@
                 <button type="button" onclick="window.switchRankTab('money')" id="tab-rank-money" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">富国長者</button>
                 <button type="button" onclick="window.switchRankTab('valor')" id="tab-rank-valor" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">修羅の道</button>
             </div>
-            <div id="rank-content" class="flex-grow overflow-y-auto p-4 pb-8 bg-[#090807]">
-            </div>
+            <div id="rank-content" class="flex-grow overflow-y-auto p-4 pb-8 bg-[#090807]"></div>
         </div>
 
     </div>
@@ -712,10 +557,10 @@
         function recordChronology(text) { state.chronology.push({ age: state.age, text: text }); }
 
         // ==========================================
-        // ★NEW: イベントをジャンル別に分割管理
+        // イベントをジャンル別に分割管理
         // ==========================================
 
-        // ① 汎用・娯楽イベント（主に mode: 'normal'）
+        // ① 汎用・娯楽イベント
         const NORMAL_EVENTS = [
             { id: 'draft', mode: ['normal'], weight: 30, condition: (s) => (s.classInfo.id === 'peasant' || s.classInfo.id === 'ashigaru') && s.age < 60,
                 title: '【動員令】合戦の徴用', text: '代官の厳しい監視の目が光る中、陣触れが布告された。田畑を捨てて戦地へ向かうか、逃れるか。',
@@ -755,7 +600,11 @@
             { id: 'red_light_district', mode: ['normal'], weight: 15, condition: (s) => s.money >= 100 && s.age >= 18,
                 title: '【遊興】遊郭の誘惑', text: '夜の町で三味線の音が響き、艶やかな遊女たちが袖を引く。莫大な銭を積めば、極上の夢を見ることができるが…。',
                 choices: [
-                    { text: '【銭100文】一晩豪遊し、浮世の憂さを晴らす', condition: () => true, hint: '体力全快・運上昇', effect: (s) => { s.luck += 15; return { money: -100, hp: 100, log: '金に物を言わせて一夜の夢を買い、心身共に完全にリフレッシュした！' }; } },
+                    { text: '【銭100文】一晩豪遊し、浮世の憂さを晴らす', condition: () => true, hint: '大回復か、ぼったくりか', effect: (s) => { 
+                        s.money -= 100;
+                        if (Math.random() < 0.7) { s.luck += 10; return { hp: 40, money: 0, log: '金に物を言わせて一夜の夢を買い、心身共にリフレッシュした！' }; }
+                        else { let lost = Math.min(s.money, 150); return { hp: -15, money: -lost, log: '悪女に結託した用心棒に酒を盛られ、身ぐるみ剥がされた挙句に路地裏に叩き出された……！' }; }
+                    } },
                     { text: '乱世に色恋など不要と立ち去る', condition: () => true, hint: '回避', effect: () => ({ hp: 0, log: '遊女の誘惑を振り切り、真っ暗な家へ戻った。' }) }
                 ] },
             { id: 'tea_appraisal', mode: ['normal'], weight: 20, condition: (s) => s.money >= 50,
@@ -767,6 +616,15 @@
                     } },
                     { text: '【知略50】贋作であると論破し、商人を追い払う', condition: (s) => s.strategy >= 50, hint: '知略上昇', effect: (s) => { s.strategy += 10; return { hp: 0, log: '釉薬の不自然さを指摘すると、商人は逃げるように去っていった。' }; } },
                     { text: '「骨董に興味はない」と無視する', condition: () => true, hint: '回避', effect: () => ({ hp: 0, log: '怪しい儲け話には乗らず、堅実に生きる道を選んだ。' }) }
+                ] },
+            { id: 'tax_collection', mode: ['normal'], weight: 25, condition: (s) => s.money >= 300,
+                title: '【御触書】過酷なる取り立て', text: '戦費の拡大に伴い、領主より非情な臨時徴収の御触れが出された。役人があなたの豊かな財産に目を付け、容赦ない取り立てにやってきた。',
+                choices: [
+                    { text: '逆らわず、要求された額を素直に納める', condition: () => true, hint: '所持金の3割を失う', effect: (s) => { 
+                        let tax = Math.floor(s.money * 0.3); return { money: -tax, hp: 0, log: `逆らえば命はない。泣く泣く金 ${tax}文 を差し出した。貯め込んだ財産が大きく削られてしまった……。` }; 
+                    } },
+                    { text: '【知略60】帳簿を巧妙に偽装し、税を逃れる', condition: (s) => s.strategy >= 60, hint: '知略で全額回避', effect: (s) => { s.strategy += 5; return { hp: 0, log: '二重帳簿を駆使して役人の目を欺き、見事に一文も払わずに追い返した！' }; } },
+                    { text: '「払う銭などない！」と役人を追い返す', condition: () => true, hint: '負傷・悪逆上昇', effect: (s) => { s.karma += 15; return { hp: -25, log: '激怒した役人たちに袋叩きにされた。銭は守り抜いたが、身体中にひどい痣と痛みが残った。' }; } }
                 ] }
         ];
 
@@ -779,6 +637,7 @@
                         s.valor += 30; s.deathCause = 'battle'; 
                         let isDodge = Math.random() < (s.luck * 0.005);
                         let dmg = isDodge ? 0 : Math.max(5, (Math.floor(Math.random() * 35) + 30) - Math.floor(s.valor * 0.3));
+                        if(s.valor > 60 && !isDodge) recordChronology("激戦の中で敵兵を次々と討ち取り、大いなる武功を挙げる");
                         return { hp: -dmg, log: isDodge ? '奇跡的に敵の反撃が急所を外れた！' : '先頭の騎馬兵を突き落としたが、乱戦の中で手傷を負った。' }; 
                     } },
                     { text: '【知略】戦局を俯瞰し、有利な高所へ退避・布陣', condition: () => true, hint: '知略増・被ダメージ軽減', effect: (s) => { s.strategy += 15; s.deathCause = 'battle'; return { hp: -8, log: '高台へ移動し、味方への被害を最小限に抑えつつ敵をいなした。' }; } },
@@ -787,7 +646,7 @@
                         else { s.deathCause = 'battle'; return { hp: -999, log: '待ち構えていた敵の鉄砲隊に蜂の巣にされ、凄惨な最期を遂げた……。' }; }
                     } }
                 ] },
-            { id: 'battle_end', mode: ['battle'], weight: 35, condition: (s) => s.modeTurn >= 3, // 3ヶ月以上で発生しやすく
+            { id: 'battle_end', mode: ['battle'], weight: 35, condition: (s) => s.modeTurn >= 3,
                 title: '【帰陣】合戦の終わり', text: '長く血生臭い戦いがついに終わりを告げた。両軍は兵を引き、生き残った者たちは陣所へと帰還する。',
                 choices: [
                     { text: '意気揚々と武功を報告し、恩賞を賜る', condition: (s) => s.valor >= 10, hint: '銭獲得・日常へ', effect: (s) => { s.mode = 'normal'; recordChronology("合戦を生き抜き恩賞を得る"); return { money: Math.floor(s.valor * 2.5), hp: 10, log: '戦場での働きが認められ恩賞を賜り、平穏な日常へ戻る。' }; } },
@@ -798,6 +657,16 @@
                 choices: [
                     { text: '罪悪感を捨て、死体の懐を徹底的に漁る', condition: () => true, hint: '銭獲得・悪逆上昇', effect: (s) => { s.karma += 20; return { money: 80, hp: 0, log: '血まみれの死体から大量の小判をくすねた。死人に金は不要だ。' }; } },
                     { text: '「人としての誇りは捨てぬ」と手を合わせる', condition: () => true, hint: '人徳上昇', effect: (s) => { s.virtue += 15; return { hp: 0, log: '名もなき兵たちの冥福を祈り、静かにその場を立ち去った。' }; } }
+                ] },
+            { id: 'encounter_shingen', mode: ['battle'], weight: 15, condition: (s) => s.faction && s.faction.id !== 'takeda' && !s.flags.metShingen,
+                title: '【死闘】甲斐の虎', text: '戦場の土煙が風に晴れた瞬間、視界に飛び込んできたのは圧倒的な威圧感を放つ「風林火山」の御旗。甲斐の虎・武田信玄の本陣が至近距離にある！',
+                choices: [
+                    { text: '【武功50】決死の単騎駆けで信玄の首に挑む！', condition: (s) => s.valor >= 50, hint: '大成功か即死', effect: (s) => {
+                        s.flags.metShingen = true;
+                        if (Math.random() < 0.3) { s.valor += 100; s.virtue += 20; recordChronology("武田信玄の本陣へ単騎駆けし生還"); return { hp: -30, log: '信玄の鉄扇に防がれはしたものの、その凄まじい武勇は敵味方全軍に轟き渡った！' }; }
+                        else { s.deathCause = 'battle'; return { hp: -999, log: '無謀にも突撃したが、無敵の赤備え騎馬隊に側面を突かれ凄絶な戦死を遂げた……。' }; }
+                    }},
+                    { text: '恐れをなして陣を引いて逃げ出す', condition: () => true, hint: '体力温存・悪逆上昇', effect: (s) => { s.flags.metShingen = true; s.karma+=15; s.valor-=10; return { hp: 0, log: '虎の放つ圧倒的な威圧感に足がすくみ、武士の誇りを投げ捨てて一目散に逃亡した。' }; } }
                 ] }
         ];
 
@@ -808,7 +677,7 @@
                 choices: [
                     { text: '【人徳15】かつて助けた里人に助けを求める', condition: (s) => s.virtue >= 15, hint: '農民へ復帰・回復', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c=>c.id==='peasant'); recordChronology("農民として生き直す"); return { hp: 35, log: '村の長が匿ってくれた。再び「農民」となり土に生きる道を選ぶ。' }; } },
                     { text: '【銭80文】頭を金で買収し見逃させる', condition: (s) => s.money >= 80, hint: '浪人へ復帰', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c=>c.id==='ronin'); recordChronology("浪人へと復帰する"); return { money: -80, hp: 10, log: '農民どもに有り金を叩きつけ、その隙に「浪人」として他国へ逃れた。' }; } },
-                    { text: '腹をくくり、山賊の群れに加わって野盗に堕ちる', condition: () => true, hint: '野盗へ転身・カルマ上昇', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c=>c.id==='bandit'); s.karma += 25; recordChronology("野盗に堕ちる"); return { hp: 15, money: 40, log: '農民を返り討ちにし、付近を荒らし回る野盗に仲間入りを果たした。' }; } }
+                    { text: '腹をくくり、山賊の群れに加わって野盗に堕ちる', condition: () => true, hint: '野盗へ転身・悪逆上昇', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c=>c.id==='bandit'); s.karma += 25; recordChronology("野盗に堕ちる"); return { hp: 15, money: 40, log: '農民を返り討ちにし、付近を荒らし回る野盗に仲間入りを果たした。' }; } }
                 ] }
         ];
 
@@ -907,6 +776,31 @@
                 choices: [
                     { text: '謹んでお受けする', condition: () => true, hint: '体力回復', effect: (s) => { s.flags.monkPromotion = true; s.virtue += 30; recordChronology("紫衣を賜り高僧となる"); return { money: 300, hp: 30, log: '莫大なお布施と立派な寺の庇護により、体力が劇的に回復した。' }; } },
                     { text: '辞退し諸国を巡る', condition: () => true, hint: '人徳特大アップ', effect: (s) => { s.flags.monkPromotion = true; s.virtue += 50; return { hp: 0, log: '栄誉すら蹴り飛ばす清貧な姿に、人々はあなたを「生き仏」と崇めた。' }; } }
+                ] },
+            { id: 'suspicion', mode: ['normal', 'battle'], weight: 40, condition: (s) => s.classInfo.id === 'bushou' && s.strategy >= 60,
+                title: '【粛清】主君の疑心暗鬼', text: '冴え渡りすぎたあなたの知謀は味方からも畏怖され、主君が密かに暗殺の刺客を放ったという噂が届く。',
+                choices: [
+                    { text: '【人徳50】重臣たちに取り成してもらう', condition: (s) => s.virtue >= 50, hint: '回避', effect: (s) => { s.virtue -= 15; return { hp: 0, log: '日頃の人望により重臣が弁護し、主君の疑いは見事に晴れた。' }; } },
+                    { text: '【銭400文】名品を献上し忠誠を誓う', condition: (s) => s.money >= 400, hint: '金で命を買う', effect: (s) => { return { money: -400, hp: 0, log: '土下座して茶器を献上し、辛くも粛清の嵐から逃れきった。' }; } },
+                    { text: '城を脱出し、浪人に身をやつす', condition: () => true, hint: '浪人へ転落', effect: (s) => { s.classInfo = CLASSES.find(c=>c.id==='ronin'); s.karma += 20; s.mode = 'normal'; return { hp: -10, log: '迫りくる刺客の手を逃れ、夜陰に紛れて出奔した。' }; } }
+                ] },
+            { id: 'tactician', mode: ['normal', 'battle'], weight: 30, condition: (s) => s.strategy >= 40 && !s.flags.tactician && (s.classInfo.id === 'ronin' || s.classInfo.id === 'ashigaru' || s.classInfo.id === 'peasant'),
+                title: '【推挙】軍師の召抱え', text: 'あなたの類まれなる知謀は諸国に知れ渡り、有力大名から「我が陣営の頭脳となれ」と仕官の誘いを受ける。',
+                choices: [
+                    { text: '【知略70】破格の待遇を要求し仕える', condition: (s) => s.strategy >= 70, hint: '武将化・大金', effect: (s) => { s.flags.tactician = true; s.classInfo = CLASSES.find(c=>c.id==='bushou'); s.strategy += 20; return { money: 300, hp: -15, log: '筆頭軍師の座へと登り詰めたが、謀略の毎日に心身はすり減っていく。' }; } },
+                    { text: '謹んでお受けする', condition: () => true, hint: '武将化', effect: (s) => { s.flags.tactician = true; s.classInfo = CLASSES.find(c=>c.id==='bushou'); return { money: 100, hp: -10, log: '軍師として大名の陣幕に席を連ねることとなった。' }; } }
+                ] },
+            { id: 'defection', mode: ['normal', 'battle'], weight: 25, condition: (s) => (s.classInfo.id === 'bushou' || s.classInfo.id === 'ninja' || s.classInfo.id === 'ashigaru') && s.age > 20 && s.faction.id !== 'custom',
+                title: '【調略】敵陣営からの誘い', text: '敵対する大名家から「今の主君を見限り我が陣営へ寝返れば、莫大な恩賞を約束しよう」と囁かれる。',
+                choices: [
+                    { text: '【悪逆30】新たな主君へ寝返る', condition: (s) => s.karma >= 30, hint: '所属変更・銭', effect: (s) => { let newFactions = FACTIONS.filter(f => f.id !== s.faction.id); s.faction = newFactions[Math.floor(Math.random() * newFactions.length)]; s.karma += 20; s.valor += 5; s.mode = 'normal'; return { money: 150, hp: 0, log: `新たに「${s.faction.name}」へ寝返った。不忠者と謗られようと生き残る！` }; } },
+                    { text: '使者を追い返す', condition: () => true, hint: '忠義', effect: (s) => { s.virtue += 15; return { hp: 0, log: '密使を毅然と追い返した。その忠誠心は主君の耳にも入った。' }; } }
+                ] },
+            { id: 'encounter_nobunaga', mode: ['normal', 'battle'], weight: 15, condition: (s) => s.faction && s.faction.id === 'oda' && s.valor >= 20 && !s.flags.metNobunaga,
+                title: '【御前】魔王の眼差し', text: '静まり返った広間。上座には、狂気を纏った第六天魔王・織田信長が座している。「貴様、何のために戦う？」',
+                choices: [
+                    { text: '「天下布武のため」と吠える', condition: () => true, hint: '武功・悪逆上昇', effect: (s) => { s.valor+=20; s.karma+=20; s.flags.metNobunaga = true; return { hp: 0, log: '信長は不敵に笑って去っていった。覇道へ付き従う覚悟が決まる。' }; } },
+                    { text: '【知略40】不敵に返す', condition: (s) => s.strategy >= 40, hint: '銭獲得', effect: (s) => { s.strategy+=15; s.flags.metNobunaga = true; return { money: 100, hp: 0, log: '見事な返答に信長は大笑いし、褒美を下賜された。' }; } }
                 ] }
         ];
 
@@ -942,7 +836,13 @@
             { id: 'inherit_50', mode: ['normal'], weight: 100, condition: (s) => s.age === 50 && s.flags.hasChild && !s.flags.inherit50,
                 title: '【家督】次世代への継承', text: '立派に成長した子供から「そろそろ家督を譲り、楽隠居されてはいかがか」と打診された。ここで一線を退けば、安全に大往生を迎えられるかもしれないが…。',
                 choices: [
-                    { text: '家督を譲り、現役を退く', condition: () => true, hint: '即座に大往生クリア', effect: (s) => { s.flags.inherit50 = true; s.deathCause = 'oldage'; s.age = 60; return { hp: 0, log: 'すべてを後進に託し、戦乱の世から完全に身を引いた。縁側で茶をすする平和な余生が始まる。' }; } },
+                    { text: '家督を譲り、現役を退く', condition: () => true, hint: '即座に大往生クリア', effect: (s) => { 
+                        s.flags.inherit50 = true; s.deathCause = 'oldage'; 
+                        // 現在の寿命上限を計算してそこまで飛ぶ
+                        const absoluteMaxAge = 70 + Math.floor((window.greatDeathCount || 0) / 10) * 5;
+                        s.age = absoluteMaxAge; 
+                        return { hp: 0, log: 'すべてを後進に託し、戦乱の世から完全に身を引いた。縁側で茶をすする平和な余生が始まる。' }; 
+                    } },
                     { text: '「儂はまだやれる！」と突っぱねる', condition: () => true, hint: '現役続行・寿命限界に挑む', effect: (s) => { s.flags.inherit50 = true; s.valor += 10; return { hp: -10, log: '子供を一喝し、まだまだ現役として血の海を泳ぎ続ける修羅の道を選んだ。' }; } }
                 ] }
         ];
@@ -1555,14 +1455,13 @@
 
                 if (state.mode === 'normal') {
                     state.age++;
-                    // 年齢が進んだ時だけ、老衰の判定を行うよう変更
                     if (!checkSurvival()) {
                         isProcessing = false;
-                        return; // 死んでいたら処理終了
+                        return;
                     }
 
                     const isMilestone = (state.age % 5 === 0);
-                    const isRandomEvent = Math.random() < 0.35; // イベント発生率を少し上昇
+                    const isRandomEvent = Math.random() < 0.35;
 
                     if (isMilestone || isRandomEvent) {
                         triggerEvent();
@@ -1704,7 +1603,6 @@
 
             updateUI(); 
             
-            // 選択の結果死んでいたらここでストップ
             if (!checkSurvival()) {
                 isProcessing = false;
                 return;
@@ -1760,7 +1658,6 @@
             requestAnimationFrame(() => { if (logContainer) logContainer.scrollTop = logContainer.scrollHeight; });
         }
 
-        // 返り値 boolean (true:生存, false:死亡)
         function checkSurvival() {
             if (!state.isAlive) return false;
 
