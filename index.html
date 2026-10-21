@@ -503,14 +503,40 @@
         ];
 
         const HEIRLOOMS_DB = [
-            { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" }, { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
-            { id: 'hl_ranjyatai', name: "名香・蘭奢待", hint: "天下の万民から敬愛されし者が賜る" }, { id: 'hl_hiragumo', name: "古天明平蜘蛛", hint: "非道と悪逆の果て、魔道を往く者が手にする" },
-            { id: 'hl_tsukumo', name: "九十九髪茄子", hint: "途方もない巨万の富を築きし商人が落とす" }, { id: 'hl_nanbandou', name: "南蛮胴具足", hint: "数多の死線を越え、長寿を全うせし者が得る" },
-            { id: 'hl_mikazuki', name: "天下五剣・三日月宗近", hint: "高き武芸を誇る剣豪が手にする" }, { id: 'hl_hasebe', name: "へし切長谷部", hint: "冷徹なる武功を挙げし者の愛刀" },
-            { id: 'hl_koyogunkan', name: "甲陽軍鑑", hint: "優れた軍略を遺せし者が著す" }, { id: 'hl_sonshi', name: "孫子の古伝書", hint: "高い兵法と知略を備えし者が受け継ぐ" },
-            { id: 'hl_matsukaze', name: "名馬・松風", hint: "人望厚き将の元へ駆けつける名馬" }, { id: 'hl_muramasa', name: "妖刀・千子村正", hint: "血塗られた悪逆の道を歩む者が振るう" },
-            { id: 'hl_chaki', name: "黄金の茶器", hint: "莫大な富を蓄えし商人の証" }, { id: 'hl_furo', name: "南蛮不老薬", hint: "還暦を越える長寿を成せし者が秘蔵する" },
-            { id: 'hl_yohen', name: "曜変天目茶碗", hint: "並外れた強運を持つ者が偶然手に入れる" }, { id: 'hl_aoi', name: "四葉の葵紋", hint: "戦火の中で運良く拾う品" }
+            // 武器
+            { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" },
+            { id: 'hl_dojigiri', name: "天下五剣・童子切安綱", hint: "武功極まり、長寿を全うした者の元へ" },
+            { id: 'hl_mikazuki', name: "天下五剣・三日月宗近", hint: "高き武芸を誇る剣豪が手にする" },
+            { id: 'hl_murasame', name: "妖刀・村雨", hint: "血に飢えた恐るべき斬り合いの末に得る" },
+            { id: 'hl_muramasa', name: "妖刀・千子村正", hint: "血塗られた悪逆の道を歩む者が振るう" },
+            { id: 'hl_hasebe', name: "へし切長谷部", hint: "冷徹なる武功を挙げし者の愛刀" },
+            { id: 'hl_hannya', name: "名刀・大般若長光", hint: "武功と富を併せ持つ者が手に入れる" },
+            // 防具・馬
+            { id: 'hl_nanbandou', name: "南蛮胴具足", hint: "数多の死線を越え、長寿を全うせし者が得る" },
+            { id: 'hl_kindami', name: "金陀美具足", hint: "富と健康を兼ね備えた者が纏う" },
+            { id: 'hl_ageha', name: "陣羽織・揚羽蝶", hint: "人徳と知略に優れた名将が羽織る" },
+            { id: 'hl_matsukaze', name: "名馬・松風", hint: "人望厚き将の元へ駆けつける名馬" },
+            // 書物
+            { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
+            { id: 'hl_gorin', name: "五輪書", hint: "武の道と兵法を極めし者が著す" },
+            { id: 'hl_koyogunkan', name: "甲陽軍鑑", hint: "優れた軍略を遺せし者が著す" },
+            { id: 'hl_sonshi', name: "孫子の古伝書", hint: "高い兵法と知略を備えし者が受け継ぐ" },
+            { id: 'hl_bansenshukai', name: "万川集海", hint: "知略と運を兼ね備えた影の者が遺す" },
+            // 茶器・香木
+            { id: 'hl_ranjyatai', name: "名香・蘭奢待", hint: "天下の万民から敬愛されし者が賜る" },
+            { id: 'hl_hiragumo', name: "古天明平蜘蛛", hint: "非道と悪逆の果て、魔道を往く者が手にする" },
+            { id: 'hl_tsukumo', name: "九十九髪茄子", hint: "途方もない巨万の富を築きし商人が落とす" },
+            { id: 'hl_chaki', name: "黄金の茶器", hint: "莫大な富を蓄えし商人の証" },
+            { id: 'hl_yohen', name: "曜変天目茶碗", hint: "並外れた強運を持つ者が偶然手に入れる" },
+            { id: 'hl_hatsuhana', name: "初花肩衝", hint: "富と人望を集めた者が愛用する" },
+            { id: 'hl_ido', name: "大井戸茶碗", hint: "清らかなる人徳を持つ者が手にする" },
+            // その他
+            { id: 'hl_furo', name: "南蛮不老薬", hint: "還暦を越える長寿を成せし者が秘蔵する" },
+            { id: 'hl_tenkyugi', name: "異国の天球儀", hint: "知略と強運で世界を見通す者が持つ" },
+            { id: 'hl_cross', name: "黄金の十字架", hint: "人徳と運の導きにより授かる" },
+            { id: 'hl_okina', name: "呪われた翁面", hint: "業が深く長生きした者が取り憑かれる" },
+            { id: 'hl_kitsune', name: "霊狐の毛皮", hint: "途方もない幸運で生き延びた者が得る" },
+            { id: 'hl_aoi', name: "四葉の葵紋", hint: "戦火の中で運良く拾う品" }
         ];
 
         const DEATH_CAUSES_DB = [
@@ -557,10 +583,9 @@
         function recordChronology(text) { state.chronology.push({ age: state.age, text: text }); }
 
         // ==========================================
-        // イベントをジャンル別に分割管理
+        // イベント定義
         // ==========================================
 
-        // ① 汎用・娯楽イベント
         const NORMAL_EVENTS = [
             { id: 'draft', mode: ['normal'], weight: 30, condition: (s) => (s.classInfo.id === 'peasant' || s.classInfo.id === 'ashigaru') && s.age < 60,
                 title: '【動員令】合戦の徴用', text: '代官の厳しい監視の目が光る中、陣触れが布告された。田畑を捨てて戦地へ向かうか、逃れるか。',
@@ -628,7 +653,6 @@
                 ] }
         ];
 
-        // ② 戦場イベント
         const BATTLE_EVENTS = [
             { id: 'battle_front', mode: ['battle'], weight: 50, condition: () => true,
                 title: '【合戦】激突の陣', text: '天地を揺るがすような法螺貝の音と、むせ返るような血と火薬の匂いが戦場を支配している。敵の精鋭騎馬隊が肉薄してきた！',
@@ -670,7 +694,6 @@
                 ] }
         ];
 
-        // ③ 逃亡イベント
         const FUGITIVE_EVENTS = [
             { id: 'escape_survival', mode: ['fugitive'], weight: 80, condition: () => true,
                 title: '【流浪】落武者狩りの包囲', text: '飢えと疲労で重くなる足を引きずり歩く中、血走った目をした農民たちの落武者狩り部隊に完全に囲まれた。',
@@ -681,7 +704,6 @@
                 ] }
         ];
 
-        // ④ 身分（クラス）専用イベント
         const CLASS_EVENTS = [
             { id: 'katana_gari', mode: ['normal'], weight: 25, condition: (s) => s.classInfo.id === 'peasant' && s.age >= 25 && !s.flags.katana,
                 title: '【農村】刀狩りの布告', text: '天下人より「農民は一切の武器を持つべからず」という刀狩令が発布された。代官が村中を家捜しして回っている。',
@@ -716,16 +738,6 @@
                 choices: [
                     { text: '【人徳60】民衆の心を打つ説法で寄付を募る', condition: (s) => s.virtue >= 60, hint: '銭大獲得', effect: (s) => { s.virtue+=20; recordChronology("見事な説法で大伽藍を再建する"); return { money: 200, hp: 0, log: 'あなたの慈愛に満ちた説法に数千の民が涙し、またたく間に再建の費用が集まった！' }; } },
                     { text: '裕福な武将に媚びへつらい、金を出させる', condition: () => true, hint: '銭獲得・人徳低下', effect: (s) => { s.virtue-=20; s.karma+=10; return { money: 150, hp: 0, log: '権力者にすり寄って金を得た。伽藍は建ったが、裏で「生臭坊主」と陰口を叩かれている。' }; } }
-                ] },
-            { id: 'nanban_trade', mode: ['normal'], weight: 30, condition: (s) => s.classInfo.id === 'merchant' && !s.flags.nanban,
-                title: '【商機】南蛮船の到来', text: '巨大な南蛮船が入港した。火縄銃の山を買い占めるか、手堅くいくか。',
-                choices: [
-                    { text: '【銭200文】全財産を賭けて火縄銃を根こそぎ買い占める', condition: (s) => s.money >= 200, hint: '大儲けか大損', effect: (s) => {
-                        s.flags.nanban = true;
-                        if (Math.random() < 0.7) { recordChronology("南蛮貿易で巨万の富を得る"); return { money: 600, hp: 0, log: '読みは見事的中！大名たちがこぞって高値で買い求め、蔵が建つほどの富を築いた！' }; }
-                        else { return { money: -200, hp: 0, log: '直後に幕府から火薬統制令が敷かれ、火縄銃はすべて二束三文で没収されてしまった……。' }; }
-                    } },
-                    { text: '欲を出さず、手堅い香辛料だけを仕入れる', condition: () => true, hint: '安定', effect: (s) => ({ money: 50, hp: 0, log: '安全な商いに留め、着実に小銭を稼いだ。' }) }
                 ] },
             { id: 'peasant_revolt', mode: ['normal'], weight: 30, condition: (s) => (s.classInfo.id === 'bushou' || s.classInfo.id === 'daimyo') && !s.flags.revolt,
                 title: '【領国】一揆の勃発', text: '重税に怒りを爆発させた領民たちが暴徒と化し、城下へ押し寄せてきた。',
@@ -804,7 +816,6 @@
                 ] }
         ];
 
-        // ⑤ 年齢・ライフステージ限定イベント
         const AGE_EVENTS = [
             { id: 'genpuku', mode: ['normal'], weight: 100, condition: (s) => s.age === 15 && !s.flags.genpuku,
                 title: '【元服】大人の仲間入り', text: '15の歳を迎え、一人前の大人として扱われる元服の儀を迎えた。これより先、自分の命は自分で守らねばならない。',
@@ -838,16 +849,14 @@
                 choices: [
                     { text: '家督を譲り、現役を退く', condition: () => true, hint: '即座に大往生クリア', effect: (s) => { 
                         s.flags.inherit50 = true; s.deathCause = 'oldage'; 
-                        // 現在の寿命上限を計算してそこまで飛ぶ
                         const absoluteMaxAge = 70 + Math.floor((window.greatDeathCount || 0) / 10) * 5;
                         s.age = absoluteMaxAge; 
-                        return { hp: 0, log: 'すべてを後進に託し、戦乱の世から完全に身を引いた。縁側で茶をすする平和な余生が始まる。' }; 
+                        return { hp: -999, log: 'すべてを後進に託し、戦乱の世から完全に身を引いた。縁側で茶をすする平和な余生が始まった……。' }; 
                     } },
                     { text: '「儂はまだやれる！」と突っぱねる', condition: () => true, hint: '現役続行・寿命限界に挑む', effect: (s) => { s.flags.inherit50 = true; s.valor += 10; return { hp: -10, log: '子供を一喝し、まだまだ現役として血の海を泳ぎ続ける修羅の道を選んだ。' }; } }
                 ] }
         ];
 
-        // ⑥ ステータス極みイベント
         const STAT_EVENTS = [
             { id: 'hidden_gold', mode: ['normal', 'fugitive'], weight: 15, condition: (s) => s.luck >= 80 && !s.flags.hiddenGold,
                 title: '【奇跡】埋蔵金の発見', text: '激しい雨上がり、裏山の土砂崩れの跡から不自然な木箱が覗いている。恐る恐る開けてみると、かつての豪族が隠したと思われる眩いばかりの砂金が詰まっていた！',
@@ -868,7 +877,6 @@
                 ] }
         ];
 
-        // ⑦ 歴史イベント
         const HISTORY_EVENTS = [
             { id: 'teppo_arrival', mode: ['normal'], weight: 50, condition: (s) => s.age >= 25 && !s.flags.teppo,
                 title: '【歴史】鉄砲の伝来', text: '南蛮船より、轟音と共に敵を撃ち抜く恐るべき筒「鉄砲」が伝来し、またたく間に諸国に広まった。これより先の戦場は、一発の鉛玉で命が散る真の修羅場と化す。',
@@ -890,7 +898,6 @@
                 ] }
         ];
 
-        // ★最後にすべてのイベントを統合
         const EVENTS = [
             ...NORMAL_EVENTS,
             ...BATTLE_EVENTS,
@@ -904,35 +911,104 @@
         // ==========================================
 
         function calculateTitle(s) {
-            if (s.classInfo && s.classInfo.id === 'daimyo') return "天下の覇者";
-            if (s.classInfo && s.classInfo.id === 'bandit') return "山河の凶魁";
-            if (s.classInfo && s.classInfo.id === 'ninja' && s.valor >= 50) return "影を統べる者";
-            if (s.classInfo && s.classInfo.id === 'monk' && s.virtue >= 60) return "生き仏";
-            if (s.strategy >= 70 && s.virtue >= 40) return "王佐の賢将";
-            if (s.strategy >= 70) return "稀代の知謀";
-            if (s.virtue >= 70) return "徳高き聖将";
+            if (s.age >= 100) return "不老不死の化身";
+            if (s.age >= 90) return "伝説の仙人";
+            if (s.age >= 80) return "生き字引の翁";
+
+            if (s.valor >= 150 && s.strategy >= 150) return "智勇兼備の神将";
+            if (s.valor >= 150) return "天下無双の軍神";
+            if (s.strategy >= 150) return "神算鬼謀の伏龍";
+            if (s.virtue >= 150) return "現人神の如き菩薩";
+            if (s.karma >= 150) return "極悪非道の修羅";
+            if (s.money >= 5000) return "日ノ本を買い占めし者";
+            if (s.luck >= 100) return "天に愛されし御子";
+
+            if (s.classInfo) {
+                const cid = s.classInfo.id;
+                if (cid === 'daimyo') {
+                    if (s.virtue >= 80) return "天下の仁君";
+                    if (s.karma >= 80) return "血塗られた覇王";
+                    return "天下の覇者";
+                }
+                if (cid === 'ninja') {
+                    if (s.valor >= 80) return "闇夜の死神";
+                    if (s.strategy >= 80) return "幻術の影";
+                    return "影を統べる者";
+                }
+                if (cid === 'monk') {
+                    if (s.karma >= 80) return "堕ちた破戒僧";
+                    if (s.virtue >= 80) return "生き仏";
+                    return "高名なる僧侶";
+                }
+                if (cid === 'merchant') {
+                    if (s.money >= 2000) return "天下の豪商";
+                    if (s.karma >= 80) return "死の商人";
+                    return "名物商人";
+                }
+                if (cid === 'ronin') {
+                    if (s.valor >= 100) return "天下無双の剣豪";
+                    if (s.karma >= 80) return "血に飢えた辻斬り";
+                    return "流浪の剣客";
+                }
+                if (cid === 'bandit') {
+                    if (s.money >= 1000) return "伝説の大盗賊";
+                    return "山河の凶魁";
+                }
+                if (cid === 'peasant' && s.money >= 1000) return "成金の大地主";
+                if (cid === 'kuge' && s.strategy >= 80) return "暗躍する黒幕";
+            }
+
+            if (s.valor >= 100 && s.strategy >= 100) return "天下の名将";
+            if (s.valor >= 100) return "一騎当千の剛将";
+            if (s.strategy >= 100) return "稀代の知将";
+            if (s.virtue >= 100) return "徳高き聖将";
+            if (s.karma >= 100) return "乱世の梟雄";
+            if (s.money >= 2000) return "富国豪商";
+            if (s.luck >= 80) return "豪運の持ち主";
+
             if (s.valor >= 80 && s.karma >= 60) return "第六天魔王";
             if (s.valor >= 70) return "無双の剛槍";
-            if (s.karma >= 70) return "乱世の梟雄";
-            if (s.money >= 800) return "富国豪商";
-            if (s.age >= 60) return "不撓不屈の大往生";
+            if (s.strategy >= 70) return "王佐の才";
+            if (s.virtue >= 70) return "慈愛の士";
+            if (s.karma >= 70) return "冷酷なる野心家";
+
+            if (s.age >= 70) return "大往生の傑物";
+            if (s.age >= 60) return "戦乱を生き抜きし者";
+
             return "名もなき草奔";
         }
 
         function determineHeirloom(s) {
             let candidates = [];
+            
+            if (s.valor >= 150) candidates.push({ id: 'hl_dojigiri', name: "天下五剣・童子切安綱", type: "valor", value: 50, desc: "初期武功 +50" });
+            if (s.valor >= 120 && s.strategy >= 120) candidates.push({ id: 'hl_gorin', name: "五輪書", type: "valor", value: 40, desc: "初期武功 +40" });
+            if (s.money >= 5000) candidates.push({ id: 'hl_tsukumo', name: "九十九髪茄子", type: "money", value: 1000, desc: "初期所持金 +1000文" });
+            
             if (s.valor >= 100) candidates.push({ id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", type: "valor", value: 35, desc: "初期武功 +35" });
             if (s.strategy >= 100) candidates.push({ id: 'hl_rikutou', name: "六韜三略の秘伝", type: "strategy", value: 35, desc: "初期知略 +35" });
             if (s.virtue >= 100) candidates.push({ id: 'hl_ranjyatai', name: "名香・蘭奢待", type: "virtue", value: 35, desc: "初期人徳 +35" });
             if (s.karma >= 100) candidates.push({ id: 'hl_hiragumo', name: "古天明平蜘蛛", type: "karma", value: 35, desc: "初期悪逆 +35" });
-            if (s.money >= 3000) candidates.push({ id: 'hl_tsukumo', name: "九十九髪茄子", type: "money", value: 600, desc: "初期所持金 +600文" });
+            if (s.luck >= 100) candidates.push({ id: 'hl_kitsune', name: "霊狐の毛皮", type: "luck", value: 35, desc: "初期運 +35" });
+            
+            if (s.valor >= 80 && s.karma >= 80) candidates.push({ id: 'hl_murasame', name: "妖刀・村雨", type: "valor", value: 25, desc: "初期武功 +25" });
+            if (s.valor >= 80 && s.money >= 1000) candidates.push({ id: 'hl_hannya', name: "名刀・大般若長光", type: "money", value: 400, desc: "初期所持金 +400文" });
+            if (s.health >= 150 && s.money >= 1000) candidates.push({ id: 'hl_kindami', name: "金陀美具足", type: "health", value: 40, desc: "初期体力 +40" });
+            if (s.virtue >= 80 && s.strategy >= 80) candidates.push({ id: 'hl_ageha', name: "陣羽織・揚羽蝶", type: "virtue", value: 25, desc: "初期人徳 +25" });
+            if (s.strategy >= 80 && s.luck >= 80) candidates.push({ id: 'hl_bansenshukai', name: "万川集海", type: "strategy", value: 25, desc: "初期知略 +25" });
+            if (s.virtue >= 80 && s.money >= 1000) candidates.push({ id: 'hl_hatsuhana', name: "初花肩衝", type: "money", value: 400, desc: "初期所持金 +400文" });
+            if (s.strategy >= 80 && s.luck >= 80) candidates.push({ id: 'hl_tenkyugi', name: "異国の天球儀", type: "luck", value: 25, desc: "初期運 +25" });
+            if (s.virtue >= 80 && s.luck >= 80) candidates.push({ id: 'hl_cross', name: "黄金の十字架", type: "virtue", value: 25, desc: "初期人徳 +25" });
+            if (s.karma >= 80 && s.age >= 60) candidates.push({ id: 'hl_okina', name: "呪われた翁面", type: "karma", value: 30, desc: "初期悪逆 +30" });
+            if (s.virtue >= 80) candidates.push({ id: 'hl_ido', name: "大井戸茶碗", type: "virtue", value: 20, desc: "初期人徳 +20" });
+            
             if (s.age >= 70) candidates.push({ id: 'hl_nanbandou', name: "南蛮胴具足", type: "health", value: 50, desc: "初期体力 +50" });
             if (s.valor >= 80) { candidates.push({ id: 'hl_mikazuki', name: "天下五剣・三日月宗近", type: "valor", value: 20, desc: "初期武功 +20" }); candidates.push({ id: 'hl_hasebe', name: "へし切長谷部", type: "valor", value: 20, desc: "初期武功 +20" }); }
             if (s.strategy >= 80) { candidates.push({ id: 'hl_koyogunkan', name: "甲陽軍鑑", type: "strategy", value: 20, desc: "初期知略 +20" }); candidates.push({ id: 'hl_sonshi', name: "孫子の古伝書", type: "strategy", value: 20, desc: "初期知略 +20" }); }
-            if (s.virtue >= 80) { candidates.push({ id: 'hl_matsukaze', name: "名馬・松風", type: "virtue", value: 20, desc: "初期人徳 +20" }); }
-            if (s.karma >= 80) { candidates.push({ id: 'hl_muramasa', name: "妖刀・千子村正", type: "karma", value: 20, desc: "初期悪逆 +20" }); }
-            if (s.money >= 1500) { candidates.push({ id: 'hl_chaki', name: "黄金の茶器", type: "money", value: 300, desc: "初期所持金 +300文" }); }
-            if (s.age >= 60) { candidates.push({ id: 'hl_furo', name: "南蛮不老薬", type: "health", value: 30, desc: "初期体力 +30" }); }
+            if (s.virtue >= 80) candidates.push({ id: 'hl_matsukaze', name: "名馬・松風", type: "virtue", value: 20, desc: "初期人徳 +20" });
+            if (s.karma >= 80) candidates.push({ id: 'hl_muramasa', name: "妖刀・千子村正", type: "karma", value: 20, desc: "初期悪逆 +20" });
+            if (s.money >= 1500) candidates.push({ id: 'hl_chaki', name: "黄金の茶器", type: "money", value: 300, desc: "初期所持金 +300文" });
+            if (s.age >= 60) candidates.push({ id: 'hl_furo', name: "南蛮不老薬", type: "health", value: 30, desc: "初期体力 +30" });
             if (s.luck >= 60) candidates.push({ id: 'hl_yohen', name: "曜変天目茶碗", type: "luck", value: 20, desc: "初期運 +20" });
             if (s.luck >= 40) candidates.push({ id: 'hl_aoi', name: "四葉の葵紋", type: "luck", value: 10, desc: "初期運 +10" });
             
@@ -1345,7 +1421,7 @@
             if (window.activeConsumable) {
                 const cons = window.activeConsumable;
                 if (cons.type === 'migawari') state.flags.migawari = true;
-                else if (cons.type === 'auto_heal') state.flags.autoHeal = cons.value; // 傷薬
+                else if (cons.type === 'auto_heal') state.flags.autoHeal = cons.value;
                 else if (cons.type === 'money') state.money += cons.value;
                 else if (cons.type === 'valor') state.valor += cons.value;
                 else if (cons.type === 'luck') state.luck += cons.value;
@@ -1690,7 +1766,7 @@
                 }
             }
 
-            if (state.health <= 0 && state.flags.migawari) {
+            if (state.health <= 0 && state.flags.migawari && state.deathCause !== 'oldage') {
                 state.health = 1; state.flags.migawari = false; state.deathCause = '';
                 addLog(`<span class="text-purple-300 font-bold">【身代わり地蔵】懐に忍ばせていた地蔵が砕け散った！冥府の力により、死の淵から奇跡的に生還する……！</span>`);
                 updateUI(); return true;
@@ -1846,7 +1922,8 @@
             records.forEach(item => {
                 const dateStr = item.timestamp ? new Date(item.timestamp).toLocaleDateString('ja-JP') : '';
                 const card = document.createElement('div'); card.className = 'bg-[#181513] border border-[#3A322A] p-3 rounded-sm relative shadow';
-                const ojBadge = item.age >= 60 ? '<span class="absolute top-2 right-2 text-[10px] bg-yellow-800 text-yellow-100 px-1.5 py-0.5 rounded-sm border border-yellow-600 font-bold">大往生</span>' : '';
+                
+                const ojBadge = item.age >= 60 ? '<span class="text-[9px] bg-yellow-800 text-yellow-100 px-1.5 py-0.5 rounded-sm border border-yellow-600 font-bold">大往生</span>' : '';
                 
                 let chronoHtml = '';
                 if (item.chronology && item.chronology.length > 0) {
@@ -1858,10 +1935,12 @@
                 const dispName = item.playerName || '名無し';
                 
                 card.innerHTML = `
-                    ${ojBadge}
                     <div class="flex justify-between items-end mb-1">
                         <div class="text-[10px] text-gray-500">${dateStr}</div>
-                        <div class="text-[10px] text-gray-400 font-bold tracking-wider">【${dispName}】</div>
+                        <div class="flex items-center gap-1.5">
+                            ${ojBadge}
+                            <div class="text-[10px] text-gray-400 font-bold tracking-wider">【${dispName}】</div>
+                        </div>
                     </div>
                     <div class="text-sm font-bold text-gold mb-1">${item.title || '名もなき武者'}</div>
                     <div class="flex items-baseline gap-3 text-xs text-gray-300 mb-2"><span>享年 <strong class="text-lg text-blood">${item.age}</strong> 歳</span><span class="text-gray-400">[${item.faction || '浪人'}] ${item.className}</span></div>
