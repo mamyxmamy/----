@@ -160,7 +160,6 @@
         <div id="start-screen" class="absolute inset-0 z-30 bg-[#161311] flex flex-col items-center justify-between px-6 py-8">
             <div class="flex-grow flex items-center justify-center relative w-full">
                 
-                <!-- 記録初期化ボタン -->
                 <button type="button" onclick="window.resetSaveData(event)" class="absolute top-0 left-0 bg-red-950/40 text-red-500 hover:text-white border border-red-900/50 hover:bg-red-900 px-2 py-1.5 rounded-sm shadow-md text-[10px] transition-colors z-20">
                     記録初期化
                 </button>
@@ -168,7 +167,6 @@
                 <div class="absolute inset-0 flex items-center justify-center opacity-10 text-[10rem] font-black text-red-700 pointer-events-none select-none">輪</div>
                 <h1 class="vertical-rl text-5xl sm:text-6xl font-black text-white tracking-[0.35em] drop-shadow-[0_0_20px_rgba(200,0,0,0.6)] z-10">乱世の輪廻</h1>
                 
-                <!-- 冥銭表示 -->
                 <div class="absolute top-0 right-0 bg-black/60 border border-gray-700 px-3 py-1.5 rounded-sm shadow-md flex items-center gap-2">
                     <span class="text-[10px] text-gray-400">所持冥銭</span>
                     <span class="text-sm font-bold text-gray-200"><span id="ui-meisen">0</span></span>
@@ -182,21 +180,17 @@
                         <div class="text-2xl font-black text-white"><span id="ui-reincarnations">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
                     </div>
                     <div class="border-l border-[#3A322A] h-10"></div>
-                    <!-- ★NEW: 大往生実績と寿命上限の表示 -->
                     <div>
                         <span class="text-gold text-xs font-bold block mb-0.5">大往生の実績</span>
                         <div class="text-xl font-black text-white"><span id="ui-great-deaths">0</span><span class="text-sm text-gray-400 font-normal ml-1">回</span></div>
                     </div>
                 </div>
 
-                <div class="text-center mt-1 mb-2">
-                    <span class="text-[10px] text-gray-500 tracking-widest">天下の総輪廻数</span>
-                    <div class="text-sm font-bold text-gold"><span id="ui-global-reincarnations">---</span><span class="text-[10px] text-gray-500 font-normal ml-1">回</span></div>
-                </div>
-
-                <!-- ★NEW: 寿命上限の表示バー -->
-                <div class="bg-[#181512] border border-gray-800 rounded-sm py-1 mb-2">
-                    <span class="text-[10px] text-gray-400">現在の寿命限界: <span id="ui-max-age-limit" class="font-bold text-red-400">70</span> 歳 (老衰開始: <span id="ui-random-death-start" class="text-gray-300">60</span>歳)</span>
+                <!-- ★NEW: 情報を圧縮した黒板エリア -->
+                <div class="bg-[#110F0D] border border-[#2A2520] rounded-sm py-1.5 text-center text-[10px] text-gray-400 flex flex-wrap justify-center gap-x-4 gap-y-1 shadow-inner">
+                    <span>天下の総輪廻: <span id="ui-global-reincarnations" class="text-gold font-bold">---</span>回</span>
+                    <span>寿命限界: <span id="ui-max-age-limit" class="text-red-400 font-bold">70</span>歳</span>
+                    <span class="w-full text-[9px] text-gray-600 mt-0.5">(老衰開始: <span id="ui-random-death-start">60</span>歳)</span>
                 </div>
 
                 <!-- 家宝表示エリア -->
@@ -223,7 +217,6 @@
             </div>
 
             <div class="w-full space-y-2 z-10">
-                <!-- 名前入力フォーム -->
                 <div class="w-full px-1 mb-2">
                     <input type="text" id="player-name-input" placeholder="御主の名（最大8文字）" maxlength="8" class="w-full bg-[#0D0B0A] border border-[#3A322A] text-white text-center py-2.5 rounded-sm focus:outline-none focus:border-gold transition-colors placeholder-gray-600 font-bold tracking-[0.2em] shadow-inner text-sm">
                 </div>
@@ -247,6 +240,11 @@
                     </button>
                     <button type="button" onclick="window.openHistory(event)" class="action-button-main bg-black/50 text-gray-400 hover:text-white border border-[#3A322A] py-2.5 text-xs font-bold tracking-widest rounded-sm transition-all">
                         輪廻の回想
+                    </button>
+
+                    <!-- ★NEW: フルウィズの番付ボタン -->
+                    <button type="button" onclick="window.openRanking(event)" class="col-span-2 action-button-main bg-gradient-to-b from-[#2A1F10] to-[#1A1308] text-yellow-500 hover:text-white border border-yellow-700/60 py-3 mt-1 text-xs font-bold tracking-widest rounded-sm transition-all shadow-md flex items-center justify-center gap-2">
+                        <span class="text-base leading-none">🏆</span> 天下の番付 <span class="text-[10px] font-normal text-yellow-600/80">(オンライン)</span> <span class="text-base leading-none">🏆</span>
                     </button>
                 </div>
             </div>
@@ -416,6 +414,7 @@
                 <h2 class="text-5xl sm:text-6xl font-black text-golden mb-2 tracking-widest anim-slide-up" style="animation-delay: 2.6s;">大往生</h2>
 
                 <div class="w-full max-w-sm border-y border-gold/70 py-3 px-4 mb-3 bg-black/80 anim-slide-up backdrop-blur-md" style="animation-delay: 3.2s;">
+                    
                     <div class="text-center mb-2 pb-1.5 border-b border-gray-700">
                         <span id="premium-player-name" class="text-sm font-bold text-gray-200 tracking-[0.2em]"></span>
                     </div>
@@ -493,7 +492,7 @@
                 <h2 class="text-base font-bold text-gold tracking-widest">絵巻図鑑</h2>
                 <button type="button" onclick="window.closeEncyclopedia(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
-            <div class="flex border-b border-[#3A322A] bg-[#1A1613]">
+            <div class="flex border-b border-[#3A322A] bg-[#1A1613] shrink-0">
                 <button type="button" onclick="window.switchEncycTab('heirloom')" id="tab-heirloom" class="flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors">お宝図鑑</button>
                 <button type="button" onclick="window.switchEncycTab('death')" id="tab-death" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">死因図鑑</button>
             </div>
@@ -567,12 +566,28 @@
             </div>
         </div>
 
+        <!-- ★NEW ================= 11. 天下の番付（ランキング）モーダル ================= -->
+        <div id="ranking-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
+            <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
+                <h2 class="text-base font-bold text-yellow-500 tracking-widest">天下の番付</h2>
+                <button type="button" onclick="window.closeRanking(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
+            </div>
+            <div class="flex border-b border-[#3A322A] bg-[#1A1613] shrink-0">
+                <button type="button" onclick="window.switchRankTab('age')" id="tab-rank-age" class="flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors">長寿番付</button>
+                <button type="button" onclick="window.switchRankTab('money')" id="tab-rank-money" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">富国長者</button>
+                <button type="button" onclick="window.switchRankTab('valor')" id="tab-rank-valor" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">修羅の道</button>
+            </div>
+            <div id="rank-content" class="flex-grow overflow-y-auto p-4 pb-8 bg-[#090807]">
+                <!-- ランキングデータがここに表示されます -->
+            </div>
+        </div>
+
     </div>
+
     <!-- ================= ゲームロジック ================= -->
     <script>
     (function() {
         window.currentReincarnationCount = 0;
-        // ★NEW: 大往生回数をカウントする変数
         window.greatDeathCount = 0;
         window.unlockedHeirlooms = [];
         window.activeHeirlooms = [];
@@ -599,7 +614,7 @@
         function saveMetaProgress() {
             try {
                 localStorage.setItem('sengoku_rinne_count', window.currentReincarnationCount);
-                localStorage.setItem('sengoku_great_death_count', window.greatDeathCount); // ★NEW: 大往生回数の保存
+                localStorage.setItem('sengoku_great_death_count', window.greatDeathCount);
                 localStorage.setItem('sengoku_unlocked_heirlooms', JSON.stringify(window.unlockedHeirlooms));
                 localStorage.setItem('sengoku_equipped_heirlooms', JSON.stringify(window.activeHeirlooms));
                 localStorage.setItem('sengoku_unlocked_deaths', JSON.stringify(window.unlockedDeaths));
@@ -614,7 +629,6 @@
             const savedCount = localStorage.getItem('sengoku_rinne_count');
             if (savedCount) window.currentReincarnationCount = parseInt(savedCount, 10) || 0;
 
-            // ★NEW: 大往生回数の読み込み
             const savedGD = localStorage.getItem('sengoku_great_death_count');
             if (savedGD) window.greatDeathCount = parseInt(savedGD, 10) || 0;
 
@@ -1249,7 +1263,6 @@
             
             if (uiMeisen) uiMeisen.innerText = window.meisen;
 
-            // ★NEW: 大往生回数と限界年齢のUI更新
             const gdElem = document.getElementById('ui-great-deaths');
             if (gdElem) gdElem.innerText = window.greatDeathCount || 0;
 
@@ -1498,6 +1511,71 @@
         window.openHelp = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('help-screen').classList.remove('hidden'); };
         window.closeHelp = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('help-screen').classList.add('hidden'); };
 
+        // ★NEW: ランキング（番付）機能の追加
+        window.openRanking = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('ranking-screen').classList.remove('hidden');
+            window.switchRankTab('age');
+        };
+        window.closeRanking = function(e) {
+            if(e){ e.preventDefault(); e.stopPropagation(); }
+            document.getElementById('ranking-screen').classList.add('hidden');
+        };
+
+        window.switchRankTab = async function(type) {
+            ['age', 'money', 'valor'].forEach(t => {
+                const el = document.getElementById(`tab-rank-${t}`);
+                if(t === type) { el.className = "flex-1 py-3 text-xs font-bold text-gold border-b-2 border-gold transition-colors"; } 
+                else { el.className = "flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors"; }
+            });
+
+            const content = document.getElementById('rank-content');
+            content.innerHTML = '<div class="text-center text-gray-500 mt-10 text-xs animate-pulse">飛脚が日本中の記録を集めております...</div>';
+
+            try {
+                const db = firebase.firestore();
+                const appId = 'sengoku-life-app';
+                const boardRef = db.collection('artifacts').doc(appId).collection('leaderboard');
+                const snapshot = await boardRef.orderBy(type, 'desc').limit(30).get();
+                
+                let html = '';
+                let rank = 1;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    let rankStyle = 'text-gray-400 text-sm';
+                    let rankIcon = `${rank}位`;
+                    let bgStyle = 'bg-[#181513] border-[#3A322A]';
+
+                    if(rank === 1) { rankStyle = 'text-yellow-400 text-xl drop-shadow-[0_0_5px_rgba(250,204,21,0.8)]'; rankIcon = '🥇'; bgStyle = 'bg-gradient-to-r from-yellow-900/30 to-[#181513] border-yellow-700/50'; }
+                    else if(rank === 2) { rankStyle = 'text-gray-300 text-lg'; rankIcon = '🥈'; bgStyle = 'bg-gradient-to-r from-gray-700/30 to-[#181513] border-gray-600/50'; }
+                    else if(rank === 3) { rankStyle = 'text-orange-400 text-lg'; rankIcon = '🥉'; bgStyle = 'bg-gradient-to-r from-orange-900/30 to-[#181513] border-orange-800/50'; }
+
+                    let scoreText = '';
+                    if(type === 'age') scoreText = `享年 <strong class="text-blood text-xl">${data.age}</strong> <span class="text-xs">歳</span>`;
+                    if(type === 'money') scoreText = `所持金 <strong class="text-gold text-xl">${data.money}</strong> <span class="text-xs">文</span>`;
+                    if(type === 'valor') scoreText = `武功 <strong class="text-red-400 text-xl">${data.valor}</strong>`;
+
+                    html += `
+                    <div class="${bgStyle} border p-2.5 rounded-sm flex items-center gap-3 shadow-md mb-2 relative overflow-hidden">
+                        <div class="font-black ${rankStyle} w-8 text-center flex-shrink-0 z-10">${rankIcon}</div>
+                        <div class="flex-grow z-10">
+                            <div class="flex justify-between items-end mb-0.5">
+                                <span class="text-sm font-bold text-white tracking-widest">${data.playerName || '名無し'}</span>
+                                <span class="text-[9px] text-gray-400 bg-black/50 px-1 py-0.5 rounded">${data.title}</span>
+                            </div>
+                            <div class="text-right text-gray-300 mt-1">${scoreText}</div>
+                        </div>
+                    </div>`;
+                    rank++;
+                });
+                
+                if(html === '') { html = '<div class="text-center text-gray-500 mt-10 text-xs">まだ記録がありません。</div>'; }
+                content.innerHTML = html;
+            } catch(err) {
+                content.innerHTML = `<div class="text-center text-red-500 mt-10 text-xs">通信に失敗しました。<br>${err.message}</div>`;
+            }
+        };
+
         function resetAllStateAndUI() {
             stopAutoPlay(); isWaitingForChoice = false; isProcessing = false; state.isAlive = false;
             if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
@@ -1515,6 +1593,7 @@
             if (document.getElementById('item-screen')) document.getElementById('item-screen').classList.add('hidden');
             if (document.getElementById('help-screen')) document.getElementById('help-screen').classList.add('hidden');
             if (document.getElementById('lost-heirloom-notice')) document.getElementById('lost-heirloom-notice').classList.add('hidden');
+            if (document.getElementById('ranking-screen')) document.getElementById('ranking-screen').classList.add('hidden');
 
             if (logContainer) { logContainer.innerHTML = ''; logContainer.scrollTop = 0; }
             if (choicesContainer) { choicesContainer.innerHTML = ''; choicesContainer.classList.add('hidden'); choicesContainer.classList.remove('flex'); }
@@ -1844,11 +1923,9 @@
             requestAnimationFrame(() => { if (logContainer) logContainer.scrollTop = logContainer.scrollHeight; });
         }
 
-        // ★NEW: 寿命限界と老衰チェックの変更
         function checkSurvival() {
             if (!state.isAlive) return;
 
-            // 10回ごとに5歳寿命が延びるボーナス計算
             const bonusAge = Math.floor((window.greatDeathCount || 0) / 10) * 5;
             const absoluteMaxAge = 70 + bonusAge;
             const randomDeathStart = 60 + bonusAge;
@@ -1864,7 +1941,7 @@
 
             if (state.health <= 0 && state.flags.migawari) {
                 state.health = 1; state.flags.migawari = false; state.deathCause = '';
-                addLog(`<span class="text-purple-300 font-bold">【身代わり地蔵】懐に忍ばせていた地蔵が砕け散った！冥府の力により、死の淵から奇跡的に生還する……！</span>`);
+                addLog(`<span class="text-purple-300 font-bold">【身代わり地蔵】懐に忍ばせていた地蔵が砕け散った！冥府の力により、死の淵から奇跡的に生生還する……！</span>`);
                 updateUI(); return;
             }
 
@@ -1872,7 +1949,6 @@
                 state.isAlive = false; stopAutoPlay(); isWaitingForChoice = false; isProcessing = false;
                 recordChronology("この世を去る"); localStorage.removeItem('sengoku_current_run');
 
-                // 死亡時の年齢が60以上なら大往生回数を+1する
                 if (state.age >= 60) {
                     window.greatDeathCount = (window.greatDeathCount || 0) + 1;
                 }
@@ -1995,7 +2071,7 @@
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (confirm("これまでの輪廻の記録と獲得した家宝蔵をすべて完全に消去します。\nよろしいですか？")) {
                 localStorage.removeItem('sengoku_rinne_count'); localStorage.removeItem('sengoku_heirloom'); localStorage.removeItem('sengoku_equipped_heirlooms'); localStorage.removeItem('sengoku_unlocked_heirlooms'); localStorage.removeItem('sengoku_unlocked_deaths'); localStorage.removeItem('sengoku_past_lives'); localStorage.removeItem('sengoku_current_run'); localStorage.removeItem('sengoku_meisen'); localStorage.removeItem('sengoku_inventory'); localStorage.removeItem('sengoku_active_consumable');
-                localStorage.removeItem('sengoku_great_death_count'); // 大往生回数もリセット
+                localStorage.removeItem('sengoku_great_death_count'); 
                 
                 window.currentReincarnationCount = 0; window.greatDeathCount = 0; window.unlockedHeirlooms = []; window.activeHeirlooms = []; window.unlockedDeaths = []; window.meisen = 0; window.inventory = {}; window.activeConsumable = null;
                 window.updateStartScreenUI(); alert("すべての記録を初期化しました。");
@@ -2125,6 +2201,17 @@
 
                     const pastLivesRef = db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('past_lives');
                     await pastLivesRef.add({ playerName: finalState.playerName || '名無し', age: age, className: className, faction: factionName, title: title, reason: reason, valor: finalState.valor, karma: finalState.karma, luck: finalState.luck, money: finalState.money, strategy: finalState.strategy, virtue: finalState.virtue, timestamp: Date.now(), chronology: finalState.chronology });
+
+                    // ★NEW: ランキング（番付）用データへの送信
+                    const boardRef = db.collection('artifacts').doc(appId).collection('leaderboard');
+                    await boardRef.add({
+                        playerName: finalState.playerName || '名無しの権兵衛',
+                        age: age,
+                        money: finalState.money,
+                        valor: finalState.valor,
+                        title: title,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
 
                     await globalStatsRef.set({
                         totalReincarnations: firebase.firestore.FieldValue.increment(1)
