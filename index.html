@@ -422,7 +422,7 @@
             <div id="rank-content" class="flex-grow overflow-y-auto p-4 pb-8 bg-[#090807]"></div>
         </div>
 
-        <!-- 作者応援・投げ銭モーダル -->
+        <!-- 作者応援・投げ銭モーダル（OFUSE削除版） -->
         <div id="support-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-gray-800 bg-[#111] flex justify-between items-center shrink-0">
                 <h2 class="text-base font-bold text-white tracking-widest">作者録・支援</h2>
@@ -434,12 +434,8 @@
                     本作を楽しんでいただけたなら、<br>一杯の酒（投げ銭）を奢っていただけると<br>次なるアップデートや新作開発の<br>大きな励みになります！
                 </p>
                 <div class="w-full max-w-xs space-y-3">
-                    <!-- ★ ここに頂いたURLを反映しました -->
                     <a href="https://www.amazon.jp/hz/wishlist/ls/92FAL8ZA3MU2?ref_=wl_share" target="_blank" class="block w-full bg-yellow-600 hover:bg-yellow-500 text-white py-3 rounded font-bold text-sm shadow-md transition-colors">
                         🎁 Amazonほしい物リストで支援
-                    </a>
-                    <a href="https://ofuse.me/" target="_blank" class="block w-full bg-pink-600 hover:bg-pink-500 text-white py-3 rounded font-bold text-sm shadow-md transition-colors">
-                        💌 OFUSEでメッセージを送る
                     </a>
                 </div>
                 <p class="text-gray-500 text-[10px] mt-6">※上記ボタンを押すと外部サイトへ移動します。</p>
@@ -1386,7 +1382,7 @@
             text += `称号：${title}\n\n`;
             text += `天下の番付に挑戦せよ！\n`;
             text += `#乱世の輪廻\n`;
-            text += `https://mamyxmamy.github.io/----/`; // ← ※本番の際はここを正しいURLに書き換えてください
+            text += `https://mamyxmamy.github.io/ransesrinne/`;
 
             const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
             window.open(url, '_blank');
