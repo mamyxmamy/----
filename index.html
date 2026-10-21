@@ -246,7 +246,7 @@
                     </div>
                     <div class="text-right">
                         <span class="text-[10px] text-gray-400 font-bold block">享年まで</span>
-                        <div class="text-2xl font-black text-white"><span id="ui-age">15</span><span class="text-xs text-gray-400 font-normal ml-0.5">歳</span></div>
+                        <div class="text-2xl font-black text-white"><span id="ui-age">14</span><span class="text-xs text-gray-400 font-normal ml-0.5">歳</span></div>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2.5">
@@ -563,7 +563,8 @@
             { id: 'hl_cross', name: "黄金の十字架", hint: "人徳と運の導きにより授かる" },
             { id: 'hl_okina', name: "呪われた翁面", hint: "業が深く長生きした者が取り憑かれる" },
             { id: 'hl_kitsune', name: "霊狐の毛皮", hint: "途方もない幸運で生き延びた者が得る" },
-            { id: 'hl_aoi', name: "四葉の葵紋", hint: "戦火の中で運良く拾う品" }
+            { id: 'hl_aoi', name: "四葉の葵紋", hint: "戦火の中で運良く拾う品" },
+            { id: 'hl_club', name: "古びた木の棍棒", hint: "素寒貧の縛りを背負い、大往生を遂げた猛者が遺す伝説の武器" }
         ];
 
         const DEATH_CAUSES_DB = [
@@ -575,7 +576,7 @@
         const WIFE_NAMES = ['千代', 'まつ', '寧々', 'お市', '濃姫', '小松', '妙玖', '早川殿', '甲斐姫', 'お田鶴'];
 
         let state = {
-            playerName: '名無し', age: 15, health: 100, money: 0, classInfo: null, faction: null,
+            playerName: '名無し', age: 14, health: 100, money: 0, classInfo: null, faction: null,
             isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0,
             mode: 'normal', lastMode: 'normal', modeTurn: 0, flags: {}, chronology: []
         };
@@ -845,12 +846,34 @@
 
         const AGE_EVENTS = [
             { id: 'genpuku', mode: ['normal'], weight: 100, condition: (s) => s.age === 15 && !s.flags.genpuku,
-                title: '【元服】大人の仲間入り', text: '15の歳を迎え、一人前の大人として扱われる元服の儀を迎えた。これより先、自分の命は自分で守らねばならない。',
+                title: '【元服】乱世への誓い', text: '15の歳を迎え、一人前の大人として扱われる元服の儀を終えた。今日から己の命は己で守らねばならない。血で血を洗うこの戦国において、あなたは何を武器にして生き抜く覚悟か？',
                 choices: [
-                    { text: '決意を胸に前を向く', condition: () => true, hint: '運試し', effect: (s) => { 
-                        s.flags.genpuku = true;
-                        if(Math.random() < 0.5) { s.luck+=10; return { hp: 10, log: '雲一つない青空が広がり、幸先の良い人生のスタートを切った。' }; }
-                        else { return { hp: -5, log: '儀式の最中に転んで怪我をした。前途多難な予感がする…。' }; }
+                    { text: '【武力】幼き日より鍛え上げた腕っぷしで、力強く生きる！', condition: () => true, hint: '武功+20', effect: (s) => { 
+                        s.flags.genpuku = true; s.valor += 20; recordChronology("元服し、武で身を立てる誓いを立てる");
+                        return { hp: 0, log: '己の肉体と力こそが唯一の裏切らない武器だ。力強く乱世を踏み出した！' }; 
+                    } },
+                    { text: '【知略】大人たちから学んだ、ずる賢い知恵で立ち回る！', condition: () => true, hint: '知略+20', effect: (s) => { 
+                        s.flags.genpuku = true; s.strategy += 20; recordChronology("元服し、知恵で生き抜く誓いを立てる");
+                        return { hp: 0, log: '真っ向勝負など馬鹿のすること。頭脳と策謀でこの世を泳ぎ切ってみせる！' }; 
+                    } },
+                    { text: '【人徳】困った時はお互い様。人との繋がりを大事にする！', condition: () => true, hint: '人徳+20', effect: (s) => { 
+                        s.flags.genpuku = true; s.virtue += 20; recordChronology("元服し、仁義を重んじる誓いを立てる");
+                        return { hp: 0, log: '情けは人のためならず。周囲と助け合いながら、泥臭くとも温かく生きる道を選んだ。' }; 
+                    } },
+                    { text: '【野心】手段は選ばない。他人から奪ってでも這い上がる！', condition: () => true, hint: '悪逆+20 / 銭+50', effect: (s) => { 
+                        s.flags.genpuku = true; s.karma += 20; recordChronology("元服し、修羅の道を歩む誓いを立てる");
+                        return { hp: 0, money: 50, log: '善人ぶって餓死するくらいなら、悪鬼となってでも富と命を貪り食ってやる！' }; 
+                    } },
+                    { text: '【強運】結局、生死を分けるのは運だ。天命に身を委ねる！', condition: () => true, hint: '運+20 / 体力+10', effect: (s) => { 
+                        s.flags.genpuku = true; s.luck += 20; recordChronology("元服し、天命に身を委ねる誓いを立てる");
+                        return { hp: 10, log: 'なるようにしかならないのが乱世。天の導きを信じ、飄々と風の吹くままに歩み出した。' }; 
+                    } },
+                    { text: '【素寒貧】己の裸一貫と、拾った木の棍棒だけで世界へ飛び出す！', condition: () => true, hint: '全能力+1 / 所持金0（縛りプレイ用）', effect: (s) => { 
+                        s.flags.genpuku = true; s.flags.sukanpin = true;
+                        s.valor += 1; s.strategy += 1; s.virtue += 1; s.karma += 1; s.luck += 1;
+                        let lostMoney = s.money; s.money = 0; 
+                        recordChronology("素寒貧として、木の棍棒一本で乱世に放り出される");
+                        return { hp: 0, money: -lostMoney, log: '身につけていたものをすべて投げ捨て、拾った木の棍棒だけを握りしめて歩み出した。地獄のような縛りプレイの始まりだ！' }; 
                     } }
                 ] },
             { id: 'marriage', mode: ['normal'], weight: 15, condition: (s) => s.age >= 18 && !s.flags.married,
@@ -938,6 +961,8 @@
         // ==========================================
 
         function calculateTitle(s) {
+            if (s.age >= 60 && s.flags.sukanpin) return "伝説の素寒貧";
+            
             if (s.age >= 100) return "不老不死の化身";
             if (s.age >= 90) return "伝説の仙人";
             if (s.age >= 80) return "生き字引の翁";
@@ -1038,6 +1063,8 @@
             if (s.age >= 60) candidates.push({ id: 'hl_furo', name: "南蛮不老薬", type: "health", value: 30, desc: "初期体力 +30" });
             if (s.luck >= 60) candidates.push({ id: 'hl_yohen', name: "曜変天目茶碗", type: "luck", value: 20, desc: "初期運 +20" });
             if (s.luck >= 40) candidates.push({ id: 'hl_aoi', name: "四葉の葵紋", type: "luck", value: 10, desc: "初期運 +10" });
+            
+            if (s.flags.sukanpin && s.age >= 60) candidates.push({ id: 'hl_club', name: "古びた木の棍棒", type: "luck", value: 50, desc: "初期運 +50（伝説の素寒貧の証）" });
             
             if (candidates.length > 0) return candidates[Math.floor(Math.random() * candidates.length)];
             return null;
@@ -1456,7 +1483,7 @@
             const spawnProbability = ((selectedClass.weight / totalWeight) * 100).toFixed(1);
             const selectedFaction = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];
 
-            state = { playerName: finalName, age: 15, health: selectedClass.initHealth, money: selectedClass.initMoney, classInfo: selectedClass, faction: selectedFaction, isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0, mode: 'normal', lastMode: 'normal', modeTurn: 0, flags: {}, chronology: [] };
+            state = { playerName: finalName, age: 14, health: selectedClass.initHealth, money: selectedClass.initMoney, classInfo: selectedClass, faction: selectedFaction, isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0, mode: 'normal', lastMode: 'normal', modeTurn: 0, flags: {}, chronology: [] };
 
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
@@ -1843,7 +1870,7 @@
                 else if (state.deathCause === 'oldage') reason = "数多の死線を潜り抜け、奇跡的に畳の上で穏やかに生涯を閉じた。";
                 else if (state.deathCause === 'execution') reason = "刑場に引き立てられ、無惨にも首を刎ねられて露と消えた。";
                 else if (state.deathCause === 'hunted') reason = "落武者狩りの凶刃に倒れ、誰にも知られることなく泥の中で息絶えた。";
-                else if (state.deathCause === 'plague') reason = "恐ろしい疫病に身体を蝕まれ、高熱と苦痛の中で黒い血を吐いて死んだ。";
+                else if (state.deathCause === 'plague') reason = "恐ろしい病魔に蝕まれ、高熱と苦痛の中で黒い血を吐いて死んだ。";
                 else reason = `${state.lastDamageEvent}により深い手傷を負い、無念のまま命を落とした。`;
 
                 let lostHeirlooms = [];
