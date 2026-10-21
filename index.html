@@ -156,24 +156,23 @@
 
     <div id="app-container" class="w-full h-full sm:h-[95vh] sm:max-h-[850px] max-w-md mx-auto relative flex flex-col sm:border sm:border-[#3A322A] sm:rounded-lg overflow-hidden">
 
-        <!-- ================= 1. タイトル＆スタート画面 ================= -->
-        <div id="start-screen" class="absolute inset-0 z-30 bg-[#161311] flex flex-col items-center justify-between px-6 py-8">
-            <div class="flex-grow flex items-center justify-center relative w-full">
-                
-                <button type="button" onclick="window.resetSaveData(event)" class="absolute top-0 left-0 bg-red-950/40 text-red-500 hover:text-white border border-red-900/50 hover:bg-red-900 px-2 py-1.5 rounded-sm shadow-md text-[10px] transition-colors z-20">
+        <div id="start-screen" class="absolute inset-0 z-30 bg-[#161311] flex flex-col px-5 py-5 overflow-y-auto pb-8 scroll-smooth">
+            <div class="flex justify-between items-start w-full flex-shrink-0 z-20 mb-2">
+                <button type="button" onclick="window.resetSaveData(event)" class="bg-red-950/40 text-red-500 hover:text-white border border-red-900/50 hover:bg-red-900 px-2 py-1.5 rounded-sm shadow-md text-[10px] transition-colors">
                     記録初期化
                 </button>
-
-                <div class="absolute inset-0 flex items-center justify-center opacity-10 text-[10rem] font-black text-red-700 pointer-events-none select-none">輪</div>
-                <h1 class="vertical-rl text-5xl sm:text-6xl font-black text-white tracking-[0.35em] drop-shadow-[0_0_20px_rgba(200,0,0,0.6)] z-10">乱世の輪廻</h1>
-                
-                <div class="absolute top-0 right-0 bg-black/60 border border-gray-700 px-3 py-1.5 rounded-sm shadow-md flex items-center gap-2">
+                <div class="bg-black/60 border border-gray-700 px-3 py-1.5 rounded-sm shadow-md flex items-center gap-2">
                     <span class="text-[10px] text-gray-400">所持冥銭</span>
                     <span class="text-sm font-bold text-gray-200"><span id="ui-meisen">0</span></span>
                 </div>
             </div>
 
-            <div class="w-full text-center my-2 space-y-2">
+            <div class="flex-shrink-0 flex items-center justify-center relative w-full min-h-[140px] sm:min-h-[180px] mb-4">
+                <div class="absolute inset-0 flex items-center justify-center opacity-10 text-[10rem] font-black text-red-700 pointer-events-none select-none">輪</div>
+                <h1 class="vertical-rl text-5xl sm:text-6xl font-black text-white tracking-[0.35em] drop-shadow-[0_0_20px_rgba(200,0,0,0.6)] z-10">乱世の輪廻</h1>
+            </div>
+
+            <div class="w-full text-center flex-shrink-0 space-y-2 mb-6">
                 <div class="border-y border-[#3A322A] py-2 bg-black/45 rounded-sm flex justify-around items-center">
                     <div>
                         <span class="text-gray-400 text-xs font-bold block mb-0.5">輪廻の巡り</span>
@@ -186,14 +185,12 @@
                     </div>
                 </div>
 
-                <!-- ★NEW: 情報を圧縮した黒板エリア -->
                 <div class="bg-[#110F0D] border border-[#2A2520] rounded-sm py-1.5 text-center text-[10px] text-gray-400 flex flex-wrap justify-center gap-x-4 gap-y-1 shadow-inner">
                     <span>天下の総輪廻: <span id="ui-global-reincarnations" class="text-gold font-bold">---</span>回</span>
                     <span>寿命限界: <span id="ui-max-age-limit" class="text-red-400 font-bold">70</span>歳</span>
                     <span class="w-full text-[9px] text-gray-600 mt-0.5">(老衰開始: <span id="ui-random-death-start">60</span>歳)</span>
                 </div>
 
-                <!-- 家宝表示エリア -->
                 <div onclick="window.openHeirloomStorage()" class="bg-[#211C18] border border-gold/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#2A231D]">
                     <span class="text-[11px] text-gold font-bold mb-1.5 flex justify-between border-b border-gold/20 pb-1">
                         <span>【継承家宝】 <span class="text-gray-400 font-normal">(枠: <span id="hl-slots-count">0/1</span>)</span></span>
@@ -204,7 +201,6 @@
                     </div>
                 </div>
                 
-                <!-- 持込道具エリア -->
                 <div onclick="window.openItemStorage()" class="bg-[#1A1821] border border-purple-900/40 p-2.5 rounded-sm text-left shadow-lg w-full cursor-pointer transition-colors hover:bg-[#23202C]">
                     <span class="text-[11px] text-purple-300 font-bold mb-1.5 flex justify-between border-b border-purple-900/40 pb-1">
                         <span>【持込道具】 <span class="text-gray-400 font-normal">(1回使い切り)</span></span>
@@ -216,7 +212,7 @@
                 </div>
             </div>
 
-            <div class="w-full space-y-2 z-10">
+            <div class="w-full flex-shrink-0 space-y-2 mt-auto">
                 <div class="w-full px-1 mb-2">
                     <input type="text" id="player-name-input" placeholder="御主の名（最大8文字）" maxlength="8" class="w-full bg-[#0D0B0A] border border-[#3A322A] text-white text-center py-2.5 rounded-sm focus:outline-none focus:border-gold transition-colors placeholder-gray-600 font-bold tracking-[0.2em] shadow-inner text-sm">
                 </div>
@@ -242,7 +238,6 @@
                         輪廻の回想
                     </button>
 
-                    <!-- ★NEW: フルウィズの番付ボタン -->
                     <button type="button" onclick="window.openRanking(event)" class="col-span-2 action-button-main bg-gradient-to-b from-[#2A1F10] to-[#1A1308] text-yellow-500 hover:text-white border border-yellow-700/60 py-3 mt-1 text-xs font-bold tracking-widest rounded-sm transition-all shadow-md flex items-center justify-center gap-2">
                         <span class="text-base leading-none">🏆</span> 天下の番付 <span class="text-[10px] font-normal text-yellow-600/80">(オンライン)</span> <span class="text-base leading-none">🏆</span>
                     </button>
@@ -250,7 +245,6 @@
             </div>
         </div>
 
-        <!-- ================= 1.5. ルーレット画面 ================= -->
         <div id="roulette-screen" class="hidden absolute inset-0 z-40 bg-[#090807] flex flex-col items-center justify-center pointer-events-none">
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,0,0,0.2)_0%,rgba(0,0,0,0.9)_80%)]"></div>
             <div class="z-10 text-center w-full px-4">
@@ -266,7 +260,6 @@
             </div>
         </div>
 
-        <!-- ================= 1.8. ストーリー導入画面 ================= -->
         <div id="intro-screen" class="hidden absolute inset-0 z-40 bg-black flex flex-col items-center justify-center p-6 cursor-pointer" onclick="window.finishIntro()">
             <div id="intro-text" class="text-white text-[13px] sm:text-sm leading-[2.2] font-bold tracking-[0.15em] text-center space-y-5 fade-text opacity-0 w-full">
             </div>
@@ -275,7 +268,6 @@
             </div>
         </div>
 
-        <!-- ================= 2. メインゲーム画面 ================= -->
         <div id="game-screen" class="hidden h-full w-full flex flex-col relative z-10 overflow-hidden">
             
             <header class="shrink-0 bg-[#14110F] border-b border-[#3A322A] p-3 z-20 shadow-md transition-colors duration-300">
@@ -343,7 +335,6 @@
             </footer>
         </div>
 
-        <!-- ================= 3. 通常死亡画面 ================= -->
         <div id="gameover-screen" class="hidden absolute inset-0 z-50 flex flex-col items-center justify-center p-5 text-white text-center backdrop-blur-md overflow-y-auto pointer-events-auto transition-colors duration-700">
             <h2 id="go-main-title" class="text-5xl sm:text-6xl font-black mb-1 mt-2 tracking-[0.25em]">討死</h2>
             <p id="go-sub-title" class="text-[10px] text-gray-500 mb-2 tracking-widest">- 乱世の泡と消ゆ -</p>
@@ -390,7 +381,7 @@
             </div>
 
             <div id="lost-heirloom-notice" class="hidden mb-3 w-full max-w-sm border border-red-800 bg-red-950/40 p-1.5 text-center rounded-sm shadow-md">
-                <span class="text-[10px] text-red-500 font-bold block mb-0.5">【家宝喪失】無念…</span>
+                <span class="text-[10px] text-red-500 font-bold mb-0.5">【家宝喪失】無念…</span>
                 <span id="lost-heirloom-text" class="text-gray-300 text-[11px]"></span>
             </div>
 
@@ -404,7 +395,6 @@
             </button>
         </div>
 
-        <!-- ================= 4. 大往生プレミアム画面 ================= -->
         <div id="premium-screen" class="hidden absolute inset-0 z-50 premium-bg flex flex-col items-center justify-center text-center overflow-hidden pointer-events-auto">
             <canvas id="particle-canvas" class="absolute inset-0 z-0 pointer-events-none"></canvas>
             <div id="freeze-overlay" class="freeze-overlay"></div>
@@ -460,7 +450,6 @@
             </div>
         </div>
 
-        <!-- ================= 5. 輪廻の回想モーダル ================= -->
         <div id="history-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
                 <h2 class="text-base font-bold text-white tracking-widest">輪廻の回想</h2>
@@ -470,7 +459,6 @@
             <div id="history-list" class="flex-grow overflow-y-auto p-4 hidden space-y-3 pb-8"></div>
         </div>
 
-        <!-- ================= 6. 家宝蔵（選択）モーダル ================= -->
         <div id="heirloom-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
                 <div>
@@ -486,7 +474,6 @@
             <div id="heirloom-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
-        <!-- ================= 7. 絵巻図鑑モーダル ================= -->
         <div id="encyclopedia-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
                 <h2 class="text-base font-bold text-gold tracking-widest">絵巻図鑑</h2>
@@ -500,7 +487,6 @@
             </div>
         </div>
 
-        <!-- ================= 8. 冥府の商人（ショップ）モーダル ================= -->
         <div id="shop-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
                 <div>
@@ -516,7 +502,6 @@
             <div id="shop-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
-        <!-- ================= 9. 道具（持ち込み）選択モーダル ================= -->
         <div id="item-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#2A1833] bg-[#110D16] flex justify-between items-center shrink-0">
                 <div>
@@ -528,7 +513,6 @@
             <div id="item-list" class="flex-grow overflow-y-auto p-4 space-y-3 pb-8"></div>
         </div>
 
-        <!-- ================= 10. 遊戯指南（ヘルプ）モーダル ================= -->
         <div id="help-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-green-900/60 bg-[#111613] flex justify-between items-center shrink-0">
                 <div>
@@ -560,13 +544,13 @@
                     </ul>
                 </section>
                 <section>
-                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 大往生と寿命の超越</h3>
-                    <p>享年60歳まで生き延びると、「大往生」となり特別な結末を迎えます。さらに<span class="text-gold font-bold">大往生を10回達成するごとに、老衰が始まる年齢と絶対寿命の限界が「5歳」ずつ延長され、より長く生きられるようになります。</span></p>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 大往生と時間の流れ</h3>
+                    <p>享年60歳まで生き延びると、「大往生」となり特別な結末を迎えます。大往生を10回達成するごとに寿命の限界が「5歳」ずつ延長されます。</p>
+                    <p class="text-red-300 font-bold mt-1">※平和な日常は1年単位で進みますが、合戦や逃亡中などの特殊な状態では、より短い期間（月・日単位）で時間が濃密に進みます。</p>
                 </section>
             </div>
         </div>
 
-        <!-- ★NEW ================= 11. 天下の番付（ランキング）モーダル ================= -->
         <div id="ranking-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-[#3A322A] bg-[#14110F] flex justify-between items-center shrink-0">
                 <h2 class="text-base font-bold text-yellow-500 tracking-widest">天下の番付</h2>
@@ -578,12 +562,10 @@
                 <button type="button" onclick="window.switchRankTab('valor')" id="tab-rank-valor" class="flex-1 py-3 text-xs font-bold text-gray-500 border-b-2 border-transparent transition-colors">修羅の道</button>
             </div>
             <div id="rank-content" class="flex-grow overflow-y-auto p-4 pb-8 bg-[#090807]">
-                <!-- ランキングデータがここに表示されます -->
             </div>
         </div>
 
     </div>
-
     <!-- ================= ゲームロジック ================= -->
     <script>
     (function() {
@@ -628,33 +610,23 @@
         try {
             const savedCount = localStorage.getItem('sengoku_rinne_count');
             if (savedCount) window.currentReincarnationCount = parseInt(savedCount, 10) || 0;
-
             const savedGD = localStorage.getItem('sengoku_great_death_count');
             if (savedGD) window.greatDeathCount = parseInt(savedGD, 10) || 0;
-
             const savedHeirlooms = localStorage.getItem('sengoku_unlocked_heirlooms');
             if (savedHeirlooms) window.unlockedHeirlooms = JSON.parse(savedHeirlooms);
-
             const savedEquipped = localStorage.getItem('sengoku_equipped_heirlooms');
-            if (savedEquipped) {
-                window.activeHeirlooms = JSON.parse(savedEquipped);
-            }
+            if (savedEquipped) window.activeHeirlooms = JSON.parse(savedEquipped);
             const maxSlots = window.getMaxHeirloomSlots();
             if (window.activeHeirlooms.length > maxSlots) window.activeHeirlooms = window.activeHeirlooms.slice(0, maxSlots);
-
             const savedDeaths = localStorage.getItem('sengoku_unlocked_deaths');
             if (savedDeaths) window.unlockedDeaths = JSON.parse(savedDeaths);
-
             const savedMeisen = localStorage.getItem('sengoku_meisen');
             if (savedMeisen) window.meisen = parseInt(savedMeisen, 10) || 0;
             const savedInv = localStorage.getItem('sengoku_inventory');
             if (savedInv) window.inventory = JSON.parse(savedInv);
             const savedCons = localStorage.getItem('sengoku_active_consumable');
             if (savedCons) window.activeConsumable = JSON.parse(savedCons);
-
-        } catch (e) {
-            console.warn("Storage restricted:", e);
-        }
+        } catch (e) {}
 
         const CLASSES = [
             { id: 'peasant', name: '農民', weight: 60, initHealth: 80, initMoney: 5, intro: '泥にまみれ、草のように這いつくばって生きる下賤な生を受けた。この世は奪われるだけの地獄か、それとも。' },
@@ -670,16 +642,14 @@
         ];
 
         const FACTIONS = [
-            { id: 'oda', name: '織田家', color: '#4B0082' },
-            { id: 'takeda', name: '武田家', color: '#8B0000' },
-            { id: 'mori', name: '毛利家', color: '#006400' },
-            { id: 'hojo', name: '北条家', color: '#00008B' },
-            { id: 'uesugi', name: '上杉家', color: '#2F4F4F' },
-            { id: 'shimazu', name: '島津家', color: '#556B2F' }
+            { id: 'oda', name: '織田家', color: '#4B0082' }, { id: 'takeda', name: '武田家', color: '#8B0000' },
+            { id: 'mori', name: '毛利家', color: '#006400' }, { id: 'hojo', name: '北条家', color: '#00008B' },
+            { id: 'uesugi', name: '上杉家', color: '#2F4F4F' }, { id: 'shimazu', name: '島津家', color: '#556B2F' }
         ];
 
         const CONSUMABLES_DB = [
             { id: 'migawari', name: '身代わり地蔵', price: 50, desc: '致死ダメージを受けた際、自動で消費されてHP1で生き残る最強の保険。', type: 'migawari' },
+            { id: 'kizugusuri', name: '秘伝の傷薬', price: 20, desc: '体力が30以下になるか致死ダメージを受けた際、自動で消費され体力を50回復する。', type: 'auto_heal', value: 50 },
             { id: 'tegata', name: '豪商の紹介状', price: 30, desc: '初期所持金 +150文 でスタート。', type: 'money', value: 150 },
             { id: 'ganyaku', name: '鬼神の丸薬', price: 30, desc: '初期武功 +30 でスタート。', type: 'valor', value: 30 },
             { id: 'heihou', name: '稀代の兵法書', price: 30, desc: '初期知略 +30 でスタート。', type: 'strategy', value: 30 },
@@ -688,537 +658,350 @@
         ];
 
         const HEIRLOOMS_DB = [
-            { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" },
-            { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
-            { id: 'hl_ranjyatai', name: "名香・蘭奢待", hint: "天下の万民から敬愛されし者が賜る" },
-            { id: 'hl_hiragumo', name: "古天明平蜘蛛", hint: "非道と悪逆の果て、魔道を往く者が手にする" },
-            { id: 'hl_tsukumo', name: "九十九髪茄子", hint: "途方もない巨万の富を築きし商人が落とす" },
-            { id: 'hl_nanbandou', name: "南蛮胴具足", hint: "数多の死線を越え、長寿を全うせし者が得る" },
-            { id: 'hl_mikazuki', name: "天下五剣・三日月宗近", hint: "高き武芸を誇る剣豪が手にする" },
-            { id: 'hl_hasebe', name: "へし切長谷部", hint: "冷徹なる武功を挙げし者の愛刀" },
-            { id: 'hl_koyogunkan', name: "甲陽軍鑑", hint: "優れた軍略を遺せし者が著す" },
-            { id: 'hl_sonshi', name: "孫子の古伝書", hint: "高い兵法と知略を備えし者が受け継ぐ" },
-            { id: 'hl_matsukaze', name: "名馬・松風", hint: "人望厚き将の元へ駆けつける名馬" },
-            { id: 'hl_muramasa', name: "妖刀・千子村正", hint: "血塗られた悪逆の道を歩む者が振るう" },
-            { id: 'hl_chaki', name: "黄金の茶器", hint: "莫大な富を蓄えし商人の証" },
-            { id: 'hl_furo', name: "南蛮不老薬", hint: "還暦を越える長寿を成せし者が秘蔵する" },
-            { id: 'hl_yohen', name: "曜変天目茶碗", hint: "並外れた強運を持つ者が偶然手に入れる" },
-            { id: 'hl_aoi', name: "四葉の葵紋", hint: "戦火の中で運良く拾う品" }
+            { id: 'hl_tonbogiri', name: "天下三名槍・蜻蛉切", hint: "人知を超えた武功を挙げし者の元へ" }, { id: 'hl_rikutou', name: "六韜三略の秘伝", hint: "神算鬼謀、知恵の極致に至りし者が得る" },
+            { id: 'hl_ranjyatai', name: "名香・蘭奢待", hint: "天下の万民から敬愛されし者が賜る" }, { id: 'hl_hiragumo', name: "古天明平蜘蛛", hint: "非道と悪逆の果て、魔道を往く者が手にする" },
+            { id: 'hl_tsukumo', name: "九十九髪茄子", hint: "途方もない巨万の富を築きし商人が落とす" }, { id: 'hl_nanbandou', name: "南蛮胴具足", hint: "数多の死線を越え、長寿を全うせし者が得る" },
+            { id: 'hl_mikazuki', name: "天下五剣・三日月宗近", hint: "高き武芸を誇る剣豪が手にする" }, { id: 'hl_hasebe', name: "へし切長谷部", hint: "冷徹なる武功を挙げし者の愛刀" },
+            { id: 'hl_koyogunkan', name: "甲陽軍鑑", hint: "優れた軍略を遺せし者が著す" }, { id: 'hl_sonshi', name: "孫子の古伝書", hint: "高い兵法と知略を備えし者が受け継ぐ" },
+            { id: 'hl_matsukaze', name: "名馬・松風", hint: "人望厚き将の元へ駆けつける名馬" }, { id: 'hl_muramasa', name: "妖刀・千子村正", hint: "血塗られた悪逆の道を歩む者が振るう" },
+            { id: 'hl_chaki', name: "黄金の茶器", hint: "莫大な富を蓄えし商人の証" }, { id: 'hl_furo', name: "南蛮不老薬", hint: "還暦を越える長寿を成せし者が秘蔵する" },
+            { id: 'hl_yohen', name: "曜変天目茶碗", hint: "並外れた強運を持つ者が偶然手に入れる" }, { id: 'hl_aoi', name: "四葉の葵紋", hint: "戦火の中で運良く拾う品" }
         ];
 
         const DEATH_CAUSES_DB = [
-            { id: 'battle', name: '討死', hint: '戦場で名誉ある、あるいは無残な最期を遂げる。' },
-            { id: 'starvation', name: '餓死', hint: '極限の飢えに苦しみ、泥を啜って命を落とす。' },
-            { id: 'execution', name: '斬首・処刑', hint: '権力者の怒りを買うか、捕縛されて首を刎ねられる。' },
-            { id: 'hunted', name: '野垂死', hint: '落武者狩りなどに遭い、路傍で息絶える。' },
-            { id: 'plague', name: '病死', hint: '恐ろしい病魔に蝕まれ、病床で果てる。' },
-            { id: 'oldage', name: '大往生・老衰', hint: '天寿を全うし、畳の上で穏やかに生涯を閉じる。' }
+            { id: 'battle', name: '討死', hint: '戦場で名誉ある、あるいは無残な最期を遂げる。' }, { id: 'starvation', name: '餓死', hint: '極限の飢えに苦しみ、泥を啜って命を落とす。' },
+            { id: 'execution', name: '斬首・処刑', hint: '権力者の怒りを買うか、捕縛されて首を刎ねられる。' }, { id: 'hunted', name: '野垂死', hint: '落武者狩りなどに遭い、路傍で息絶える。' },
+            { id: 'plague', name: '病死', hint: '恐ろしい病魔に蝕まれ、病床で果てる。' }, { id: 'oldage', name: '大往生・老衰', hint: '天寿を全うし、畳の上で穏やかに生涯を閉じる。' }
         ];
 
         const WIFE_NAMES = ['千代', 'まつ', '寧々', 'お市', '濃姫', '小松', '妙玖', '早川殿', '甲斐姫', 'お田鶴'];
 
         let state = {
-            playerName: '名無し',
-            age: 15, health: 100, money: 0,
-            classInfo: null, faction: null,
-            isAlive: true, lastDamageEvent: '', deathCause: '',
-            valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0,
-            mode: 'normal', flags: {}, chronology: []
+            playerName: '名無し', age: 15, health: 100, money: 0, classInfo: null, faction: null,
+            isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0,
+            mode: 'normal', lastMode: 'normal', modeTurn: 0, flags: {}, chronology: []
         };
 
-        let autoPlayTimer = null;
-        let isWaitingForChoice = false;
-        let isProcessing = false;
-        let animFrameId = null;
-
+        let autoPlayTimer = null; let isWaitingForChoice = false; let isProcessing = false; let animFrameId = null;
         let appContainer, startScreen, gameScreen, gameoverScreen, premiumScreen, historyScreen;
-        let rouletteScreen, rouletteClass, rouletteFaction;
-        let introScreen, introText, introPrompt;
+        let rouletteScreen, rouletteClass, rouletteFaction, introScreen, introText, introPrompt;
         let advanceBtn, advanceBtnText, choicesContainer, logContainer;
         let uiAge, uiClass, uiHealth, uiMoney, uiFaction, modeBadge, uiPlayerName;
-        let uiValor, uiKarma, uiStrategy, uiVirtue, uiLuck, uiMaxHealth;
-        let uiMeisen, playerNameInput;
+        let uiValor, uiKarma, uiStrategy, uiVirtue, uiLuck, uiMaxHealth, uiMeisen, playerNameInput;
 
         function cacheElements() {
-            appContainer = document.getElementById('app-container');
-            startScreen = document.getElementById('start-screen');
-            gameScreen = document.getElementById('game-screen');
-            gameoverScreen = document.getElementById('gameover-screen');
-            premiumScreen = document.getElementById('premium-screen');
-            historyScreen = document.getElementById('history-screen');
-            rouletteScreen = document.getElementById('roulette-screen');
-            rouletteClass = document.getElementById('roulette-class');
-            rouletteFaction = document.getElementById('roulette-faction');
-            introScreen = document.getElementById('intro-screen');
-            introText = document.getElementById('intro-text');
-            introPrompt = document.getElementById('intro-tap-prompt');
-            
-            advanceBtn = document.getElementById('advance-btn');
-            advanceBtnText = document.getElementById('advance-btn-text');
-            choicesContainer = document.getElementById('choices-container');
-            logContainer = document.getElementById('log-container');
-            uiAge = document.getElementById('ui-age');
-            uiClass = document.getElementById('ui-class');
-            uiHealth = document.getElementById('ui-health');
-            uiMoney = document.getElementById('ui-money');
-            uiFaction = document.getElementById('ui-faction');
-            modeBadge = document.getElementById('ui-mode-badge');
-            uiPlayerName = document.getElementById('ui-player-name');
-            playerNameInput = document.getElementById('player-name-input');
-            
-            uiValor = document.getElementById('ui-valor');
-            uiKarma = document.getElementById('ui-karma');
-            uiStrategy = document.getElementById('ui-strategy');
-            uiVirtue = document.getElementById('ui-virtue');
-            uiLuck = document.getElementById('ui-luck');
-            uiMaxHealth = document.getElementById('ui-max-health');
+            appContainer = document.getElementById('app-container'); startScreen = document.getElementById('start-screen');
+            gameScreen = document.getElementById('game-screen'); gameoverScreen = document.getElementById('gameover-screen');
+            premiumScreen = document.getElementById('premium-screen'); historyScreen = document.getElementById('history-screen');
+            rouletteScreen = document.getElementById('roulette-screen'); rouletteClass = document.getElementById('roulette-class');
+            rouletteFaction = document.getElementById('roulette-faction'); introScreen = document.getElementById('intro-screen');
+            introText = document.getElementById('intro-text'); introPrompt = document.getElementById('intro-tap-prompt');
+            advanceBtn = document.getElementById('advance-btn'); advanceBtnText = document.getElementById('advance-btn-text');
+            choicesContainer = document.getElementById('choices-container'); logContainer = document.getElementById('log-container');
+            uiAge = document.getElementById('ui-age'); uiClass = document.getElementById('ui-class');
+            uiHealth = document.getElementById('ui-health'); uiMoney = document.getElementById('ui-money');
+            uiFaction = document.getElementById('ui-faction'); modeBadge = document.getElementById('ui-mode-badge');
+            uiPlayerName = document.getElementById('ui-player-name'); playerNameInput = document.getElementById('player-name-input');
+            uiValor = document.getElementById('ui-valor'); uiKarma = document.getElementById('ui-karma');
+            uiStrategy = document.getElementById('ui-strategy'); uiVirtue = document.getElementById('ui-virtue');
+            uiLuck = document.getElementById('ui-luck'); uiMaxHealth = document.getElementById('ui-max-health');
             uiMeisen = document.getElementById('ui-meisen');
         }
 
-        function stopAutoPlay() {
-            if (autoPlayTimer) { clearTimeout(autoPlayTimer); autoPlayTimer = null; }
-        }
+        function stopAutoPlay() { if (autoPlayTimer) { clearTimeout(autoPlayTimer); autoPlayTimer = null; } }
+        function recordChronology(text) { state.chronology.push({ age: state.age, text: text }); }
 
-        function recordChronology(text) {
-            state.chronology.push({ age: state.age, text: text });
-        }
+        // ==========================================
+        // ★NEW: イベントをジャンル別に分割管理
+        // ==========================================
 
-        const EVENTS = [
-            {
-                id: 'battle_end', mode: ['battle'], weight: 45, condition: () => true,
-                title: '【帰陣】合戦の終わり', text: '長く血生臭い戦いがついに終わりを告げた。両軍は兵を引き、生き残った者たちはそれぞれの故郷や陣所へと帰還する。生存を分かち合う論功行賞の刻だ。',
+        // ① 汎用・娯楽イベント（主に mode: 'normal'）
+        const NORMAL_EVENTS = [
+            { id: 'draft', mode: ['normal'], weight: 30, condition: (s) => (s.classInfo.id === 'peasant' || s.classInfo.id === 'ashigaru') && s.age < 60,
+                title: '【動員令】合戦の徴用', text: '代官の厳しい監視の目が光る中、陣触れが布告された。田畑を捨てて戦地へ向かうか、逃れるか。',
                 choices: [
-                    { text: '意気揚々と武功を報告し、恩賞を賜る', condition: (s) => s.valor >= 10, hint: '武功に応じて銭獲得・日常へ戻る', effect: (s) => { 
-                        s.mode = 'normal';
-                        let reward = Math.floor(s.valor * 2.5);
-                        recordChronology("合戦を生き抜き、武功により恩賞を得る");
-                        return { money: reward, hp: 10, log: `生き延びた安堵と共に帰陣した。戦場での働きが認められ、金 ${reward}文の恩賞を賜り、平穏な日常へと戻る。` }; 
-                    } },
-                    { text: 'ひっそりと陣を払い、日常へ戻る', condition: () => true, hint: '日常へ戻る', effect: (s) => { 
-                        s.mode = 'normal';
-                        return { hp: 5, log: '特に目立った手柄はなかったが、五体満足で生き残ったことこそが最大の報酬だ。血塗られた武器を置き、平穏な日常へと戻る。' }; 
-                    } }
-                ]
-            },
-            {
-                id: 'defection', mode: ['normal', 'battle'], weight: 25, condition: (s) => (s.classInfo.id === 'bushou' || s.classInfo.id === 'ninja' || s.classInfo.id === 'ashigaru') && s.age > 20 && s.faction.id !== 'custom',
-                title: '【調略】敵陣営からの誘い', text: '敵対する大名家から密使が訪れた。「今の主君を見限り我が陣営へ寝返れば、莫大な恩賞と地位を約束しよう」と囁く。',
+                    { text: '泥を払い槍を取り、手柄を目指して出陣する', condition: () => true, hint: '戦場へ移行・武功獲得', effect: (s) => { s.mode = 'battle'; s.valor += 10; recordChronology("動員令に応じ戦場へ向かう"); return { hp: 0, log: '覚悟を決め、すり減った草鞋を履き直して重い朱槍を握りしめた！' }; } },
+                    { text: '【銭50文】役人に賄賂を握らせ兵籍を削る', condition: (s) => s.money >= 50, hint: '安全に回避', effect: (s) => { return { money: -50, hp: 0, log: '夜の闇に乗じて役人に袖の下を渡し、徴兵を逃れた。' }; } },
+                    { text: '【知略30】重病を装い、巧みに徴兵を逃れる', condition: (s) => s.strategy >= 30, hint: '無傷回避', effect: (s) => { s.strategy += 5; return { hp: 0, log: '迫真の名演技で代官を完全に信じ込ませた。' }; } },
+                    { text: 'すべてを捨てて深い山中へ逃走する', condition: () => true, hint: '逃亡者になる・カルマ上昇', effect: (s) => { s.mode = 'fugitive'; s.karma += 10; s.virtue -= 10; recordChronology("兵役を逃れ逃亡生活を始める"); return { hp: -10, log: '家も土地もすべて捨て、追っ手の矢を避けながら姿を消した。' }; } }
+                ] },
+            { id: 'famine', mode: ['normal', 'fugitive'], weight: 20, condition: () => true,
+                title: '【飢饉】天変地異の飢餓', text: '残酷なまでの日照りと長雨が続き、今年の作物は完全に根腐れを起こした。',
                 choices: [
-                    { text: '【悪逆30】裏切り、新たな主君へ寝返る', condition: (s) => s.karma >= 30, hint: '所属派閥の変更・銭獲得', effect: (s) => {
-                        const oldFaction = s.faction.name;
-                        let newFactions = FACTIONS.filter(f => f.id !== s.faction.id);
-                        s.faction = newFactions[Math.floor(Math.random() * newFactions.length)];
-                        s.karma += 20; s.valor += 5;
-                        recordChronology(`${oldFaction}を裏切り、${s.faction.name}へと寝返る`);
-                        return { money: 150, hp: 0, log: `主家を裏切り、新たに「${s.faction.name}」へ寝返った。不忠者と謗られようと、乱世は生き残った者が正義だ。` };
-                    } },
-                    { text: '「二君に仕える気はない」と使者を追い返す', condition: () => true, hint: '忠義を示す', effect: (s) => { s.virtue += 15; return { hp: 0, log: '密使を毅然と追い返した。その忠誠心はやがて主君の耳にも入り、厚い信頼を得た。' }; } },
-                    { text: '使者を斬り捨て、主君への手土産にする', condition: () => true, hint: '武功増・敵対', effect: (s) => { s.valor += 10; s.karma += 10; return { hp: 0, log: '問答無用で使者を斬り捨てた。忠誠は示したが、敵対勢力からの激しい恨みを買うことになった。' }; } }
-                ]
-            },
-            {
-                id: 'tactician', mode: ['normal', 'battle'], weight: 30, condition: (s) => s.strategy >= 40 && !s.flags.tactician && (s.classInfo.id === 'ronin' || s.classInfo.id === 'ashigaru' || s.classInfo.id === 'peasant'),
-                title: '【推挙】軍師の召抱え', text: 'あなたの類まれなる知謀と先の先を読む戦術眼は、いつしか諸国にまで知れ渡っていた。ある日、近隣の有力大名から使者が訪れ、「我が陣営の頭脳となり、共に天下を目指してはくれまいか」と熱烈な仕官の誘いを受ける。泥まみれの生活を捨て、万の軍勢の命を握る軍師となる機会が訪れた。',
+                    { text: '【銭120文】私財を投げ打ち、大量の粥を民に施す', condition: (s) => s.money >= 120, hint: '人徳特大アップ', effect: (s) => { s.virtue += 45; recordChronology("大飢饉で私財を投じ生き神と崇められる"); return { money: -120, hp: 5, log: '通りで大量の炊き出しを行い、領民たちは涙を流してあなたを崇めた。' }; } },
+                    { text: '【銭50文】高騰した食糧を強引に買い占める', condition: (s) => s.money >= 50, hint: '知略で出費抑制', effect: (s) => { let cost = Math.max(10, 50 - Math.floor(s.strategy * 0.3)); return { money: -cost, hp: 15, log: '蓄えておいた銭に物を言わせて闇米を確保し、命を繋いだ。' }; } },
+                    { text: '草の根や泥を齧り、ただひたすらに耐え忍ぶ', condition: () => true, hint: '体力大ダメージ', effect: (s) => { s.deathCause = 'starvation'; return { hp: -40, log: '食べるものが何一つなくなり、最後は木の皮を煮て飢えを凌ぐ地獄の日々が続いた。' }; } }
+                ] },
+            { id: 'plague', mode: ['normal', 'fugitive'], weight: 25, condition: () => true,
+                title: '【疫病】死の病魔', text: '不吉な黒雲が空を覆う中、村々を死の病魔が舐め尽くしている。あなたにも高熱が走り始めた。',
                 choices: [
-                    { text: '【知略70】破格の待遇を要求し、筆頭家老として仕える', condition: (s) => s.strategy >= 70, hint: '武将化・大金・重圧による体力減', effect: (s) => {
-                        s.flags.tactician = true; s.classInfo = CLASSES.find(c=>c.id==='bushou');
-                        s.strategy += 20; recordChronology("大名に類まれなる知略を認められ、筆頭軍師となる");
-                        return { money: 300, hp: -15, log: '冷徹なまでの交渉術で大名を完全に心服させ、またたく間に筆頭軍師の座へと登り詰めた。だが、休まる暇もなく謀略を張り巡らせる毎日に、心身は確実にすり減っていく。' };
-                    } },
-                    { text: '謹んでお受けし、陣帷幄に参画する', condition: () => true, hint: '武将化・銭獲得', effect: (s) => {
-                        s.flags.tactician = true; s.classInfo = CLASSES.find(c=>c.id==='bushou');
-                        s.strategy += 10; recordChronology("大名に召し抱えられ、陣幕で采配を振るう軍師となる");
-                        return { money: 100, hp: -10, log: '丁重に誘いを受け入れ、軍師として大名の陣幕に席を連ねることとなった。これより先は、盤上の駒のごとく人の命を散らす血塗られた知恵比べの連続となる。' };
-                    } },
-                    { text: '仕官を断り、自由な身を保つ', condition: () => true, hint: '回避', effect: (s) => ({ hp: 0, log: '「権力の犬になるつもりはない」と使者を追い返し、市井に生きる名もなき軍師としての自由な暮らしを選んだ。' }) }
-                ]
-            },
-            {
-                id: 'suspicion', mode: ['normal', 'battle'], weight: 40, condition: (s) => s.classInfo.id === 'bushou' && s.strategy >= 60,
-                title: '【粛清】主君の疑心暗鬼', text: '冴え渡りすぎたあなたの知謀は、いつしか味方からも畏怖と嫉妬の対象となっていた。最近、主君のあなたを見る目が異様に冷たく淀んでいる。「あやつは賢すぎる。いずれ我が首を狙う気ではないか…」という猜疑心が爆発し、密かに暗殺の刺客が放たれたという不穏な風の噂が耳に届く。身の潔白を証明できねば、待つのは冷たい刃のみだ。',
+                    { text: '【銭100文】高価な南蛮の秘薬をすがる思いで買い求める', condition: (s) => s.money >= 100, hint: '安全に回復', effect: (s) => { return { money: -100, hp: 10, log: '宣教師から特効薬を手に入れ、嘘のように熱が引いた。' }; } },
+                    { text: '【人徳30】寺社に籠り、病に苦しむ民と共に祈祷を行う', condition: (s) => s.virtue >= 30, hint: '人徳上昇・被害軽減', effect: (s) => { s.virtue += 20; return { hp: -10, log: '不眠不休で祈り続け、奇跡的に病魔は去った。' }; } },
+                    { text: '己の気力と体力だけを頼りに病魔に耐え抜く', condition: () => true, hint: '運で被害軽減', effect: (s) => { s.deathCause = 'plague'; let dmg = Math.random() < (s.luck * 0.005) ? 5 : 55; return { hp: -dmg, log: '薬に頼る金もなく、高熱と吐血でのたうち回る三日三晩を過ごした。' }; } }
+                ] },
+            { id: 'tournament', mode: ['normal'], weight: 25, condition: (s) => s.classInfo && (s.classInfo.id === 'ronin' || s.classInfo.id === 'ashigaru' || s.classInfo.id === 'bushou'),
+                title: '【御前試合】真剣勝負', text: '大名肝煎りの盛大な御前試合が開催された。勝者には莫大な報奨金が約束されるが、真剣による死合である。',
                 choices: [
-                    { text: '【人徳50】周囲の重臣たちに取り成してもらう', condition: (s) => s.virtue >= 50, hint: '人徳消費で回避', effect: (s) => { 
-                        s.virtue -= 15; recordChronology("主君からの謀反の疑いを、日頃の人望によって晴らす");
-                        return { hp: 0, log: '日頃から目をかけ、手厚く恩を売っていた重臣たちの必死の弁護により、主君の凝り固まった疑いは見事に晴れた。人望の厚さが命を救った瞬間だった。' }; 
+                    { text: '【武功30】己の腕と刀だけを信じて闘技場に立つ', condition: (s) => s.valor >= 30, hint: '勝てば賞金・負ければ負傷', effect: (s) => {
+                        if (Math.random() < 0.6 + (s.valor * 0.002)) { s.valor += 30; recordChronology("御前試合で優勝し名声を得る"); return { money: 150 + Math.floor(s.valor*0.5), hp: -5, log: '見事な剣捌きで並み居る猛者を次々と打ち倒し、堂々の優勝を果たした！' }; }
+                        else { return { hp: Math.min(-5, -30 + Math.floor(s.valor*0.2)), log: '準決勝で立ちはだかった無双の浪人に力負けし、無念の敗退となった。' }; }
                     } },
-                    { text: '【銭400文】名品を献上し、絶対の忠誠を誓う', condition: (s) => s.money >= 400, hint: '金で命を買う', effect: (s) => { 
-                        recordChronology("主君の猜疑心を莫大な金品でねじ伏せ、粛清を逃れる");
-                        return { money: -400, hp: 0, log: '恥も外聞も捨てて土下座し、私財を投じて手に入れた茶器を献上。必死にへりくだることで、辛くも粛清の嵐から逃れきった。' }; 
+                    { text: '見物人として酒を飲みながら賭けを楽しむ（銭20文）', condition: (s) => s.money >= 20, hint: '運で配当増', effect: (s) => {
+                        if (Math.random() < 0.5 + (s.luck * 0.005)) { s.luck += 5; return { money: 40 + Math.floor(s.luck*0.8), hp: 0, log: '大穴狙いで賭けた剣客が見事に勝利し、懐が温かくなった！' }; }
+                        else { return { money: -20, hp: 0, log: '自信満々で賭けた剣客はあっさり負け、掛け銭をすってしまった。' }; }
                     } },
-                    { text: '城を脱出し、浪人に身をやつす', condition: () => true, hint: '浪人へ転落・カルマ増', effect: (s) => { 
-                        s.classInfo = CLASSES.find(c=>c.id==='ronin'); s.karma += 20; 
-                        s.mode = 'normal';
-                        recordChronology("主君の暗殺の手から逃れ、浪人へと身をやつす");
-                        return { hp: -10, log: '「ここで死ぬわけにはいかぬ」と迫りくる刺客の手を逃れ、夜陰に紛れて出奔した。地位も名誉もすべてを捨て、また一介の「浪人」に戻る。' }; 
-                    } },
-                    { text: '甘んじて腹を切る', condition: () => true, hint: '即死', effect: (s) => { 
-                        s.deathCause = 'execution'; recordChronology("主君の疑心暗鬼により、無念の切腹を果たす");
-                        return { hp: -999, log: '知恵が回りすぎた自らの不幸を悟り、これも乱世の習いと静かに白装束を纏うと、見事な作法で切腹して果てた……。' }; 
-                    } }
-                ]
-            },
-            {
-                id: 'draft', mode: ['normal'], weight: 30, condition: (s) => (s.classInfo.id === 'peasant' || s.classInfo.id === 'ashigaru') && s.age < 60,
-                title: '【動員令】合戦の徴用', text: '村の広場に陣太鼓の音が重々しく響き渡り、領主からの非情な陣触れ（強制徴兵令）が布告された。代官の厳しい監視の目が光る中、泣き叫ぶ家族の声が響く。住み慣れた田畑を捨てて血生臭い死地へ向かうか、それとも何らかの手段を用いてこの過酷な運命に抗うか。今、人生の岐路に立たされている。',
+                    { text: '命を懸ける見世物など阿呆らしいと立ち去る', condition: () => true, hint: 'スルー', effect: () => ({ hp: 0, log: '熱狂する歓声を背に、日々の生活へと戻っていった。' }) }
+                ] },
+            { id: 'red_light_district', mode: ['normal'], weight: 15, condition: (s) => s.money >= 100 && s.age >= 18,
+                title: '【遊興】遊郭の誘惑', text: '夜の町で三味線の音が響き、艶やかな遊女たちが袖を引く。莫大な銭を積めば、極上の夢を見ることができるが…。',
                 choices: [
-                    { text: '泥を払い槍を取り、手柄を目指して出陣する', condition: () => true, hint: '戦場へ移行・武功獲得の機会', effect: (s) => { 
-                        s.mode = 'battle'; s.valor += 10; recordChronology("戦への動員令に応じ、朱槍を手にして血塗られた戦場へ向かう");
-                        return { hp: 0, log: '覚悟を決め、すり減った草鞋を履き直して重い朱槍を握りしめた。無数の足音が響く中、見知らぬ血煙立ち込める戦場へと駆り出されていく！' }; 
+                    { text: '【銭100文】一晩豪遊し、浮世の憂さを晴らす', condition: () => true, hint: '体力全快・運上昇', effect: (s) => { s.luck += 15; return { money: -100, hp: 100, log: '金に物を言わせて一夜の夢を買い、心身共に完全にリフレッシュした！' }; } },
+                    { text: '乱世に色恋など不要と立ち去る', condition: () => true, hint: '回避', effect: () => ({ hp: 0, log: '遊女の誘惑を振り切り、真っ暗な家へ戻った。' }) }
+                ] },
+            { id: 'tea_appraisal', mode: ['normal'], weight: 20, condition: (s) => s.money >= 50,
+                title: '【散財】怪しげな骨董商', text: '胡散臭い商人が「これは天下の名物になり得る茶器だ」と薄汚れた茶碗を差し出してきた。真贋は全く不明だ。',
+                choices: [
+                    { text: '【銭50文】一攫千金を夢見て買い取る', condition: () => true, hint: 'ランダムでステータス変化', effect: (s) => { 
+                        if (Math.random() < 0.4 + (s.luck * 0.005)) { s.virtue += 20; s.strategy += 10; recordChronology("掘り出し物の茶器を見つけ、名声を高める"); return { money: -50, hp: 0, log: '大当たり！汚れを落とすと見事な名物であり、武将たちの間であなたの審美眼が絶賛された！' }; }
+                        else { s.strategy -= 5; return { money: -50, hp: 0, log: '大ハズレ！ただの便器の欠片を掴まされ、周囲の笑い者になってしまった…。' }; }
                     } },
-                    { text: '【銭50文】役人に賄賂を握らせ兵籍を削る', condition: (s) => s.money >= 50, hint: '安全に徴兵回避', effect: (s) => { return { money: -50, hp: 0, log: '夜の闇に乗じて強欲な役人に袖の下を渡し、徴兵の名簿からしれっと己の名前を消させた。乱世において金子こそが命の盾であることを深く噛み締める。' }; } },
-                    { text: '【知略30】重病を装い、巧妙に徴兵を逃れる', condition: (s) => s.strategy >= 30, hint: '知略で無傷回避', effect: (s) => { s.strategy += 5; return { hp: 0, log: '顔に泥を塗り、咳き込みながら血を吐く迫真の名演技で、疑り深い代官を完全に信じ込ませて徴兵を逃れきった。' }; } },
-                    { text: 'すべてを捨てて深い山中へ逃走する', condition: () => true, hint: '逃亡状態へ移行・カルマ上昇', effect: (s) => { 
-                        s.mode = 'fugitive'; s.karma += 10; s.virtue -= 10; recordChronology("兵役を逃れ、すべてを捨てて逃亡生活を始める");
-                        let baseDmg = 15;
-                        let reduce = Math.floor(s.strategy * 0.2);
-                        let finalDmg = Math.max(0, baseDmg - reduce);
-                        let msg = '家も土地もすべて捨て、追っ手の矢を避けながら夜の山中へ姿を消した。';
-                        if (reduce > 0) msg += `<br><span class="text-[10px] text-green-400">【知略】裏道を熟知しており、追手を安全に巻いた！（被害軽減）</span>`;
-                        return { hp: -finalDmg, log: msg }; 
-                    } }
-                ]
-            },
-            {
-                id: 'battle_front', mode: ['battle'], weight: 50, condition: () => true,
-                title: '【合戦】激突の陣', text: '天地を揺るがすような法螺貝の音と、むせ返るような血と火薬の匂いが戦場を支配している。怒号と悲鳴が入り混じる中、土煙を切り裂くように敵の精鋭騎馬隊が地響きを立てて肉薄してきた！味方の陣形が完全に崩れかける中、目前には朱塗りの槍を構えた狂気の騎馬武者が迫る！',
+                    { text: '【知略50】贋作であると論破し、商人を追い払う', condition: (s) => s.strategy >= 50, hint: '知略上昇', effect: (s) => { s.strategy += 10; return { hp: 0, log: '釉薬の不自然さを指摘すると、商人は逃げるように去っていった。' }; } },
+                    { text: '「骨董に興味はない」と無視する', condition: () => true, hint: '回避', effect: () => ({ hp: 0, log: '怪しい儲け話には乗らず、堅実に生きる道を選んだ。' }) }
+                ] }
+        ];
+
+        // ② 戦場イベント
+        const BATTLE_EVENTS = [
+            { id: 'battle_front', mode: ['battle'], weight: 50, condition: () => true,
+                title: '【合戦】激突の陣', text: '天地を揺るがすような法螺貝の音と、むせ返るような血と火薬の匂いが戦場を支配している。敵の精鋭騎馬隊が肉薄してきた！',
                 choices: [
                     { text: '死の恐怖を怒声に変え、真っ向から槍を突き出す！', condition: () => true, hint: '武功大幅増・負傷リスク', effect: (s) => { 
                         s.valor += 30; s.deathCause = 'battle'; 
-                        if(s.valor > 60) recordChronology("激戦の中で敵兵を次々と討ち取り、大いなる武功を挙げる");
-                        
-                        let baseDmg = Math.floor(Math.random() * 35) + 30;
-                        let reduce = Math.floor(s.valor * 0.3);
                         let isDodge = Math.random() < (s.luck * 0.005);
-                        let finalDmg = isDodge ? 0 : Math.max(5, baseDmg - reduce);
-
-                        let msg = '先頭で突っ込んできた騎馬兵を馬ごと突き落として見事な殊勲を挙げた！';
-                        if (isDodge) {
-                            msg += '<br><span class="text-[10px] text-yellow-300">【強運】奇跡的に敵の反撃がすべて急所を外れた！（ダメージ無効化）</span>';
-                        } else if (reduce > 0) {
-                            msg += `<br><span class="text-[10px] text-green-400">【武功】鍛え抜かれた武の力で、敵の刃を最小限に防いだ！（被害を ${reduce} 軽減）</span>`;
-                        } else {
-                            msg += '<br>しかし、乱戦の中で背後から刃を浴び、熱い血を吹き出しながらその場に倒れ込んだ。';
-                        }
-                        return { hp: -finalDmg, log: msg }; 
+                        let dmg = isDodge ? 0 : Math.max(5, (Math.floor(Math.random() * 35) + 30) - Math.floor(s.valor * 0.3));
+                        return { hp: -dmg, log: isDodge ? '奇跡的に敵の反撃が急所を外れた！' : '先頭の騎馬兵を突き落としたが、乱戦の中で手傷を負った。' }; 
                     } },
-                    { text: '【知略】戦局を俯瞰し、有利な高所へ素早く退避・布陣', condition: () => true, hint: '知略増・被ダメージ軽減', effect: (s) => { s.strategy += 15; s.deathCause = 'battle'; return { hp: -8, log: '馬鹿正直に突っ込む愚を避け、地形を巧みに利用して高台へ移動。味方への被害を最小限に抑えつつ、上から矢を射掛けて敵の突撃を見事にいなした。' }; } },
-                    { text: '【乾坤一擲】血路を開き、敵本陣へ単騎突撃！（成功率25%）', condition: () => true, hint: '大逆転か即死', effect: (s) => {
-                        if (Math.random() < 0.25 + (s.valor * 0.001)) {
-                            s.valor += 90; s.deathCause = 'battle'; recordChronology("敵本陣へ単騎突撃し、見事敵将の首級を挙げる");
-                            return { hp: -25, money: 250, log: '【大戦果！】槍玉に上がる敵を次々と薙ぎ払い、ついに敵武将の首級を高く掲げた！天地を震わす勝ち鬨が響き、莫大な報奨金を手にした！' };
-                        } else {
-                            s.deathCause = 'battle';
-                            return { hp: -999, log: '蛮勇を奮って突撃したものの、待ち構えていた敵の鉄砲隊に蜂の巣にされ、無数の刃に肉を裂かれて凄惨な最期を遂げた……。' };
-                        }
+                    { text: '【知略】戦局を俯瞰し、有利な高所へ退避・布陣', condition: () => true, hint: '知略増・被ダメージ軽減', effect: (s) => { s.strategy += 15; s.deathCause = 'battle'; return { hp: -8, log: '高台へ移動し、味方への被害を最小限に抑えつつ敵をいなした。' }; } },
+                    { text: '【乾坤一擲】血路を開き、敵本陣へ単騎突撃！（低確率）', condition: () => true, hint: '大逆転か即死', effect: (s) => {
+                        if (Math.random() < 0.25 + (s.valor * 0.001)) { s.valor += 90; recordChronology("敵本陣へ単騎突撃し大戦果"); return { hp: -25, money: 250, log: '敵将の首級を高く掲げ、莫大な報奨金を手にした！' }; }
+                        else { s.deathCause = 'battle'; return { hp: -999, log: '待ち構えていた敵の鉄砲隊に蜂の巣にされ、凄惨な最期を遂げた……。' }; }
                     } }
-                ]
-            },
-            {
-                id: 'escape_survival', mode: ['fugitive'], weight: 80, condition: () => true,
-                title: '【流浪】落武者狩りの包囲', text: '飢えと疲労で重くなる足を引きずり、名もなき獣道を彷徨い歩く。背後の茂みがガサリと揺れ、血走った目をした農民たちの落武者狩り部隊が現れた。彼らの手には鋭く削られた竹槍や錆びた鉈が握られ、賞金目当ての殺意がギラギラと光っている。四方を完全に囲まれつつあり、一刻の猶予も残されていない。',
+                ] },
+            { id: 'battle_end', mode: ['battle'], weight: 35, condition: (s) => s.modeTurn >= 3, // 3ヶ月以上で発生しやすく
+                title: '【帰陣】合戦の終わり', text: '長く血生臭い戦いがついに終わりを告げた。両軍は兵を引き、生き残った者たちは陣所へと帰還する。',
                 choices: [
-                    { text: '【人徳15】かつて助けた里人に大声で助けを求める', condition: (s) => s.virtue >= 15, hint: '農民へ復帰・HP回復', effect: (s) => { 
-                        s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'peasant'); recordChronology("かつて救った民に命を助けられ、農民として生き直す");
-                        return { hp: 35, log: 'かつて飢えから救ってやった村の長が、命懸けで納屋の床下に匿ってくれた。追手が去った後、彼らの仲間として再び「農民」となり、土に生きる道を選ぶ。' }; 
-                    } },
-                    { text: '【銭80文】探索隊の頭を金で買収し、見逃させる', condition: (s) => s.money >= 80, hint: '浪人へ復帰', effect: (s) => { 
-                        s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'ronin'); recordChronology("金で落武者狩りの手を逃れ、浪人へと復帰する");
-                        return { money: -80, hp: 10, log: 'ギラつく農民の顔に有り金を叩きつけると、彼らは蜘蛛の子を散らすように金に群がった。その隙に山を抜け、「浪人」として他国へ逃れ再起を図る。' }; 
-                    } },
-                    { text: '腹をくくり、山賊の群れに加わって野盗に堕ちる', condition: () => true, hint: '野盗へ転身・カルマ上昇', effect: (s) => { 
-                        s.mode = 'normal'; s.classInfo = CLASSES.find(c => c.id === 'bandit'); s.karma += 25; recordChronology("人の道を外れ、山賊の群れに加わり野盗に堕ちる");
-                        return { hp: 15, money: 40, log: '農民どもを返り討ちにし、付近を荒らし回る山賊に仲間入りを果たした。もはや人の道は捨てた。これからは奪う側として乱世を暴れ回る。' }; 
-                    } }
-                ]
-            },
-            {
-                id: 'famine', mode: ['normal', 'fugitive'], weight: 20, condition: () => true,
-                title: '【飢饉】天変地異の飢餓', text: '残酷なまでの日照りと狂ったような長雨が続き、今年の作物は完全に根腐れを起こした。市場の米価は天井知らずに跳ね上がり、通りには骨と皮だけになった者たちが虚ろな目で泥を啜っている。飢餓という名の見えない魔物的、領民たちの命と理性を容赦なく食い荒らし始めていた。',
+                    { text: '意気揚々と武功を報告し、恩賞を賜る', condition: (s) => s.valor >= 10, hint: '銭獲得・日常へ', effect: (s) => { s.mode = 'normal'; recordChronology("合戦を生き抜き恩賞を得る"); return { money: Math.floor(s.valor * 2.5), hp: 10, log: '戦場での働きが認められ恩賞を賜り、平穏な日常へ戻る。' }; } },
+                    { text: 'ひっそりと陣を払い、日常へ戻る', condition: () => true, hint: '日常へ', effect: (s) => { s.mode = 'normal'; return { hp: 5, log: '五体満足で生き残ったことこそが最大の報酬だ。日常へと戻る。' }; } }
+                ] },
+            { id: 'ashigaru_looting', mode: ['battle'], weight: 20, condition: (s) => s.classInfo.id === 'ashigaru',
+                title: '【戦場】陣跡の死体漁り', text: '激戦が去った後の夜。見渡す限りの死体の山から、まだ使えそうな武具や金目の物を剥ぎ取る「落ち武者漁り」の絶好の機会だ。',
                 choices: [
-                    { text: '【銭120文】私財を投げ打ち、大量の粥を民に施す', condition: (s) => s.money >= 120, hint: '人徳特大アップ', effect: (s) => { 
-                        s.virtue += 45; recordChronology("大飢饉において私財を投じて施しを行い、生き神として崇められる");
-                        return { money: -120, hp: 5, log: '私財を限界まで投じて食糧を買い集め、通りで大量の炊き出しを行った。生き返った領民たちは涙を流し、あなたを生き神の如く崇め立てた。' }; 
-                    } },
-                    { text: '【銭50文】高騰した食糧を強引に買い占める', condition: (s) => s.money >= 50, hint: '知略で出費を抑制', effect: (s) => { 
-                        let baseCost = 50;
-                        let discount = Math.floor(s.strategy * 0.3);
-                        let finalCost = Math.max(10, baseCost - discount);
-                        let msg = '周囲で人がバタバタと倒れる中、蓄えておいた銭に物を言わせて闇米を確保した。懐は痛んだが、己と家族の命だけは確実に繋ぎ止めた。';
-                        if(discount > 0) msg += `<br><span class="text-[10px] text-green-400">【知略】商人の弱みを握って巧みに交渉し、安く買い叩いた！（銭 ${discount}文 節約）</span>`;
-                        return { money: -finalCost, hp: 15, log: msg }; 
-                    } },
-                    { text: '草の根や泥を齧り、ただひたすらに耐え忍ぶ', condition: () => true, hint: '体力大ダメージ', effect: (s) => { s.deathCause = 'starvation'; return { hp: -40, log: '食べるものが何一つなくなり、最後は木の皮を煮て飢えを凌ぐ地獄の日々が続いた。身体は痩せこけ、立っていることも辛いほどに体力が削り取られた。' }; } }
-                ]
-            },
-            {
-                id: 'plague', mode: ['normal', 'fugitive'], weight: 25, condition: () => true,
-                title: '【疫病】死の病魔', text: '不吉な黒雲が空を覆う中、村々を「死の病魔」が舐め尽くしている。昨日まで笑っていた隣人が突如として黒い血を吐いて倒れ、そのまま二度と動かなくなる。死体を焼く異臭が風に乗って漂い、ついにあなたの体にも焼けるような高熱と激しい悪寒が走り始めた。見えざる死神が、すぐ背後に立っている。',
-                choices: [
-                    { text: '【銭100文】高価な南蛮の秘薬をすがる思いで買い求める', condition: (s) => s.money >= 100, hint: '安全に回復', effect: (s) => { return { money: -100, hp: 10, log: '莫大な金を支払い、怪しげな宣教師から南蛮由来の特効薬を手に入れた。数日後には嘘のように熱が引き、九死に一生を得た。' }; } },
-                    { text: '【人徳30】寺社に籠り、病に苦しむ民と共に不眠の祈祷を行う', condition: (s) => s.virtue >= 30, hint: '人徳上昇・被害軽減', effect: (s) => { s.virtue += 20; return { hp: -10, log: '激しい熱病にうなされながらも、不眠不休で祈り続けた。奇跡的に病魔は去り、民からの信仰はより強固なものとなった。' }; } },
-                    { text: '己の気力と体力だけを頼りに病魔に耐え抜く', condition: () => true, hint: '運で被害軽減', effect: (s) => { 
-                        s.deathCause = 'plague';
-                        let baseDmg = 55;
-                        let isDodge = Math.random() < (s.luck * 0.005);
-                        let finalDmg = isDodge ? 5 : baseDmg;
-                        let msg = '薬に頼る金もなく、高熱と吐血でのたうち回る三日三晩を過ごした。';
-                        if (isDodge) {
-                            msg += `<br><span class="text-[10px] text-yellow-300">【強運】しかし、体内の免疫が奇跡的に打ち勝ち、後遺症なく完全回復を果たした！</span>`;
-                        } else {
-                            msg += '一命は取り留めたものの、髪は抜け落ち、大きく寿命を縮める結果となった。';
-                        }
-                        return { hp: -finalDmg, log: msg }; 
-                    } }
-                ]
-            },
-            {
-                id: 'encounter_nobunaga', mode: ['normal', 'battle'], weight: 15, condition: (s) => s.faction && s.faction.id === 'oda' && s.valor >= 20 && !s.flags.metNobunaga,
-                title: '【御前】魔王の眼差し', text: '静まり返った広間。上座には、底知れぬ覇気と狂気を纏った第六天魔王・織田信長が座している。張り詰めた空気の中、信長の鋭く冷酷な眼光があなたの魂を射抜いた。「貴様、何のために戦う？」――その一言には、答え次第で即座に首を刎ねられかねない、恐るべき殺気が込められていた。',
-                choices: [
-                    { text: '「天下布武のため、自ら修羅となる覚悟です」と吠える', condition: () => true, hint: '武功・悪逆上昇', effect: (s) => { 
-                        s.valor+=20; s.karma+=20; s.flags.metNobunaga = true; recordChronology("織田信長に謁見し、その狂気と覇道へ付き従う覚悟を決める");
-                        return { hp: 0, log: '張り詰めた空気を切り裂くように答えると、信長は「面白い奴だ」と一言残し、不敵に笑って去っていった。覇道へ付き従う覚悟が完全に決まる。' }; 
-                    } },
-                    { text: '「ただ、愛する家族と己の命を守るためにございます」と伏す', condition: () => true, hint: '正直に答える・人徳上昇', effect: (s) => { 
-                        s.virtue+=10; s.flags.metNobunaga = true;
-                        return { hp: 0, log: '「つまらぬ男よ」と鼻で笑われたが、一切の飾りのないその偽りのない言葉により、命までは取られずに済んだ。' }; 
-                    } },
-                    { text: '【知略40】「殿の描く、まだ見ぬ太平の世を見るためです」と不敵に返す', condition: (s) => s.strategy >= 40, hint: '知略で気に入られる・銭獲得', effect: (s) => { 
-                        s.strategy+=15; s.flags.metNobunaga = true; recordChronology("織田信長に謁見し、見事な返答で気に入られ褒美を賜る");
-                        return { money: 100, hp: 0, log: '信長の目が僅かに見開かれた。「その言葉、決して違えるなよ」と大音声で笑い、多額の褒美が下賜された。魔王のお気に入りとなったようだ。' }; 
-                    } }
-                ]
-            },
-            {
-                id: 'encounter_shingen', mode: ['battle'], weight: 15, condition: (s) => s.faction && s.faction.id !== 'takeda' && !s.flags.metShingen,
-                title: '【死闘】甲斐の虎', text: '戦場の土煙が風に晴れた瞬間、視界に飛び込んできたのは圧倒的な威圧感を放つ「風林火山」の御旗と、血塗られたような武田の赤備えだった。床几にどっしりと腰を下ろす巨漢――甲斐の虎・武田信玄の本陣が、信じられないほど至近距離にある。生か死か、歴史が動く一撃が今、放たれようとしている！',
-                choices: [
-                    { text: '【武功50】名乗りを上げ、決死の単騎駆けで信玄の首に挑む！', condition: (s) => s.valor >= 50, hint: '大成功か即死', effect: (s) => {
-                        s.flags.metShingen = true;
-                        if (Math.random() < 0.3) {
-                            s.valor += 100; s.virtue += 20; recordChronology("武田信玄の本陣へ単騎駆けを行い、生還して天下に勇名を轟かす");
-                            return { hp: -30, log: '怒涛の勢いで赤備えを突破し、渾身の槍を突き出す！信玄の鉄扇に防がれはしたものの、その凄まじい武勇は敵味方全軍に轟き渡った！武田軍は感嘆し、潮を引くように撤退していく。' };
-                        } else {
-                            s.deathCause = 'battle'; recordChronology("武田信玄へ挑むも、無敵の赤備えの前に敗れ去る");
-                            return { hp: -999, log: '無謀にも突撃したが、信玄に届く遥か手前で無敵の赤備え騎馬隊に側面を突かれた。一瞬にして無数の槍に貫かれ、凄絶な戦死を遂げた……。' };
-                        }
-                    }},
-                    { text: '命あっての物種と、恐れをなして陣を引いて逃げ出す', condition: () => true, hint: '体力温存・カルマ上昇', effect: (s) => { s.flags.metShingen = true; s.karma+=15; s.valor-=10; return { hp: 0, log: '虎の放つ圧倒的な威圧感に足がすくみ、武士の誇りを投げ捨てて一目散に逃亡した。命は拾ったが、武名には拭い去れない泥を塗ることとなった。' }; } }
-                ]
-            },
-            {
-                id: 'honnoji', mode: ['normal', 'battle'], weight: 5, condition: (s) => s.age >= 30 && !s.flags.honnoji,
-                title: '【凶報】本能寺の変', text: '深夜の静寂を引き裂くように、血に塗れた飛脚が絶叫と共に駆け込んできた。「信長公、本能寺にて明智軍の謀反に遭い討ち死に！」――天地がひっくり返るような凶報に、日本中が震え上がった。絶対的覇者の死により、これまで保たれていた勢力図は崩壊し、新たな戦乱の嵐が吹き荒れようとしている。',
-                choices: [
-                    { text: '【銭300文】大混乱に乗じて米や武器を徹底的に買い占める', condition: (s) => s.money >= 300, hint: '商人・悪徳ムーブ', effect: (s) => { 
-                        s.flags.honnoji=true; s.karma+=20; recordChronology("本能寺の変の混乱に乗じて物資を買い占め、巨万の富を築く");
-                        return { money: 500, hp: 0, log: '天下が悲しみに暮れる中、冷静に相場の乱れを逆手にとり、莫大な利益を叩き出した。信義など知ったことか、乱世は銭こそが絶対の力だ。' }; 
-                    } },
-                    { text: '【知略40】いち早く情勢の裏を読み、次の覇者となる軍勢に合流する', condition: (s) => s.strategy >= 40, hint: '知略で立ち回る', effect: (s) => { 
-                        s.flags.honnoji=true; s.strategy+=30; recordChronology("本能寺の変においていち早く時流を読み、次の天下人に取り入る");
-                        return { money: 100, hp: 0, log: '信長死後の権力闘争を冷徹に分析し、いち早く中国大返しを見せていた秀吉の軍に誼を通じた。見事な先見の明により、立身出世の確固たる足がかりを得た。' }; 
-                    } },
-                    { text: '時流の波に抗わず、嵐が過ぎ去るのをただ静観する', condition: () => true, hint: '影響なし', effect: (s) => { s.flags.honnoji=true; return { hp: 0, log: '天下の主が織田であろうと明智であろうと、自分の泥まみれの暮らしは何も変わらない。戸板を固く閉ざし、血の雨が止むのをじっと待ち続けた。' }; } }
-                ]
-            },
-            {
-                id: 'tournament', mode: ['normal'], weight: 25, condition: (s) => s.classInfo && (s.classInfo.id === 'ronin' || s.classInfo.id === 'ashigaru' || s.classInfo.id === 'bushou'),
-                title: '【御前試合】真剣勝負', text: '大名肝煎りの盛大な御前試合が開催された。熱狂する群衆に囲まれた白砂の闘技場には、己の腕一本で成り上がろうとする野心に満ちた剣客や、血に飢えた荒くれ者たちが集結している。勝者には莫大な報奨金と栄誉が約束されるが、一歩間違えれば真剣の餌食となる過酷な死合である。',
-                choices: [
-                    { text: '【武功30】己の腕と刀だけを信じて、血塗られた闘技場に立つ', condition: (s) => s.valor >= 30, hint: '武功で勝率と賞金増', effect: (s) => {
-                        if (Math.random() < 0.6 + (s.valor * 0.002)) {
-                            s.valor += 30; recordChronology("大名主催の御前試合で見事に優勝し、名声と賞金を獲得する");
-                            let reward = 150 + Math.floor(s.valor * 0.5);
-                            return { money: reward, hp: -5, log: `飛沫を上げる鮮血の中で、見事な剣捌きで並み居る猛者を次々と打ち倒し、堂々の優勝を果たした！<br><span class="text-[10px] text-green-400">【武功】圧倒的な強さにより、殿から追加の褒美が出た！（賞金+${Math.floor(s.valor*0.5)}文）</span>` };
-                        } else {
-                            let dmg = Math.max(5, 30 - Math.floor(s.valor * 0.2));
-                            return { hp: -dmg, log: `準決勝で立ちはだかった無双の浪人に力負けし、無念の敗退となった。<br><span class="text-[10px] text-green-400">【武功】受け身を取り、致命傷だけは避けた。（被害軽減）</span>` };
-                        }
-                    } },
-                    { text: '見物人として酒を飲みながら賭けを楽しむ（銭20文）', condition: (s) => s.money >= 20, hint: '運で勝率と配当増', effect: (s) => {
-                        if (Math.random() < 0.5 + (s.luck * 0.005)) {
-                            s.luck += 5;
-                            let bonus = Math.floor(s.luck * 0.8);
-                            return { money: 40 + bonus, hp: 0, log: `大穴狙いで賭けた無名の剣客が見事に勝利を収め、懐が思いがけず温かくなった。<br><span class="text-[10px] text-yellow-300">【強運】とんでもない大穴が的中し、配当が跳ね上がった！（ボーナス+${bonus}文）</span>` };
-                        } else {
-                            return { money: -20, hp: 0, log: '自信満々で賭けた剣客はあっさりと最初の一撃で首を落とされ、掛け銭をすべてすってしまった。' };
-                        }
-                    } },
-                    { text: '命を懸ける見世物など阿呆らしいと背を向ける', condition: () => true, hint: 'スルー', effect: (s) => ({ hp: 0, log: '熱狂する愚民たちの歓声を背に、血生臭い闘技場を後にして日々の生活へと戻っていった。' }) }
-                ]
-            },
-            {
-                id: 'nanban_trade', mode: ['normal'], weight: 30, condition: (s) => s.classInfo.id === 'merchant' && !s.flags.nanban,
-                title: '【商機】南蛮船の到来', text: '活気あふれる堺の港に、黒船のごとき巨大な南蛮船が入港した。異国の言葉が飛び交い、鼻をつく火薬の匂いと共に運ばれてきたのは、見たこともない珍品や恐るべき破壊力を秘めた最新式の鉄砲の山だ。莫大な富を生む一生に一度の大商機だが、商談の席につくには桁外れの元手と度胸が試される。',
-                choices: [
-                    { text: '【銭200文】全財産を賭けて火縄銃を根こそぎ買い占める', condition: (s) => s.money >= 200, hint: '大成功で大儲け', effect: (s) => {
-                        s.flags.nanban = true;
-                        if (Math.random() < 0.7) {
-                            recordChronology("南蛮貿易で火縄銃を買い占め、巨万の富を得る");
-                            return { money: 600, hp: 0, log: '読みは完璧に的中！戦備を急ぐ大名たちがこぞって火縄銃を高値で買い求め、蔵が建つほどの莫大な富を築き上げた！' };
-                        } else {
-                            recordChronology("南蛮貿易に全財産を賭けるも、幕府に没収され失敗に終わる");
-                            return { money: -200, hp: 0, log: '直後に幕府から非情な火薬統制令が敷かれ、苦労して仕入れた火縄銃はすべて二束三文で没収されてしまった……。' };
-                        }
-                    } },
-                    { text: '【銭50文】手堅くビロードの反物や香辛料を仕入れる', condition: (s) => s.money >= 50, hint: '安定した利益', effect: (s) => {
-                        s.flags.nanban = true;
-                        return { money: 80, hp: 0, log: '珍しい異国の布や香辛料は京の貴族や豪商たちに飛ぶように売れ、確実にそして着実に大きな利益を生み出した。' };
-                    } },
-                    { text: '欲を出さず、今回は商いを見送る', condition: () => true, hint: 'リスク回避', effect: (s) => ({ hp: 0, log: '海のものとも山のものともつかぬ異国の品に手を出して破産した商人の話を思い出し、静観を決め込んだ。' }) }
-                ]
-            },
-            {
-                id: 'peasant_revolt', mode: ['normal'], weight: 30, condition: (s) => (s.classInfo.id === 'bushou' || s.classInfo.id === 'daimyo') && !s.flags.revolt,
-                title: '【領国】一揆の勃発', text: '「もはや生きてはいけぬ！」重税と度重なる飢饉に怒りを爆発させた領民たちが、ついに暴徒と化した。粗末な竹槍や錆びた鎌を振りかざし、怒号と狂乱状態となった一揆勢が土煙を上げて城下へと押し寄せてくる。領主としての器が試される、流血必至の重大な危機が訪れた。',
-                choices: [
-                    { text: '【武功50】自ら鉄砲隊を率いて徹底的に撫で斬りにする', condition: (s) => s.valor >= 50, hint: '武功・悪逆増', effect: (s) => { 
-                        s.flags.revolt=true; s.valor+=20; s.karma+=30; s.virtue=0; recordChronology("一揆勢を武力で容赦なく鎮圧し、血塗られた領主として恐れられる");
-                        return { hp: -10, log: '「刃向かう者は皆殺しにせよ！」容赦なく一揆勢に鉛玉を浴びせ、完全に制圧した。反乱は鎮まったが、血塗られた領主として深い恨みを買った。' }; 
-                    } },
-                    { text: '【銭300文】ただちに年貢を減免し、蔵の米をすべて配る', condition: (s) => s.money >= 300, hint: '人徳で出費を抑制', effect: (s) => { 
-                        s.flags.revolt=true; s.virtue+=40; recordChronology("私財を投じて一揆を鎮め、名君としての名声を高める");
-                        let baseCost = 300;
-                        let discount = Math.floor(s.virtue * 1.5);
-                        let finalCost = Math.max(50, baseCost - discount);
-                        let msg = '怒り狂う民の前に単身進み出て苦境を詫び、私財をなげうって救済を約束した。誠意は伝わり、領民からの忠誠は盤石なものとなった。';
-                        if(discount > 0) msg += `<br><span class="text-[10px] text-green-400">【人徳】日頃の善政と人望のおかげで、民は少ない施しでも涙を流して納得した！（出費を ${discount}文 抑制）</span>`;
-                        return { money: -finalCost, hp: 0, log: msg }; 
-                    } },
-                    { text: '面倒事は家臣に押し付け、安全な天守に籠もる', condition: () => true, hint: '名声低下・被害', effect: (s) => { 
-                        s.flags.revolt=true; s.virtue-=20; s.valor-=10; recordChronology("一揆に怯えて城に籠もり、領主としての威厳を大きく損なう");
-                        return { money: -50, hp: 0, log: '家臣団の奮闘で数日後に一揆は収束したが、城下町の大半は焼かれ、領主としての威厳と信頼は完全に地に堕ちた。' }; 
-                    } }
-                ]
-            },
-            {
-                id: 'court_rank', mode: ['normal'], weight: 30, condition: (s) => s.classInfo.id === 'kuge' && !s.flags.courtRank,
-                title: '【朝儀】帝からの勅命', text: '御所より厳かな使者が訪れ、泥沼の抗争を続ける武家同士の争いを調停せよとの勅命が下された。両家とも引くに引けぬ状況であり、一歩でも対応を誤れば朝廷の権威に傷がつく。しかし、これを巧みに捌き切れば、公家としての名声は不動のものとなり、莫大な「御礼」が転がり込むだろう。',
-                choices: [
-                    { text: '【知略50】双方の顔を絶妙に立てつつ、巧みに和睦に持ち込む', condition: (s) => s.strategy >= 50, hint: '名声と献金獲得', effect: (s) => { 
-                        s.virtue+=30; s.strategy+=10; s.flags.courtRank = true; recordChronology("帝の勅命を見事に果たし、朝廷での地位と莫大な献金を獲得する");
-                        return { money: 200, hp: 0, log: '洗練された弁舌と裏工作で両大名の面子を保ちつつ、見事に矛を収めさせた。後日、両家から山のような金銀財宝が「御礼」として届けられた。' }; 
-                    } },
-                    { text: '裏で多額の賄賂を受け取り、権勢ある片方の武家に加担する', condition: () => true, hint: '銭獲得・悪逆上昇', effect: (s) => { 
-                        s.karma+=20; s.flags.courtRank = true;
-                        return { money: 300, hp: 0, log: '袖の下の重さに負け、露骨に片方へ有利な裁定を下した。私腹を肥やすことには成功したが、没落した武家からは生涯消えぬ恨みを買うこととなる。' }; 
-                    } },
-                    { text: '「武骨者の争いなど我らには関わりなきこと」と辞退する', condition: () => true, hint: '無難に過ごす', effect: (s) => ({ hp: 0, log: '泥にまみれるような面倒な政争をのらりくらりと避け、ひたすらに蹴鞠と和歌の世界に引きこもって日々を過ごした。' }) }
-                ]
-            },
-            {
-                id: 'ninja_mission', mode: ['normal', 'battle'], weight: 40, condition: (s) => s.classInfo.id === 'ninja',
-                title: '【暗躍】闇の指令', text: '月の隠れた新月の夜。主君の密使より、敵国の大名を物理的に抹殺せよという非情な指令が下された。厳重な警戒が敷かれた敵の居城に潜入し、標的の息の根を止める。失敗すれば過酷な拷問の末に処刑され、家名ごと歴史の闇に葬られる。忍びの技のすべてが試される死の任務だ。',
-                choices: [
-                    { text: '【知略50】何日もかけて毒とからくりを仕込み、気付かれず仕留める', condition: (s) => s.strategy >= 50, hint: '大成功・銭獲得', effect: (s) => { 
-                        s.valor += 30; s.karma += 20; recordChronology("敵国大名の暗殺任務を完璧に遂行し、闇の世界に伝説を残す");
-                        return { money: 200, hp: -5, log: '誰一人として影すら踏ませず、寝所に致死の猛毒を見事に仕掛けた。翌朝、城が騒然とする中を悠然と離脱し、莫大な報奨金を得る。まさに闇の伝説だ。' }; 
-                    } },
-                    { text: '見張りを斬り捨て、強行突破で強引に寝所へ忍び込む（成功率50%）', condition: () => true, hint: '成功で報酬、失敗で即死', effect: (s) => {
-                        if (Math.random() < 0.5) {
-                            s.valor += 40; s.karma += 30;
-                            return { money: 150, hp: -15, log: '血飛沫を上げながら寝所に突入し、驚愕する大名の首を強引に刎ね飛ばした！手傷を負いながらも、死地から辛くも生還を果たす。' };
-                        } else {
-                            s.deathCause = 'execution';
-                            return { hp: -999, log: '寝所に踏み込んだ瞬間、隠し部屋から現れた無数の鉄砲隊の火蓋が切られた。抵抗する間もなく全身を撃ち抜かれ、骸は肥溜めに捨てられた……。' };
-                        }
-                    } },
-                    { text: '死の恐怖に抗えず、里を抜けて抜け忍となる', condition: () => true, hint: '逃亡者になる', effect: (s) => { 
-                        s.mode = 'fugitive'; s.karma += 10; recordChronology("過酷な暗殺任務から逃亡し、抜け忍として追われる身となる");
-                        return { hp: 0, log: '任務の過酷さに心が折れ、闇夜に乗じて逃走した。かつての同胞である恐るべき「抜け忍狩り」から一生逃げ続ける、地獄の日々が始まる。' }; 
-                    } }
-                ]
-            },
-            {
-                id: 'marriage', mode: ['normal'], weight: 15, condition: (s) => s.age >= 18 && !s.flags.married,
-                title: '【縁談】生涯の伴侶', text: 'あなたの名声と将来性を見込んだ近隣の有力者より、色よい縁談が舞い込んできた。相手は気立てが良く美しいと評判の娘だ。乱世の荒波の中で共に生き抜く伴侶を得ることは、家門の繁栄と心の安らぎをもたらすが、妻帯者となれば、己一人の命ではないという重荷を背負うことにもなる。',
-                choices: [
-                    { text: '【銭80文】町中を巻き込む盛大な祝宴を開き、華やかに迎える', condition: (s) => s.money >= 80, hint: '人徳・体力上昇', effect: (s) => {
-                        s.flags.married = true; s.flags.wifeName = WIFE_NAMES[Math.floor(Math.random() * WIFE_NAMES.length)];
-                        s.virtue += 20; recordChronology(`「${s.flags.wifeName}」を正室として迎え、盛大な祝言を挙げる`);
-                        return { money: -80, hp: 25, log: `金に糸目をつけず豪勢な式を挙げ、「${s.flags.wifeName}」を正式に妻に迎えた。見事な嫁取りだと町中で評判となり、心身ともに充実感に満ちる。` };
-                    } },
-                    { text: '身内だけでささやかに杯を交わし、ひっそりと祝う（銭10文）', condition: (s) => s.money >= 10, hint: '少額で婚姻成立', effect: (s) => {
-                        s.flags.married = true; s.flags.wifeName = WIFE_NAMES[Math.floor(Math.random() * WIFE_NAMES.length)];
-                        s.virtue += 5; recordChronology(`「${s.flags.wifeName}」とささやかな祝言を挙げ、妻に迎える`);
-                        return { money: -10, hp: 10, log: `派手な式は挙げられなかったが、質素ながらも温かな祝言を挙げ、「${s.flags.wifeName}」と固い契りを結んだ。守るべき者ができた喜びを噛み締める。` };
-                    } },
-                    { text: '「今は己の生き様に専念する時だ」と丁重に断る', condition: () => true, hint: '独身を貫く', effect: (s) => ({ hp: 0, log: '家庭のぬくもりなど乱世において弱点にしかならない。湧き上がる未練を断ち切り、独身を貫き通す道を選んだ。' }) }
-                ]
-            },
-            {
-                id: 'childbirth', mode: ['normal'], weight: 20, condition: (s) => s.flags.married && !s.flags.hasChild,
-                title: '【生誕】新たな息吹', text: (s) => `身重だった妻・${s.flags.wifeName || '妻'}の産気づく声が屋敷に響き渡った。乱世といういつ命を落とすか分からぬ時代にあって、新たな血脈が産声を上げようとしている。タライに湯が張られ、慌ただしく立ち働く女中たちを横目に、あなたは我が子の無事と、この子が生き抜く未来の安寧をただひたすらに祈り続けた。`,
-                choices: [
-                    { text: '【銭30文】名高き産婆を呼び寄せ、万全の手厚い処置を受けさせる', condition: (s) => s.money >= 30, hint: '母子ともに安全・体力大幅回復', effect: (s) => {
-                        s.flags.hasChild = true; s.virtue += 15; recordChronology("待望の跡継ぎとなる子が誕生する");
-                        return { money: -30, hp: 25, log: '元気な産声が響き渡った！高名な産婆の助けもあり、母子ともに信じられないほど健康だ。後継の誕生に、家中に歓喜の声があふれた。' };
-                    } },
-                    { text: '神仏にひたすら祈りを捧げ、天命に身を委ねて安産を願う', condition: () => true, hint: '通常出産', effect: (s) => {
-                        s.flags.hasChild = true; s.virtue += 5; recordChronology("子が誕生し、親としての責任を噛み締める");
-                        return { hp: 10, log: '長い苦しみの末、ついに無事に赤子が誕生した。小さくも力強いその手を握りしめ、貧しくとも笑顔の絶えぬ家路を守り抜くという誓いを立てた。' };
-                    } }
-                ]
-            },
-            {
-                id: 'independence', mode: ['normal', 'battle'], weight: 50, condition: (s) => s.virtue >= 30 && s.valor >= 30 && s.classInfo.id === 'bushou' && !s.flags.independence,
-                title: '【IF野望】天下を望む独立の旗', text: '堂々たるあなたの武勲と人望に惹かれ、血の気の多い野心的な武士団が密かに集結した。彼らは熱を帯びた眼差しで「もはや今の主君の下に留まる器ではありませぬ。今こそ御旗を掲げ、天下の覇を競うべきです！」と決起を迫る。一介の家臣から大名へと飛躍する下剋上か、逆賊としての無惨な死か。歴史があなたに決断を求めている。',
-                choices: [
-                    { text: '【銭800文】圧倒的な資金力で近隣豪族を買収し、無血開城で堂々たる独立を果たす', condition: (s) => s.money >= 800, hint: '安全に「大名」へ昇格', effect: (s) => {
-                        s.flags.independence = true; s.classInfo = CLASSES.find(c => c.id === 'daimyo'); s.mode = 'normal';
-                        s.faction = { id: 'custom', name: '独立勢力', color: '#B8860B' }; s.valor += 40; s.virtue += 40;
-                        recordChronology("主家を無血で降伏させ、独立を果たして堂々たる大名となる");
-                        return { money: -800, hp: 0, log: '潤沢すぎる資金で敵方の武将を次々と寝返らせ、一滴の血も流すことなく旧主を城から追い出した！ついに己の城を持った「大名」の誕生である！' };
-                    } },
-                    { text: '【武力蜂起】己の戦術と武勇のみを頼りに、主家に対して反旗を翻す！（成功率50%）', condition: () => true, hint: '成功で大名、失敗で即死', effect: (s) => {
-                        s.flags.independence = true;
-                        if (Math.random() < 0.5 + (s.strategy * 0.005) + (s.luck * 0.005)) {
-                            s.classInfo = CLASSES.find(c => c.id === 'daimyo'); s.mode = 'normal';
-                            s.faction = { id: 'custom', name: '独立勢力', color: '#B8860B' }; s.valor += 50;
-                            recordChronology("主君に反旗を翻して激戦の末に打ち破り、下剋上を果たして大名となる");
-                            return { money: 200, hp: -20, log: '血で血を洗う激戦の末、ついに主家の本陣を打ち破り完全なる独立を成し遂げた！天高く己の旗印を掲げる、新たな「大名」の誕生に諸国が震え上がった！' };
-                        } else {
-                            s.deathCause = 'execution';
-                            return { hp: -999, log: '本隊の急襲を前に謀反の計画は脆くも崩れ去り、味方は総崩れとなった。捕縛されたのち、見せしめとして城門の前で無惨に斬首された……。' };
-                        }
-                    } },
-                    { text: '「義に反する行いは武士の恥」と、謀反を誘う者たちを厳しく一喝する', condition: () => true, hint: '忠義を貫き人徳上昇', effect: (s) => {
-                        s.virtue += 20; return { hp: 0, log: '「恩ある主家に弓を引くなど言語道断！」と決起を促す者たちを一蹴した。その見事な忠誠心は主君の耳にも入り、家中での信望は不動のものとなった。' };
-                    } }
-                ]
-            },
-            {
-                id: 'ninja_promotion', mode: ['normal', 'battle'], weight: 30, condition: (s) => s.classInfo.id === 'ninja' && s.valor >= 40 && s.strategy >= 40 && !s.flags.ninjaPromotion,
-                title: '【御庭番】闇から光へ', text: '数々の過酷な任務を完璧にこなしてきたあなたの手腕が、ついに大名の目に留まった。「これからは日陰者ではなく、我が直属の将として表舞台で働かぬか」と、武士としての召し抱えを打診される。',
-                choices: [
-                    { text: '有難くお受けし、武士（武将）として仕える', condition: () => true, hint: '武将化・銭獲得', effect: (s) => { 
-                        s.flags.ninjaPromotion = true; s.classInfo = CLASSES.find(c=>c.id==='bushou');
-                        recordChronology("大名に類まれなる手腕を認められ、直属の武将に取り立てられる");
-                        return { money: 150, hp: 10, log: '忍びの装束を脱ぎ捨て、立派な具足を与えられた。今日からあなたは名を持たぬ影ではなく、歴史に名を刻む「武将」だ。' }; 
-                    } },
-                    { text: '「闇に生きるが忍びの宿命」と丁重に断る', condition: () => true, hint: '忍者を継続・知略上昇', effect: (s) => { 
-                        s.flags.ninjaPromotion = true; s.strategy += 10;
-                        return { hp: 0, log: '光の当たる場所は自分には眩しすぎる。大名の誘いを断り、引き続き影として暗躍する道を選んだ。' }; 
-                    } }
-                ]
-            },
-            {
-                id: 'monk_promotion', mode: ['normal'], weight: 35, condition: (s) => s.classInfo.id === 'monk' && s.virtue >= 60 && !s.flags.monkPromotion,
-                title: '【紫衣】高僧への昇叙', text: '長年にわたり民草を救い、無私の祈りを捧げ続けたあなたの徳の高さは、ついに都の朝廷にまで知れ渡った。帝より直接、最高位の僧侶の証である「紫衣（しえ）」と多額のお布施が下賜されるという、仏門における最高の栄誉が舞い込んだ。',
-                choices: [
-                    { text: '謹んでお受けし、民の浄財として役立てる', condition: () => true, hint: '大金獲得・体力回復', effect: (s) => { 
-                        s.flags.monkPromotion = true; s.virtue += 30;
-                        recordChronology("その類まれなる徳を帝に認められ、紫衣を賜り高僧となる");
-                        return { money: 300, hp: 30, log: '高貴な紫の衣を身にまとい、民衆からの絶大な信仰と莫大なお布施が集まるようになった。栄養ある食事と立派な寺の庇護により、衰えていた体力も劇的に回復した。' }; 
-                    } },
-                    { text: '権力にすり寄ることを嫌い、破れ衣のまま諸国を巡る', condition: () => true, hint: '人徳特大アップ', effect: (s) => { 
-                        s.flags.monkPromotion = true; s.virtue += 50; s.strategy += 10;
-                        recordChronology("朝廷からの栄誉を辞退し、清貧を貫く生き仏として伝説となる");
-                        return { hp: 0, log: '最高権威からの申し出すら蹴り飛ばすその清貧な姿に、人々はあなたを「生き仏」として狂信的に崇めるようになった。' }; 
-                    } }
-                ]
-            }
+                    { text: '罪悪感を捨て、死体の懐を徹底的に漁る', condition: () => true, hint: '銭獲得・悪逆上昇', effect: (s) => { s.karma += 20; return { money: 80, hp: 0, log: '血まみれの死体から大量の小判をくすねた。死人に金は不要だ。' }; } },
+                    { text: '「人としての誇りは捨てぬ」と手を合わせる', condition: () => true, hint: '人徳上昇', effect: (s) => { s.virtue += 15; return { hp: 0, log: '名もなき兵たちの冥福を祈り、静かにその場を立ち去った。' }; } }
+                ] }
         ];
+
+        // ③ 逃亡イベント
+        const FUGITIVE_EVENTS = [
+            { id: 'escape_survival', mode: ['fugitive'], weight: 80, condition: () => true,
+                title: '【流浪】落武者狩りの包囲', text: '飢えと疲労で重くなる足を引きずり歩く中、血走った目をした農民たちの落武者狩り部隊に完全に囲まれた。',
+                choices: [
+                    { text: '【人徳15】かつて助けた里人に助けを求める', condition: (s) => s.virtue >= 15, hint: '農民へ復帰・回復', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c=>c.id==='peasant'); recordChronology("農民として生き直す"); return { hp: 35, log: '村の長が匿ってくれた。再び「農民」となり土に生きる道を選ぶ。' }; } },
+                    { text: '【銭80文】頭を金で買収し見逃させる', condition: (s) => s.money >= 80, hint: '浪人へ復帰', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c=>c.id==='ronin'); recordChronology("浪人へと復帰する"); return { money: -80, hp: 10, log: '農民どもに有り金を叩きつけ、その隙に「浪人」として他国へ逃れた。' }; } },
+                    { text: '腹をくくり、山賊の群れに加わって野盗に堕ちる', condition: () => true, hint: '野盗へ転身・カルマ上昇', effect: (s) => { s.mode = 'normal'; s.classInfo = CLASSES.find(c=>c.id==='bandit'); s.karma += 25; recordChronology("野盗に堕ちる"); return { hp: 15, money: 40, log: '農民を返り討ちにし、付近を荒らし回る野盗に仲間入りを果たした。' }; } }
+                ] }
+        ];
+
+        // ④ 身分（クラス）専用イベント
+        const CLASS_EVENTS = [
+            { id: 'katana_gari', mode: ['normal'], weight: 25, condition: (s) => s.classInfo.id === 'peasant' && s.age >= 25 && !s.flags.katana,
+                title: '【農村】刀狩りの布告', text: '天下人より「農民は一切の武器を持つべからず」という刀狩令が発布された。代官が村中を家捜しして回っている。',
+                choices: [
+                    { text: '大人しく先祖代々の槍を提出する', condition: () => true, hint: '武功低下・人徳上昇', effect: (s) => { s.flags.katana=true; s.valor-=15; s.virtue+=10; return { hp: 0, log: '武器を捨て、鍬一本で土と生きる真の百姓となる覚悟を決めた。' }; } },
+                    { text: '【知略40】床下に隠し、いざという時の牙を残す', condition: (s) => s.strategy >= 40, hint: '武功維持', effect: (s) => { s.flags.katana=true; s.strategy+=10; return { hp: 0, log: '巧妙に武器を隠し通した。乱世において丸腰など自殺行為に等しい。' }; } },
+                    { text: '役人に逆らって暴れ回る', condition: () => true, hint: '即死', effect: (s) => { s.deathCause='execution'; return { hp: -999, log: '代官に斬りかかったが、多勢に無勢。その場で無惨に斬り捨てられた…。' }; } }
+                ] },
+            { id: 'loan_to_daimyo', mode: ['normal'], weight: 30, condition: (s) => s.classInfo.id === 'merchant' && s.money >= 300,
+                title: '【御用】大名への大名貸し', text: '戦費に行き詰まった地元の大名から「金を貸してくれ」と直接の要請（という名の恐喝）が来た。',
+                choices: [
+                    { text: '【銭300文】ニコニコ笑って快く貸し付ける', condition: () => true, hint: '大成功で大儲け、失敗で大損', effect: (s) => {
+                        if (Math.random() < 0.6) { recordChronology("大名への貸付で莫大な利息を得る"); return { money: 100, hp: 0, log: '大名が戦に大勝！約束通り、莫大な利息をつけて銭が返ってきた！' }; }
+                        else { s.strategy-=10; return { money: -300, hp: 0, log: '大名が戦に大敗！貸した金は完全に踏み倒され、泣き寝入りする羽目に…。' }; }
+                    } },
+                    { text: '「手元に銭はない」と突っぱねる', condition: () => true, hint: '悪逆上昇・負傷', effect: (s) => { s.karma+=10; return { hp: -20, log: '激怒した大名に店を荒らされ、怪我を負ったが、金庫の鍵だけは死守した。' }; } }
+                ] },
+            { id: 'bandit_conflict', mode: ['normal'], weight: 30, condition: (s) => s.classInfo.id === 'bandit',
+                title: '【抗争】裏山の縄張り争い', text: '隣の山を縄張りとする凶悪な山賊団が、こちらのシマを荒らしにやってきた。血で血を洗う殺し合いの始まりだ。',
+                choices: [
+                    { text: '【武功40】先陣を切って敵の頭目を討ち取る', condition: (s) => s.valor >= 40, hint: '武功・悪逆増', effect: (s) => { s.valor+=20; s.karma+=20; return { money: 100, hp: -10, log: '敵の頭の首を刎ね、相手の組織と財産をすべて吸収して大頭目へと成り上がった！' }; } },
+                    { text: '手下を見捨てて一人で逃げ出す', condition: () => true, hint: '浪人へ転落', effect: (s) => { s.classInfo=CLASSES.find(c=>c.id==='ronin'); return { hp: 0, log: '勝ち目はないと悟り、夜逃げした。また一介の浪人からのやり直しだ。' }; } }
+                ] },
+            { id: 'tsujigiri_tempt', mode: ['normal'], weight: 20, condition: (s) => s.classInfo.id === 'ronin',
+                title: '【誘惑】辻斬りの闇', text: '財布の中身は空っぽ。夜の闇道で、前方を裕福そうな商人が一人で歩いているのが見える。刀の柄に手が伸びる。',
+                choices: [
+                    { text: '背後から一刀両断し、金品を奪う', condition: () => true, hint: '悪逆特大増・銭獲得', effect: (s) => { s.karma+=40; return { money: 100, hp: 0, log: '血飛沫と共に商人は倒れた。懐は温まったが、人としての越えてはならない一線を越えた。' }; } },
+                    { text: '刀から手を離し、己の貧しさを噛み締める', condition: () => true, hint: '人徳上昇', effect: (s) => { s.virtue+=15; return { hp: 0, log: '貧しくとも誇りだけは失わない。空腹を抱えながら夜道を足早に立ち去った。' }; } }
+                ] },
+            { id: 'temple_donation', mode: ['normal'], weight: 25, condition: (s) => s.classInfo.id === 'monk',
+                title: '【勧進】大伽藍の建立', text: '戦火で焼け落ちた大伽藍を再建するため、諸国を巡って多額の寄付（勧進）を集めなければならない。',
+                choices: [
+                    { text: '【人徳60】民衆の心を打つ説法で寄付を募る', condition: (s) => s.virtue >= 60, hint: '銭大獲得', effect: (s) => { s.virtue+=20; recordChronology("見事な説法で大伽藍を再建する"); return { money: 200, hp: 0, log: 'あなたの慈愛に満ちた説法に数千の民が涙し、またたく間に再建の費用が集まった！' }; } },
+                    { text: '裕福な武将に媚びへつらい、金を出させる', condition: () => true, hint: '銭獲得・人徳低下', effect: (s) => { s.virtue-=20; s.karma+=10; return { money: 150, hp: 0, log: '権力者にすり寄って金を得た。伽藍は建ったが、裏で「生臭坊主」と陰口を叩かれている。' }; } }
+                ] },
+            { id: 'nanban_trade', mode: ['normal'], weight: 30, condition: (s) => s.classInfo.id === 'merchant' && !s.flags.nanban,
+                title: '【商機】南蛮船の到来', text: '巨大な南蛮船が入港した。火縄銃の山を買い占めるか、手堅くいくか。',
+                choices: [
+                    { text: '【銭200文】全財産を賭けて火縄銃を根こそぎ買い占める', condition: (s) => s.money >= 200, hint: '大儲けか大損', effect: (s) => {
+                        s.flags.nanban = true;
+                        if (Math.random() < 0.7) { recordChronology("南蛮貿易で巨万の富を得る"); return { money: 600, hp: 0, log: '読みは見事的中！大名たちがこぞって高値で買い求め、蔵が建つほどの富を築いた！' }; }
+                        else { return { money: -200, hp: 0, log: '直後に幕府から火薬統制令が敷かれ、火縄銃はすべて二束三文で没収されてしまった……。' }; }
+                    } },
+                    { text: '欲を出さず、手堅い香辛料だけを仕入れる', condition: () => true, hint: '安定', effect: (s) => ({ money: 50, hp: 0, log: '安全な商いに留め、着実に小銭を稼いだ。' }) }
+                ] },
+            { id: 'peasant_revolt', mode: ['normal'], weight: 30, condition: (s) => (s.classInfo.id === 'bushou' || s.classInfo.id === 'daimyo') && !s.flags.revolt,
+                title: '【領国】一揆の勃発', text: '重税に怒りを爆発させた領民たちが暴徒と化し、城下へ押し寄せてきた。',
+                choices: [
+                    { text: '【武功50】自ら鉄砲隊を率いて徹底的に撫で斬りにする', condition: (s) => s.valor >= 50, hint: '武力鎮圧', effect: (s) => { s.flags.revolt=true; s.valor+=20; s.karma+=30; s.virtue=0; recordChronology("一揆勢を容赦なく鎮圧"); return { hp: -10, log: '反乱は鎮まったが、血塗られた領主として深い恨みを買った。' }; } },
+                    { text: '【銭300文】蔵の米を配り、平和的に解決する', condition: (s) => s.money >= 300, hint: '人徳で出費抑制', effect: (s) => { 
+                        s.flags.revolt=true; s.virtue+=40; recordChronology("私財を投じて一揆を鎮める");
+                        let cost = Math.max(50, 300 - Math.floor(s.virtue * 1.5));
+                        return { money: -cost, hp: 0, log: '私財をなげうって救済を約束し、領民からの忠誠は盤石なものとなった。' }; 
+                    } },
+                    { text: '城に籠もって震える', condition: () => true, hint: '名声低下', effect: (s) => { s.flags.revolt=true; s.virtue-=20; s.valor-=10; return { hp: 0, log: '一揆は収まったが、城下町は焼かれ威厳は完全に地に堕ちた。' }; } }
+                ] },
+            { id: 'court_rank', mode: ['normal'], weight: 30, condition: (s) => s.classInfo.id === 'kuge' && !s.flags.courtRank,
+                title: '【朝儀】帝からの勅命', text: '泥沼の抗争を続ける武家同士の争いを調停せよとの勅命が下された。',
+                choices: [
+                    { text: '【知略50】双方の顔を立て、巧みに和睦に持ち込む', condition: (s) => s.strategy >= 50, hint: '名声獲得', effect: (s) => { s.virtue+=30; s.strategy+=10; s.flags.courtRank = true; return { money: 200, hp: 0, log: '見事な弁舌で矛を収めさせ、両家から山のような金銀財宝が届けられた。' }; } },
+                    { text: '裏で賄賂を受け取り、片方に加担する', condition: () => true, hint: '銭獲得・悪逆上昇', effect: (s) => { s.karma+=20; s.flags.courtRank = true; return { money: 300, hp: 0, log: '私腹を肥やすことには成功したが、生涯消えぬ恨みを買った。' }; } }
+                ] },
+            { id: 'ninja_mission', mode: ['normal', 'battle'], weight: 40, condition: (s) => s.classInfo.id === 'ninja',
+                title: '【暗躍】闇の指令', text: '敵国の大名を物理的に抹殺せよという非情な指令が下された。',
+                choices: [
+                    { text: '【知略50】毒を仕込み、気付かれず仕留める', condition: (s) => s.strategy >= 50, hint: '大成功', effect: (s) => { s.valor+=30; s.karma+=20; recordChronology("敵大名の暗殺を完璧に遂行"); return { money: 200, hp: -5, log: '誰一人影すら踏ませず暗殺を完遂。莫大な報奨金を得た。' }; } },
+                    { text: '強行突破で寝所へ忍び込む（成功率50%）', condition: () => true, hint: '成功か即死', effect: (s) => {
+                        if (Math.random() < 0.5) { s.valor += 40; return { money: 150, hp: -15, log: '手傷を負いながらも、驚愕する大名の首を刎ね飛ばした！' }; }
+                        else { s.deathCause = 'execution'; return { hp: -999, log: '隠し部屋の鉄砲隊に蜂の巣にされ、凄惨な最期を遂げた……。' }; }
+                    } },
+                    { text: '恐怖に抗えず、抜け忍となる', condition: () => true, hint: '逃亡者へ', effect: (s) => { s.mode = 'fugitive'; s.modeTurn = 0; s.karma += 10; return { hp: 0, log: '任務から逃亡し、抜け忍狩りから逃げ続ける地獄の日々が始まる。' }; } }
+                ] },
+            { id: 'independence', mode: ['normal', 'battle'], weight: 50, condition: (s) => s.virtue >= 30 && s.valor >= 30 && s.classInfo.id === 'bushou' && !s.flags.independence && s.age < 50,
+                title: '【野望】独立の旗', text: '血の気の多い野心的な武士団が決起を迫ってきた。一介の家臣から大名へと飛躍する下剋上の時か。',
+                choices: [
+                    { text: '【銭800文】豪族を買収し、無血開城で独立する', condition: (s) => s.money >= 800, hint: '「大名」へ昇格', effect: (s) => { s.flags.independence = true; s.classInfo = CLASSES.find(c => c.id === 'daimyo'); s.mode = 'normal'; s.faction = { id: 'custom', name: '独立勢力', color: '#B8860B' }; s.valor += 40; recordChronology("下剋上を果たし大名となる"); return { money: -800, hp: 0, log: '圧倒的な資金力で旧主を追い出し、己の城を持った大名の誕生だ！' }; } },
+                    { text: '【武力蜂起】主家に反旗を翻す！（成功率50%）', condition: () => true, hint: '成功か即死', effect: (s) => {
+                        s.flags.independence = true;
+                        if (Math.random() < 0.5 + (s.strategy * 0.005)) { s.classInfo = CLASSES.find(c => c.id === 'daimyo'); s.mode = 'normal'; s.faction = { id: 'custom', name: '独立勢力', color: '#B8860B' }; s.valor += 50; recordChronology("武力による下剋上を果たし大名となる"); return { money: 200, hp: -20, log: '激戦の末に主家の本陣を打ち破り、完全なる独立を成し遂げた！' }; }
+                        else { s.deathCause = 'execution'; return { hp: -999, log: '謀反の計画は脆くも崩れ、捕縛ののち無惨に斬首された……。' }; }
+                    } },
+                    { text: '謀反を誘う者たちを一喝する', condition: () => true, hint: '忠義', effect: (s) => { s.virtue += 20; return { hp: 0, log: '見事な忠誠心は主君の耳にも入り、信望は不動のものとなった。' }; } }
+                ] },
+            { id: 'ninja_promotion', mode: ['normal', 'battle'], weight: 30, condition: (s) => s.classInfo.id === 'ninja' && s.valor >= 40 && s.strategy >= 40 && !s.flags.ninjaPromotion,
+                title: '【御庭番】闇から光へ', text: '大名の目に留まり、「我が直属の武将として表舞台で働かぬか」と召し抱えを打診される。',
+                choices: [
+                    { text: '有難くお受けし、武将として仕える', condition: () => true, hint: '武将化', effect: (s) => { s.flags.ninjaPromotion = true; s.classInfo = CLASSES.find(c=>c.id==='bushou'); s.mode = 'normal'; recordChronology("直属の武将に取り立てられる"); return { money: 150, hp: 10, log: '忍びの装束を脱ぎ、今日から歴史に名を刻む武将となった。' }; } },
+                    { text: '丁重に断る', condition: () => true, hint: '継続', effect: (s) => { s.flags.ninjaPromotion = true; s.strategy += 10; return { hp: 0, log: '光の当たる場所は眩しすぎる。引き続き影として生きる道を選んだ。' }; } }
+                ] },
+            { id: 'monk_promotion', mode: ['normal'], weight: 35, condition: (s) => s.classInfo.id === 'monk' && s.virtue >= 60 && !s.flags.monkPromotion,
+                title: '【紫衣】高僧への昇叙', text: 'あなたの徳の高さが朝廷に知れ渡り、最高位の証「紫衣」と多額のお布施が下賜されることになった。',
+                choices: [
+                    { text: '謹んでお受けする', condition: () => true, hint: '体力回復', effect: (s) => { s.flags.monkPromotion = true; s.virtue += 30; recordChronology("紫衣を賜り高僧となる"); return { money: 300, hp: 30, log: '莫大なお布施と立派な寺の庇護により、体力が劇的に回復した。' }; } },
+                    { text: '辞退し諸国を巡る', condition: () => true, hint: '人徳特大アップ', effect: (s) => { s.flags.monkPromotion = true; s.virtue += 50; return { hp: 0, log: '栄誉すら蹴り飛ばす清貧な姿に、人々はあなたを「生き仏」と崇めた。' }; } }
+                ] }
+        ];
+
+        // ⑤ 年齢・ライフステージ限定イベント
+        const AGE_EVENTS = [
+            { id: 'genpuku', mode: ['normal'], weight: 100, condition: (s) => s.age === 15 && !s.flags.genpuku,
+                title: '【元服】大人の仲間入り', text: '15の歳を迎え、一人前の大人として扱われる元服の儀を迎えた。これより先、自分の命は自分で守らねばならない。',
+                choices: [
+                    { text: '決意を胸に前を向く', condition: () => true, hint: '運試し', effect: (s) => { 
+                        s.flags.genpuku = true;
+                        if(Math.random() < 0.5) { s.luck+=10; return { hp: 10, log: '雲一つない青空が広がり、幸先の良い人生のスタートを切った。' }; }
+                        else { return { hp: -5, log: '儀式の最中に転んで怪我をした。前途多難な予感がする…。' }; }
+                    } }
+                ] },
+            { id: 'marriage', mode: ['normal'], weight: 15, condition: (s) => s.age >= 18 && !s.flags.married,
+                title: '【縁談】生涯の伴侶', text: '有力者より、色よい縁談が舞い込んできた。妻帯者となれば、己一人の命ではないという重荷を背負うことにもなる。',
+                choices: [
+                    { text: '【銭80文】盛大な祝宴を開き迎える', condition: (s) => s.money >= 80, hint: '体力大幅回復', effect: (s) => { s.flags.married = true; s.flags.wifeName = WIFE_NAMES[Math.floor(Math.random() * WIFE_NAMES.length)]; s.virtue += 20; recordChronology(`「${s.flags.wifeName}」を妻に迎える`); return { money: -80, hp: 25, log: `「${s.flags.wifeName}」を正式に妻に迎え、心身ともに充実感に満ちる。` }; } },
+                    { text: '身内だけでひっそりと祝う（銭10文）', condition: (s) => s.money >= 10, hint: '回復', effect: (s) => { s.flags.married = true; s.flags.wifeName = WIFE_NAMES[Math.floor(Math.random() * WIFE_NAMES.length)]; s.virtue += 5; recordChronology(`「${s.flags.wifeName}」を妻に迎える`); return { money: -10, hp: 10, log: `質素ながら温かな祝言を挙げた。守るべき者ができた喜びを噛み締める。` }; } },
+                    { text: '丁重に断る', condition: () => true, hint: '独身', effect: () => ({ hp: 0, log: '家庭のぬくもりは乱世において弱点になる。独身を貫き通す道を選んだ。' }) }
+                ] },
+            { id: 'childbirth', mode: ['normal'], weight: 20, condition: (s) => s.flags.married && !s.flags.hasChild,
+                title: '【生誕】新たな息吹', text: (s) => `身重だった妻・${s.flags.wifeName || '妻'}が産気づいた。新たな血脈が産声を上げようとしている。`,
+                choices: [
+                    { text: '【銭30文】名高き産婆を呼ぶ', condition: (s) => s.money >= 30, hint: '体力大回復', effect: (s) => { s.flags.hasChild = true; s.virtue += 15; recordChronology("子が誕生する"); return { money: -30, hp: 25, log: '元気な産声が響き渡った！母子ともに健康で、歓喜にあふれた。' }; } },
+                    { text: '天命に身を委ねて祈る', condition: () => true, hint: '通常出産', effect: (s) => { s.flags.hasChild = true; s.virtue += 5; recordChronology("子が誕生する"); return { hp: 10, log: '無事に赤子が誕生した。この家路を守り抜く誓いを立てた。' }; } }
+                ] },
+            { id: 'aging_40', mode: ['normal'], weight: 100, condition: (s) => s.age === 40 && !s.flags.aging40,
+                title: '【不惑】初老の兆し', text: '「四十、五十は化け物」と言われる戦国時代。ふとした瞬間に息切れを感じるようになり、確実に肉体の衰えが始まっていることを悟る。だが、積み重ねた経験は確かな知恵となっている。',
+                choices: [
+                    { text: '老いを受け入れ、頭脳で戦う覚悟を決める', condition: () => true, hint: '知略上昇・体力減少', effect: (s) => { s.flags.aging40 = true; s.strategy += 20; return { hp: -10, log: '無理な無茶は控え、経験と知恵を武器にしてこれからの乱世を渡り歩くことにした。' }; } }
+                ] },
+            { id: 'inherit_50', mode: ['normal'], weight: 100, condition: (s) => s.age === 50 && s.flags.hasChild && !s.flags.inherit50,
+                title: '【家督】次世代への継承', text: '立派に成長した子供から「そろそろ家督を譲り、楽隠居されてはいかがか」と打診された。ここで一線を退けば、安全に大往生を迎えられるかもしれないが…。',
+                choices: [
+                    { text: '家督を譲り、現役を退く', condition: () => true, hint: '即座に大往生クリア', effect: (s) => { s.flags.inherit50 = true; s.deathCause = 'oldage'; s.age = 60; return { hp: 0, log: 'すべてを後進に託し、戦乱の世から完全に身を引いた。縁側で茶をすする平和な余生が始まる。' }; } },
+                    { text: '「儂はまだやれる！」と突っぱねる', condition: () => true, hint: '現役続行・寿命限界に挑む', effect: (s) => { s.flags.inherit50 = true; s.valor += 10; return { hp: -10, log: '子供を一喝し、まだまだ現役として血の海を泳ぎ続ける修羅の道を選んだ。' }; } }
+                ] }
+        ];
+
+        // ⑥ ステータス極みイベント
+        const STAT_EVENTS = [
+            { id: 'hidden_gold', mode: ['normal', 'fugitive'], weight: 15, condition: (s) => s.luck >= 80 && !s.flags.hiddenGold,
+                title: '【奇跡】埋蔵金の発見', text: '激しい雨上がり、裏山の土砂崩れの跡から不自然な木箱が覗いている。恐る恐る開けてみると、かつての豪族が隠したと思われる眩いばかりの砂金が詰まっていた！',
+                choices: [
+                    { text: '有難く頂戴し、懐に入れる', condition: () => true, hint: '銭超絶アップ', effect: (s) => { s.flags.hiddenGold=true; recordChronology("途方もない強運で埋蔵金を発見する"); return { money: 500, hp: 0, log: '天の配剤か、これほどの財産が転がり込んでくるとは！笑いが止まらない。' }; } }
+                ] },
+            { id: 'goemon_raid', mode: ['normal'], weight: 20, condition: (s) => s.karma >= 80 && !s.flags.goemon,
+                title: '【義賊】大泥棒の襲撃', text: 'あなたの悪行は天下に知れ渡っていた。ある夜、屋敷の天井裏から天下の大泥棒（石川五右衛門）が舞い降り、「悪銭身に付かず、だ！」と刃を向けてきた！',
+                choices: [
+                    { text: '【武功80】大泥棒を返り討ちにする！', condition: (s) => s.valor >= 80, hint: '撃退', effect: (s) => { s.flags.goemon=true; return { hp: -10, money: 100, log: '激しい斬り合いの末、大泥棒を撃退！逃げ際に落とした金品をせしめた。' }; } },
+                    { text: '命乞いをして全財産を差し出す', condition: () => true, hint: '銭全損', effect: (s) => { s.flags.goemon=true; let lost = s.money; return { money: -lost, hp: -10, log: '恐怖に震え上がり、土下座して金庫の鍵を渡した。これまでの悪銭がすべて消え去った…。' }; } }
+                ] },
+            { id: 'people_petition', mode: ['normal'], weight: 20, condition: (s) => s.virtue >= 80 && !s.flags.petition,
+                title: '【人望】民衆の嘆願', text: 'あなたの海より深い人徳を慕い、近隣の村々から数千人の民衆が集まり、「どうか我らの新たな領主になってくだされ！」と涙ながらに嘆願してきた。',
+                choices: [
+                    { text: '民のため、新しい国を作る', condition: () => true, hint: '大名へ昇格', effect: (s) => { s.flags.petition=true; s.classInfo=CLASSES.find(c=>c.id==='daimyo'); s.faction = { id: 'custom', name: '民衆勢力', color: '#B8860B' }; recordChronology("民衆に推戴され大名となる"); return { hp: 0, log: '血を流さずして、民の力のみで一国を築き上げた。歴史に残る偉業だ！' }; } },
+                    { text: '分不相応だと優しく諭して帰す', condition: () => true, hint: '人徳・運上昇', effect: (s) => { s.flags.petition=true; s.luck+=20; return { hp: 0, log: '野心を捨てたその無欲な姿に、民衆はあなたを生き神としてさらに深く崇拝した。' }; } }
+                ] }
+        ];
+
+        // ⑦ 歴史イベント
+        const HISTORY_EVENTS = [
+            { id: 'teppo_arrival', mode: ['normal'], weight: 50, condition: (s) => s.age >= 25 && !s.flags.teppo,
+                title: '【歴史】鉄砲の伝来', text: '南蛮船より、轟音と共に敵を撃ち抜く恐るべき筒「鉄砲」が伝来し、またたく間に諸国に広まった。これより先の戦場は、一発の鉛玉で命が散る真の修羅場と化す。',
+                choices: [
+                    { text: '時代の変化を肌で感じる', condition: () => true, hint: '今後の合戦が危険に', effect: (s) => { s.flags.teppo = true; recordChronology("鉄砲が伝来し、戦の常識が覆る"); return { hp: 0, log: 'どれほど剣術を磨こうと、鉛玉一発で名将が死ぬ時代が到来した。気を引き締めねば。' }; } }
+                ] },
+            { id: 'christianity', mode: ['normal'], weight: 15, condition: (s) => s.age >= 20 && !s.flags.christianity && s.classInfo.id !== 'monk',
+                title: '【異教】切支丹の教え', text: '見慣れぬ衣服を着た南蛮の宣教師が「デウスの教え」を説いて回っている。すべての人を救うというその教えは、乱世に苦しむ民の心を捉え始めている。',
+                choices: [
+                    { text: '【銭50文】寄付をして、南蛮の医学や知識を学ぶ', condition: (s) => s.money >= 50, hint: '知略上昇・回復', effect: (s) => { s.flags.christianity=true; s.strategy+=15; return { money: -50, hp: 20, log: '異教の教えには深入りせず、彼らが持つ高度な南蛮医学と知識だけを巧みに吸収した。' }; } },
+                    { text: '異国の妖術だと石を投げて追い払う', condition: () => true, hint: '悪逆上昇', effect: (s) => { s.flags.christianity=true; s.karma+=5; return { hp: 0, log: '得体の知れない教えなど我が国には不要だ。暴力で追い払った。' }; } }
+                ] },
+            { id: 'honnoji', mode: ['normal', 'battle'], weight: 5, condition: (s) => s.age >= 30 && !s.flags.honnoji,
+                title: '【凶報】本能寺の変', text: '深夜の静寂を引き裂くように、飛脚が絶叫と共に駆け込んできた。「信長公、本能寺にて討ち死に！」絶対的覇者の死により、新たな戦乱の嵐が吹き荒れようとしている。',
+                choices: [
+                    { text: '【銭300文】大混乱に乗じて物資を買い占める', condition: (s) => s.money >= 300, hint: '大儲け', effect: (s) => { s.flags.honnoji=true; s.karma+=20; recordChronology("本能寺の変の混乱で巨万の富を築く"); return { money: 500, hp: 0, log: '相場の乱れを逆手にとり、莫大な利益を叩き出した。' }; } },
+                    { text: '【知略40】いち早く次の覇者となる軍勢に合流する', condition: (s) => s.strategy >= 40, hint: '出世', effect: (s) => { s.flags.honnoji=true; s.strategy+=30; recordChronology("時流を読み次の天下人に取り入る"); return { money: 100, hp: 0, log: '秀吉の軍に誼を通じ、立身出世の足がかりを得た。' }; } },
+                    { text: '嵐が過ぎ去るのをただ静観する', condition: () => true, hint: '影響なし', effect: (s) => { s.flags.honnoji=true; return { hp: 0, log: '戸板を固く閉ざし、血の雨が止むのをじっと待ち続けた。' }; } }
+                ] }
+        ];
+
+        // ★最後にすべてのイベントを統合
+        const EVENTS = [
+            ...NORMAL_EVENTS,
+            ...BATTLE_EVENTS,
+            ...FUGITIVE_EVENTS,
+            ...CLASS_EVENTS,
+            ...AGE_EVENTS,
+            ...STAT_EVENTS,
+            ...HISTORY_EVENTS
+        ];
+
+        // ==========================================
 
         function calculateTitle(s) {
             if (s.classInfo && s.classInfo.id === 'daimyo') return "天下の覇者";
@@ -1511,7 +1294,6 @@
         window.openHelp = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('help-screen').classList.remove('hidden'); };
         window.closeHelp = function(e) { if(e){ e.preventDefault(); e.stopPropagation(); } document.getElementById('help-screen').classList.add('hidden'); };
 
-        // ★NEW: ランキング（番付）機能の追加
         window.openRanking = function(e) {
             if(e){ e.preventDefault(); e.stopPropagation(); }
             document.getElementById('ranking-screen').classList.remove('hidden');
@@ -1597,7 +1379,7 @@
 
             if (logContainer) { logContainer.innerHTML = ''; logContainer.scrollTop = 0; }
             if (choicesContainer) { choicesContainer.innerHTML = ''; choicesContainer.classList.add('hidden'); choicesContainer.classList.remove('flex'); }
-            if (advanceBtn) { advanceBtn.classList.remove('hidden'); if (advanceBtnText) advanceBtnText.innerText = "歳 月 を 進 め る"; }
+            
             if (appContainer) appContainer.classList.remove('mode-battle', 'mode-fugitive', 'damage-flash');
             if (modeBadge) modeBadge.classList.add('hidden');
         }
@@ -1643,7 +1425,7 @@
             const spawnProbability = ((selectedClass.weight / totalWeight) * 100).toFixed(1);
             const selectedFaction = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];
 
-            state = { playerName: finalName, age: 15, health: selectedClass.initHealth, money: selectedClass.initMoney, classInfo: selectedClass, faction: selectedFaction, isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0, mode: 'normal', flags: {}, chronology: [] };
+            state = { playerName: finalName, age: 15, health: selectedClass.initHealth, money: selectedClass.initMoney, classInfo: selectedClass, faction: selectedFaction, isAlive: true, lastDamageEvent: '', deathCause: '', valor: 0, karma: 0, luck: 0, strategy: 0, virtue: 0, mode: 'normal', lastMode: 'normal', modeTurn: 0, flags: {}, chronology: [] };
 
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
@@ -1663,11 +1445,13 @@
             if (window.activeConsumable) {
                 const cons = window.activeConsumable;
                 if (cons.type === 'migawari') state.flags.migawari = true;
+                else if (cons.type === 'auto_heal') state.flags.autoHeal = cons.value; // 傷薬
                 else if (cons.type === 'money') state.money += cons.value;
                 else if (cons.type === 'valor') state.valor += cons.value;
                 else if (cons.type === 'luck') state.luck += cons.value;
                 else if (cons.type === 'strategy') state.strategy += cons.value;
                 else if (cons.type === 'virtue') state.virtue += cons.value;
+                else if (cons.type === 'health') state.health += cons.value;
 
                 if (window.inventory[cons.id] > 0) window.inventory[cons.id] -= 1;
                 state.flags.consumedItemName = cons.name;
@@ -1751,42 +1535,69 @@
         function scheduleNextAutoPlay(delay = 900) {
             stopAutoPlay();
             if (!state.isAlive || isWaitingForChoice) return;
-            autoPlayTimer = setTimeout(() => { if (state.isAlive && !isWaitingForChoice && !isProcessing) advanceOneYear(); }, delay);
+            autoPlayTimer = setTimeout(() => { if (state.isAlive && !isWaitingForChoice && !isProcessing) advanceGame(); }, delay);
         }
 
         window.manualAdvance = function(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
             if (!state.isAlive || isWaitingForChoice || isProcessing) return;
-            stopAutoPlay(); advanceOneYear();
+            stopAutoPlay(); advanceGame();
         };
 
-        function advanceOneYear() {
+        function advanceGame() {
             if (!state.isAlive || isWaitingForChoice || isProcessing) return;
             isProcessing = true;
             try {
-                state.age++;
-                const isMilestone = (state.age % 5 === 0);
-                const isRandomEvent = Math.random() < 0.25;
+                if (state.lastMode !== state.mode) {
+                    state.modeTurn = 0;
+                    state.lastMode = state.mode;
+                }
 
-                if (isMilestone || isRandomEvent) {
-                    let pool = EVENTS.filter(e => e.mode.includes(state.mode));
-                    const availableEvents = pool.filter(e => { if (e.condition && !e.condition(state)) return false; return true; });
-                    if (availableEvents.length === 0) availableEvents.push(EVENTS[0]);
+                if (state.mode === 'normal') {
+                    state.age++;
+                    // 年齢が進んだ時だけ、老衰の判定を行うよう変更
+                    if (!checkSurvival()) {
+                        isProcessing = false;
+                        return; // 死んでいたら処理終了
+                    }
 
-                    const totalW = availableEvents.reduce((s, e) => s + e.weight, 0);
-                    let r = Math.random() * totalW;
-                    let ev = availableEvents[0];
-                    for (let e of availableEvents) { r -= e.weight; if (r <= 0) { ev = e; break; } }
-                    presentEventChoices(ev); saveCurrentRun();
+                    const isMilestone = (state.age % 5 === 0);
+                    const isRandomEvent = Math.random() < 0.35; // イベント発生率を少し上昇
+
+                    if (isMilestone || isRandomEvent) {
+                        triggerEvent();
+                    } else {
+                        handleNormalYear(); updateUI(); checkSurvival();
+                        if (state.isAlive && !isWaitingForChoice) { saveCurrentRun(); scheduleNextAutoPlay(850); }
+                    }
                 } else {
-                    handleNormalYear(); updateUI(); checkSurvival();
-                    if (state.isAlive && !isWaitingForChoice) { saveCurrentRun(); scheduleNextAutoPlay(850); }
+                    state.modeTurn++;
+                    const isRandomEvent = Math.random() < 0.5;
+                    
+                    if (isRandomEvent) {
+                        triggerEvent();
+                    } else {
+                        handleNormalYear(); updateUI(); checkSurvival();
+                        if (state.isAlive && !isWaitingForChoice) { saveCurrentRun(); scheduleNextAutoPlay(850); }
+                    }
                 }
             } catch (err) {
                 console.error("Yearly advance error:", err);
             } finally {
                 if(!isWaitingForChoice) isProcessing = false;
             }
+        }
+
+        function triggerEvent() {
+            let pool = EVENTS.filter(e => e.mode.includes(state.mode));
+            const availableEvents = pool.filter(e => { if (e.condition && !e.condition(state)) return false; return true; });
+            if (availableEvents.length === 0) availableEvents.push(EVENTS[0]);
+
+            const totalW = availableEvents.reduce((s, e) => s + e.weight, 0);
+            let r = Math.random() * totalW;
+            let ev = availableEvents[0];
+            for (let e of availableEvents) { r -= e.weight; if (r <= 0) { ev = e; break; } }
+            presentEventChoices(ev); saveCurrentRun();
         }
 
         function handleNormalYear() {
@@ -1824,7 +1635,12 @@
             if (hpDiff !== 0) tag.push(`体力${hpDiff > 0 ? '+' : ''}${hpDiff}`);
             if (moneyDiff !== 0) tag.push(`銭${moneyDiff > 0 ? '+' : ''}${moneyDiff}`);
             const statStr = tag.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tag.join(', ')})</span>` : '';
-            addLog(`<span class="font-bold text-gray-500">【${state.age}歳】</span> ${item.text}${statStr}`);
+            
+            let tagHeader = `<span class="font-bold text-gray-500">【${state.age}歳】</span>`;
+            if (state.mode === 'battle') tagHeader = `<span class="font-bold text-red-400">【${state.age}歳: 戦場 ${state.modeTurn}ヶ月目】</span>`;
+            else if (state.mode === 'fugitive') tagHeader = `<span class="font-bold text-gray-400">【${state.age}歳: 逃亡 ${state.modeTurn}日目】</span>`;
+
+            addLog(`${tagHeader} ${item.text}${statStr}`);
         }
 
         function presentEventChoices(ev) {
@@ -1832,9 +1648,13 @@
             state.flags.currentEventTitle = ev.title;
             const textContent = typeof ev.text === 'function' ? ev.text(state) : ev.text;
 
+            let ageText = `【${state.age}歳】`;
+            if (state.mode === 'battle') ageText = `【${state.age}歳: 戦場 ${state.modeTurn || 1}ヶ月目】`;
+            else if (state.mode === 'fugitive') ageText = `【${state.age}歳: 逃亡 ${state.modeTurn || 1}日目】`;
+
             const card = document.createElement('div'); card.className = 'event-active-card';
             card.innerHTML = `
-                <div class="flex items-center justify-between mb-1"><span class="text-xs font-black text-gold flex items-center"><span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-1.5 animate-ping"></span>【${state.age}歳】${ev.title}</span><span class="text-[10px] text-yellow-200/60 font-bold border border-yellow-700/50 px-1 py-0.2 rounded">選択の刻</span></div>
+                <div class="flex items-center justify-between mb-1"><span class="text-xs font-black text-gold flex items-center"><span class="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-1.5 animate-ping"></span>${ageText}${ev.title}</span><span class="text-[10px] text-yellow-200/60 font-bold border border-yellow-700/50 px-1 py-0.2 rounded">選択の刻</span></div>
                 <div class="text-[13px] leading-relaxed text-gray-100 font-bold">${textContent}</div>
             `;
             logContainer.appendChild(card);
@@ -1882,8 +1702,15 @@
                 if (hpChg < 0 && appContainer) { appContainer.classList.remove('damage-flash'); void appContainer.offsetWidth; appContainer.classList.add('damage-flash'); }
             } catch (err) { console.error("Choice effect error:", err); }
 
-            updateUI(); checkSurvival();
-            if (state.isAlive) { advanceBtn.classList.remove('hidden'); if (advanceBtnText) advanceBtnText.innerText = "次 の 年 へ 進 む"; isProcessing = false; saveCurrentRun(); scheduleNextAutoPlay(1000); }
+            updateUI(); 
+            
+            // 選択の結果死んでいたらここでストップ
+            if (!checkSurvival()) {
+                isProcessing = false;
+                return;
+            }
+
+            if (state.isAlive) { advanceBtn.classList.remove('hidden'); isProcessing = false; saveCurrentRun(); scheduleNextAutoPlay(1000); }
         }
 
         function updateUI() {
@@ -1900,12 +1727,22 @@
             const hb = document.getElementById('health-box');
             if (hb) { if (state.health <= 30) { hb.classList.add('bg-red-950', 'border-red-600'); hb.classList.remove('bg-[#201C18]', 'border-[#3A322A]'); } else { hb.classList.remove('bg-red-950', 'border-red-600'); hb.classList.add('bg-[#201C18]', 'border-[#3A322A]'); } }
             if (appContainer) appContainer.classList.remove('mode-battle', 'mode-fugitive');
+            
             if (modeBadge) {
                 modeBadge.classList.add('hidden');
                 if (state.mode === 'battle') { if (appContainer) appContainer.classList.add('mode-battle'); modeBadge.innerText = '戦場'; modeBadge.className = 'text-[10px] bg-red-950 text-red-200 border border-red-600 px-1.5 py-0.5 font-bold rounded-sm'; modeBadge.classList.remove('hidden'); }
                 else if (state.mode === 'fugitive') { if (appContainer) appContainer.classList.add('mode-fugitive'); modeBadge.innerText = '逃亡'; modeBadge.className = 'text-[10px] bg-gray-900 text-gray-300 border border-gray-600 px-1.5 py-0.5 font-bold rounded-sm'; modeBadge.classList.remove('hidden'); }
             }
-            if (!isWaitingForChoice && advanceBtnText) { advanceBtnText.innerText = autoPlayTimer ? "自動進行中... (タップで進む)" : "歳 月 を 進 め る"; }
+
+            if (!isWaitingForChoice && advanceBtnText) { 
+                if (autoPlayTimer) {
+                    advanceBtnText.innerText = "自動進行中... (タップで進む)";
+                } else {
+                    if (state.mode === 'normal') advanceBtnText.innerText = "歳 月 を 進 め る";
+                    else if (state.mode === 'battle') advanceBtnText.innerText = "戦 局 を 進 め る";
+                    else if (state.mode === 'fugitive') advanceBtnText.innerText = "息 を 潜 め て 進 む";
+                }
+            }
         }
 
         function renderChronologyToList(containerId) {
@@ -1923,35 +1760,50 @@
             requestAnimationFrame(() => { if (logContainer) logContainer.scrollTop = logContainer.scrollHeight; });
         }
 
+        // 返り値 boolean (true:生存, false:死亡)
         function checkSurvival() {
-            if (!state.isAlive) return;
+            if (!state.isAlive) return false;
 
             const bonusAge = Math.floor((window.greatDeathCount || 0) / 10) * 5;
             const absoluteMaxAge = 70 + bonusAge;
             const randomDeathStart = 60 + bonusAge;
 
-            if (state.age >= absoluteMaxAge) { 
+            if (state.age >= absoluteMaxAge && state.deathCause !== 'oldage') { 
                 state.health = 0; state.lastDamageEvent = '天寿'; state.deathCause = 'oldage'; 
                 addLog(`<span class="text-gold font-bold">過酷な戦乱を生き抜き、真の天寿（${absoluteMaxAge}歳）を全うして静かに目を閉じた……。</span>`); 
             }
-            else if (state.age >= randomDeathStart && Math.random() < (state.age - (randomDeathStart - 1)) * 0.08) { 
+            else if (state.age >= randomDeathStart && state.deathCause !== 'oldage' && Math.random() < (state.age - (randomDeathStart - 1)) * 0.08) { 
                 state.health = 0; state.lastDamageEvent = '老衰'; state.deathCause = 'oldage'; 
                 addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた老躯が限界を迎え、静かに眠りについた。</span>`); 
             }
 
+            if (state.deathCause !== 'oldage' && state.flags.autoHeal) {
+                if (state.health <= 30 && state.health > 0) {
+                    state.health += state.flags.autoHeal;
+                    addLog(`<span class="text-green-400 font-bold">【秘伝の傷薬】体力が危険域に達したため、持参した傷薬を飲み体力を ${state.flags.autoHeal} 回復した！</span>`);
+                    state.flags.autoHeal = 0;
+                    updateUI();
+                } else if (state.health <= 0) {
+                    state.health += state.flags.autoHeal;
+                    addLog(`<span class="text-green-400 font-bold">【秘伝の傷薬】死の淵で薄れゆく意識の中、薬を飲み干して体力を ${state.flags.autoHeal} 回復し、一命を取り留めた！</span>`);
+                    state.flags.autoHeal = 0;
+                    state.deathCause = '';
+                    updateUI();
+                    return true;
+                }
+            }
+
             if (state.health <= 0 && state.flags.migawari) {
                 state.health = 1; state.flags.migawari = false; state.deathCause = '';
-                addLog(`<span class="text-purple-300 font-bold">【身代わり地蔵】懐に忍ばせていた地蔵が砕け散った！冥府の力により、死の淵から奇跡的に生生還する……！</span>`);
-                updateUI(); return;
+                addLog(`<span class="text-purple-300 font-bold">【身代わり地蔵】懐に忍ばせていた地蔵が砕け散った！冥府の力により、死の淵から奇跡的に生還する……！</span>`);
+                updateUI(); return true;
             }
 
             if (state.health <= 0) {
                 state.isAlive = false; stopAutoPlay(); isWaitingForChoice = false; isProcessing = false;
                 recordChronology("この世を去る"); localStorage.removeItem('sengoku_current_run');
 
-                if (state.age >= 60) {
-                    window.greatDeathCount = (window.greatDeathCount || 0) + 1;
-                }
+                if (state.age >= 60) window.greatDeathCount = (window.greatDeathCount || 0) + 1;
 
                 const earnedMeisen = Math.floor((state.age + state.valor + state.karma + state.luck + state.strategy + state.virtue) / 10);
                 window.meisen += earnedMeisen;
@@ -1995,7 +1847,10 @@
 
                 if (state.age >= 60) setTimeout(() => showPremiumEnding(finalTitle, nextHeirloom, earnedMeisen), 400);
                 else setTimeout(() => showGameOver(reason, finalTitle, nextHeirloom, state.deathCause, earnedMeisen, lostHeirlooms), 400);
+
+                return false;
             }
+            return true;
         }
 
         function showGameOver(reason, title, nextHeirloom, deathCause, earnedMeisen, lostHeirlooms = []) {
@@ -2202,7 +2057,6 @@
                     const pastLivesRef = db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('past_lives');
                     await pastLivesRef.add({ playerName: finalState.playerName || '名無し', age: age, className: className, faction: factionName, title: title, reason: reason, valor: finalState.valor, karma: finalState.karma, luck: finalState.luck, money: finalState.money, strategy: finalState.strategy, virtue: finalState.virtue, timestamp: Date.now(), chronology: finalState.chronology });
 
-                    // ★NEW: ランキング（番付）用データへの送信
                     const boardRef = db.collection('artifacts').doc(appId).collection('leaderboard');
                     await boardRef.add({
                         playerName: finalState.playerName || '名無しの権兵衛',
