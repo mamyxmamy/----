@@ -399,14 +399,56 @@
 
         <div id="help-screen" class="hidden absolute inset-0 z-50 bg-[#0C0A09] flex flex-col pointer-events-auto">
             <div class="p-3 border-b border-green-900/60 bg-[#111613] flex justify-between items-center shrink-0">
-                <div><h2 class="text-base font-bold text-green-400 tracking-widest">遊戯指南</h2><p class="text-[10px] text-gray-400 mt-1">この乱世を生き抜くための基礎知識。</p></div>
+                <div><h2 class="text-base font-bold text-green-400 tracking-widest">遊戯指南</h2><p class="text-[10px] text-gray-400 mt-1">この乱世を生き抜くための完全手引書。</p></div>
                 <button type="button" onclick="window.closeHelp(event)" class="action-button-main text-gray-400 hover:text-white text-3xl px-2 leading-none">&times;</button>
             </div>
             <div class="flex-grow overflow-y-auto p-4 space-y-4 pb-8 text-gray-300 text-xs leading-relaxed">
-                <section><h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 目的</h3><p>過酷な戦国時代にランダムな身分で生まれ落ち、寿命を迎えるか、非業の死を遂げるまで生き抜くライフシミュレーションゲームです。「歳月を進める」ことで時間が経過し、様々なイベントが発生します。</p></section>
-                <section><h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 各種能力値</h3><ul class="list-disc pl-4 space-y-1"><li><span class="text-red-300 font-bold">武功</span>: 戦での強さ。合戦や御前試合で有利になります。</li><li><span class="text-purple-300 font-bold">悪逆</span>: 業の深さ。非道な選択肢を選ぶと上がります。</li><li><span class="text-blue-300 font-bold">知略</span>: 頭の良さ。策略で危機を回避したり、商売で得をします。</li><li><span class="text-green-300 font-bold">人徳</span>: 人望の厚さ。高いと人から助けられたりします。</li><li><span class="text-yellow-300 font-bold">運</span>: 生死を分ける究極の確率に関わります。</li></ul></section>
-                <section><h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 引き継ぎ要素とロスト</h3><ul class="list-disc pl-4 space-y-1"><li><span class="text-gold font-bold">家宝</span>: 特定の条件を満たして死亡すると獲得します。装備することでボーナスを得ますが、<span class="text-red-400 font-bold">大往生（60歳到達）できずに死亡すると完全にロストします。</span></li><li><span class="text-purple-400 font-bold">冥銭・道具</span>: 生き抜いた年数や能力値に応じて死後に獲得します。冥府の商人で「持込道具」と交換できます。</li></ul></section>
-                <section><h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 大往生と時間の流れ</h3><p>享年60歳まで生き延びると、「大往生」となり特別な結末を迎えます。大往生を10回達成するごとに寿命の限界が「5歳」ずつ延長されます。</p><p class="text-red-300 font-bold mt-1">※平和な日常は1年単位で進みますが、合戦や逃亡中などの特殊な状態では、より短い期間（月・日単位）で時間が濃密に進みます。</p></section>
+                <section>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 乱世の歩き方（基本）</h3>
+                    <p>14歳で身分と領地を背負って生まれ落ち、寿命を迎えるか非業の死を遂げるまで生き抜くライフシミュレーションです。「歳月を進める」で時間が流れ、様々な事象や決断が訪れます。</p>
+                </section>
+
+                <section>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 15歳の元服と「素寒貧」</h3>
+                    <p class="mb-1">15歳を迎えると必ず【元服の儀】が発生し、自らの生き様（伸ばす能力）を選択できます。</p>
+                    <ul class="list-disc pl-4 space-y-1 text-gray-400">
+                        <li><strong class="text-white">能力特化:</strong> 武力・知略・人徳・野心・強運を選び、能力を大幅強化して生き抜く。</li>
+                        <li><strong class="text-yellow-400">素寒貧（縛り道）:</strong> 全財産を捨て、拾った木の棍棒1本で挑む極限モード。この状態で60歳の大往生を果たすと、専用の二つ名と伝説の家宝が刻まれます。</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 五大能力値</h3>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li><span class="text-red-300 font-bold">武功</span>: 合戦や御前試合で有利になり、手柄を立てやすくなります。</li>
+                        <li><span class="text-purple-300 font-bold">悪逆</span>: 業の深さ。非情な決断で上昇し、裏社会の道が開かれます。</li>
+                        <li><span class="text-blue-300 font-bold">知略</span>: 策謀や危機回避、商売の成否に影響します。</li>
+                        <li><span class="text-green-300 font-bold">人徳</span>: 人望の厚さ。高いと民や他者に窮地を救われることがあります。</li>
+                        <li><span class="text-yellow-300 font-bold">運</span>: 生死を分ける確率や、不意の奇跡を引き寄せます。</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 冥銭・商人・家宝ロスト</h3>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li><span class="text-purple-400 font-bold">冥銭と道具</span>: 死後に業に応じて獲得する通貨。冥府の商人で「身代わり地蔵」やステータス強化札などの持込道具（1回使い切り）と交換できます。</li>
+                        <li><span class="text-gold font-bold">継承家宝</span>: 特定条件で入手する永続強化品。<span class="text-red-400 font-bold">大往生（60歳到達）できずに非業の死を遂げると完全にロストします。</span></li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 絵巻図鑑と天下の番付</h3>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li><span class="text-gold font-bold">絵巻図鑑</span>: これまで集めた「家宝」、迎えた「死因」、そして人生の生き様によって授かる「二つ名（全45種）」がコレクションされます。</li>
+                        <li><span class="text-yellow-400 font-bold">天下の番付</span>: 全国のプレイヤーと「長寿」「富国」「武功」を競い合うオンラインランキングです。</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 大往生と時間の流れ</h3>
+                    <p>享年60歳に達すると「大往生」となります。大往生を10回達成するごとに寿命限界が「+5歳」延長されます。</p>
+                    <p class="text-red-300 font-bold mt-1">※合戦中や逃亡中は月・日単位で濃密に時間が流れます。</p>
+                </section>
             </div>
         </div>
 
@@ -1875,7 +1917,7 @@
             if (state.deathCause !== 'oldage' && state.flags.autoHeal) {
                 if (state.health <= 30 && state.health > 0) {
                     state.health += state.flags.autoHeal;
-                    addLog(`<span class="text-green-400 font-bold">【秘伝の傷薬】体력이危険域に達したため、持参した傷薬を飲み体力を ${state.flags.autoHeal} 回復した！</span>`);
+                    addLog(`<span class="text-green-400 font-bold">【秘伝の傷薬】体力が危険域に達したため、持参した傷薬を飲み体力を ${state.flags.autoHeal} 回復した！</span>`);
                     state.flags.autoHeal = 0;
                     updateUI();
                 } else if (state.health <= 0) {
