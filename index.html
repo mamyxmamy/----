@@ -441,7 +441,7 @@
                 <section>
                     <h3 class="text-green-300 font-bold mb-1 border-b border-green-900/50 pb-1">◆ 絵巻図鑑と天下の番付</h3>
                     <ul class="list-disc pl-4 space-y-1">
-                        <li><span class="text-gold font-bold">絵巻図鑑</span>: これまで集めた「家宝」、迎えた「死因」、そして人生の生き様によって授かる「二つ名（全45種）」がコレクションされます。</li>
+                        <li><span class="text-gold font-bold">絵巻図鑑</span>: これまで集めた「家宝」、迎えた「死因」、そして人生の生き様によって授かる「二つ名（全50種）」がコレクションされます。</li>
                         <li><span class="text-yellow-400 font-bold">天下の番付</span>: 全国のプレイヤーと「長寿」「富国」「武功」を競い合うオンラインランキングです。</li>
                     </ul>
                 </section>
@@ -667,6 +667,11 @@
             { name: "冷酷なる野心家", hint: "悪逆を示す(70)" },
             { name: "大往生の傑物", hint: "七十の歳を越える" },
             { name: "戦乱を生き抜きし者", hint: "六十の歳を越える" },
+            { name: "若き散り桜", hint: "若くして戦場に散る(30歳未満の討死)" },
+            { name: "路傍の落武者", hint: "落武者狩りに遭い野垂れる" },
+            { name: "刑場の露", hint: "処刑され首を刎ねられる" },
+            { name: "飢餓に倒れし者", hint: "飢えに耐えきれず命を落とす" },
+            { name: "病魔に蝕まれし者", hint: "疫病に倒れる" },
             { name: "名もなき草奔", hint: "戦国の世に生きる" }
         ];
 
@@ -1061,10 +1066,6 @@
 
         function calculateTitle(s) {
             if (s.age >= 60 && s.flags.sukanpin) return "伝説の素寒貧";
-            
-            if (s.age >= 100) return "不老不死の化身";
-            if (s.age >= 90) return "伝説の仙人";
-            if (s.age >= 80) return "生き字引の翁";
 
             if (s.valor >= 150 && s.strategy >= 150) return "智勇兼備の神将";
             if (s.valor >= 150) return "天下無双の軍神";
@@ -1073,6 +1074,8 @@
             if (s.karma >= 150) return "極悪非道の修羅";
             if (s.money >= 5000) return "日ノ本を買い占めし者";
             if (s.luck >= 100) return "天に愛されし御子";
+
+            if (s.valor >= 80 && s.karma >= 60) return "第六天魔王";
 
             if (s.classInfo) {
                 const cid = s.classInfo.id;
@@ -1117,14 +1120,22 @@
             if (s.money >= 2000) return "富国豪商";
             if (s.luck >= 80) return "豪運の持ち主";
 
-            if (s.valor >= 80 && s.karma >= 60) return "第六天魔王";
             if (s.valor >= 70) return "無双の剛槍";
             if (s.strategy >= 70) return "王佐の才";
             if (s.virtue >= 70) return "慈愛の士";
             if (s.karma >= 70) return "冷酷なる野心家";
 
+            if (s.age >= 100) return "不老不死の化身";
+            if (s.age >= 90) return "伝説の仙人";
+            if (s.age >= 80) return "生き字引の翁";
             if (s.age >= 70) return "大往生の傑物";
             if (s.age >= 60) return "戦乱を生き抜きし者";
+
+            if (s.deathCause === 'battle' && s.age < 30) return "若き散り桜";
+            if (s.deathCause === 'hunted') return "路傍の落武者";
+            if (s.deathCause === 'execution') return "刑場の露";
+            if (s.deathCause === 'starvation') return "飢餓に倒れし者";
+            if (s.deathCause === 'plague') return "病魔に蝕まれし者";
 
             return "名もなき草奔";
         }
@@ -1381,7 +1392,7 @@
 
             } else if (tabName === 'title') {
                 tabT.className = "flex-1 py-3 text-xs font-bold text-blue-400 border-b-2 border-blue-400 transition-colors";
-                let html = '<div class="text-[10px] text-gray-400 mb-2">※これまでの輪廻で獲得した称号（全45種）が記録されます</div>';
+                let html = '<div class="text-[10px] text-gray-400 mb-2">※これまでの輪廻で獲得した称号（全50種）が記録されます</div>';
                 TITLES_DB.forEach(t => {
                     const isUnlocked = window.unlockedTitles && window.unlockedTitles.includes(t.name);
                     if(isUnlocked) {
@@ -2172,7 +2183,7 @@
 
             } else if (tabName === 'title') {
                 tabT.className = "flex-1 py-3 text-xs font-bold text-blue-400 border-b-2 border-blue-400 transition-colors";
-                let html = '<div class="text-[10px] text-gray-400 mb-2">※これまでの輪廻で獲得した称号（全45種）が記録されます</div>';
+                let html = '<div class="text-[10px] text-gray-400 mb-2">※これまでの輪廻で獲得した称号（全50種）が記録されます</div>';
                 TITLES_DB.forEach(t => {
                     const isUnlocked = window.unlockedTitles && window.unlockedTitles.includes(t.name);
                     if(isUnlocked) {
