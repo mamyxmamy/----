@@ -940,7 +940,7 @@
         ];
 
         const AGE_EVENTS = [
-            { id: 'genpuku', mode: ['normal'], weight: 100, condition: (s) => s.age === 15 && !s.flags.genpuku,
+            { id: 'genpuku', mode: ['normal'], weight: 100, condition: (s) => s.age >= 15 && !s.flags.genpuku,
                 title: '【元服】乱世への誓い', text: '15の歳を迎え、一人前の大人として扱われる元服の儀を終えた。今日から己の命は己で守らねばならない。血で血を洗うこの戦国において、あなたは何を武器にして生き抜く覚悟か？',
                 choices: [
                     { text: '【武力】幼き日より鍛え上げた腕っぷしで、力強く生きる！', condition: () => true, hint: '武功+20', effect: (s) => { 
@@ -1731,6 +1731,9 @@
             let pool = EVENTS.filter(e => e.mode.includes(state.mode));
             const availableEvents = pool.filter(e => { if (e.condition && !e.condition(state)) return false; return true; });
             if (availableEvents.length === 0) availableEvents.push(EVENTS[0]);
+
+            const genpukuEv = availableEvents.find(e => e.id === 'genpuku');
+            if (genpukuEv) { presentEventChoices(genpukuEv); saveCurrentRun(); return; }
 
             const totalW = availableEvents.reduce((s, e) => s + e.weight, 0);
             let r = Math.random() * totalW;
