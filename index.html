@@ -247,12 +247,14 @@
                     <div class="text-right">
                         <span class="text-[10px] text-gray-400 font-bold block">享年まで</span>
                         <div class="text-2xl font-black text-white"><span id="ui-age">14</span><span class="text-xs text-gray-400 font-normal ml-0.5">歳</span></div>
+                        <div id="ui-age-remaining" class="text-[10px] text-gray-500 font-bold mt-0.5"></div>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2.5">
                     <div id="health-box" class="bg-[#201C18] p-2 text-center border border-[#3A322A] rounded-sm transition-colors">
                         <span class="block text-[11px] text-gray-400 font-bold">体力 <span id="ui-max-health" class="text-[9px] text-gray-600 font-normal">/ 150</span></span>
                         <span id="ui-health" class="text-xl font-black text-white">100</span>
+                        <div class="w-full h-1.5 bg-black/60 border border-[#3A322A] mt-1 rounded-sm overflow-hidden"><div id="ui-health-bar" class="h-full transition-all duration-500" style="width: 100%; background-color: #6B8E23;"></div></div>
                     </div>
                     <div class="bg-[#201C18] p-2 text-center border border-[#3A322A] rounded-sm">
                         <span class="block text-[11px] text-gray-400 font-bold">所持金</span>
@@ -723,6 +725,8 @@
                 choices: [
                     { text: '【銭120文】私財を投げ打ち、大量の粥を民に施す', condition: (s) => s.money >= 120, hint: '人徳特大アップ', effect: (s) => { s.virtue += 45; recordChronology("大飢饉で私財を投じ生き神と崇められる"); return { money: -120, hp: 5, log: '通りで大量の炊き出しを行い、領民たちは涙を流してあなたを崇めた。' }; } },
                     { text: '【銭50文】高騰した食糧を強引に買い占める', condition: (s) => s.money >= 50, hint: '知略で出費抑制', effect: (s) => { let cost = Math.max(10, 50 - Math.floor(s.strategy * 0.3)); return { money: -cost, hp: 15, log: '蓄えておいた銭に物を言わせて闇米を確保し、命を繋いだ。' }; } },
+                    { text: '【人徳30】托鉢と村々の施しで食い繋ぐ', condition: (s) => s.virtue >= 30, hint: '被害軽減・人徳上昇', effect: (s) => { s.virtue += 5; return { hp: -10, log: '質素な粥を分け合い、施しと祈りで飢えの冬をなんとか凌いだ。' }; } },
+                    { text: '【銭20文】蓄えを切り崩し、粗末な糧を確保する', condition: (s) => s.money >= 20, hint: '出費を抑えて凌ぐ', effect: (s) => { return { money: -20, hp: -15, log: '乏しい蓄えをはたいて粗末な糧を確保し、飢えを凌いだ。' }; } },
                     { text: '草の根や泥を齧り、ただひたすらに耐え忍ぶ', condition: () => true, hint: '体力大ダメージ', effect: (s) => { s.deathCause = 'starvation'; return { hp: -40, log: '食べるものが何一つなくなり、最後は木の皮を煮て飢えを凌ぐ地獄の日々が続いた。' }; } }
                 ] },
             { id: 'plague', mode: ['normal', 'fugitive'], weight: 25, condition: () => true,
@@ -730,7 +734,7 @@
                 choices: [
                     { text: '【銭100文】高価な南蛮の秘薬をすがる思いで買い求める', condition: (s) => s.money >= 100, hint: '安全に回復', effect: (s) => { return { money: -100, hp: 10, log: '宣教師から特効薬を手に入れ、嘘のように熱が引いた。' }; } },
                     { text: '【人徳30】寺社に籠り、病に苦しむ民と共に祈祷を行う', condition: (s) => s.virtue >= 30, hint: '人徳上昇・被害軽減', effect: (s) => { s.virtue += 20; return { hp: -10, log: '不眠不休で祈り続け、奇跡的に病魔は去った。' }; } },
-                    { text: '己の気力と体力だけを頼りに病魔に耐え抜く', condition: () => true, hint: '運で被害軽減', effect: (s) => { s.deathCause = 'plague'; let dmg = Math.random() < (s.luck * 0.005) ? 5 : 55; return { hp: -dmg, log: '薬に頼る金もなく、高熱と吐血でのたうち回る三日三晩を過ごした。' }; } }
+                    { text: '己の気力と体力だけを頼りに病魔に耐え抜く', condition: () => true, hint: '運で被害軽減', effect: (s) => { s.deathCause = 'plague'; let dmg = Math.random() < (s.luck * 0.008) ? 5 : 55; return { hp: -dmg, log: '薬に頼る金もなく、高熱と吐血でのたうち回る三日三晩を過ごした。' }; } }
                 ] },
             { id: 'tournament', mode: ['normal'], weight: 25, condition: (s) => s.classInfo && (s.classInfo.id === 'ronin' || s.classInfo.id === 'ashigaru' || s.classInfo.id === 'bushou'),
                 title: '【御前試合】真剣勝負', text: '大名肝煎りの盛大な御前試合が開催された。勝者には莫大な報奨金が約束されるが、真剣による死合である。',
@@ -856,7 +860,7 @@
                     { text: '背後から一刀両断し、金品を奪う', condition: () => true, hint: '悪逆特大増・銭獲得', effect: (s) => { s.karma+=40; return { money: 100, hp: 0, log: '血飛沫と共に商人は倒れた。懐は温まったが、人としての越えてはならない一線を越えた。' }; } },
                     { text: '刀から手を離し、己の貧しさを噛み締める', condition: () => true, hint: '人徳上昇', effect: (s) => { s.virtue+=15; return { hp: 0, log: '貧しくとも誇りだけは失わない。空腹を抱えながら夜道を足早に立ち去った。' }; } }
                 ] },
-            { id: 'temple_donation', mode: ['normal'], weight: 25, condition: (s) => s.classInfo.id === 'monk',
+            { id: 'temple_donation', mode: ['normal'], weight: 35, condition: (s) => s.classInfo.id === 'monk',
                 title: '【勧進】大伽藍の建立', text: '戦火で焼け落ちた大伽藍を再建するため、諸国を巡って多額の寄付（勧進）を集めなければならない。',
                 choices: [
                     { text: '【人徳60】民衆の心を打つ説法で寄付を募る', condition: (s) => s.virtue >= 60, hint: '銭大獲得', effect: (s) => { s.virtue+=20; recordChronology("見事な説法で大伽藍を再建する"); return { money: 200, hp: 0, log: 'あなたの慈愛に満ちた説法に数千の民が涙し、またたく間に再建の費用が集まった！' }; } },
@@ -984,12 +988,12 @@
                     { text: '【銭30文】名高き産婆を呼ぶ', condition: (s) => s.money >= 30, hint: '体力大回復', effect: (s) => { s.flags.hasChild = true; s.virtue += 15; recordChronology("子が誕生する"); return { money: -30, hp: 25, log: '元気な産声が響き渡った！母子ともに健康で、歓喜にあふれた。' }; } },
                     { text: '天命に身を委ねて祈る', condition: () => true, hint: '通常出産', effect: (s) => { s.flags.hasChild = true; s.virtue += 5; recordChronology("子が誕生する"); return { hp: 10, log: '無事に赤子が誕生した。この家路を守り抜く誓いを立てた。' }; } }
                 ] },
-            { id: 'aging_40', mode: ['normal'], weight: 100, condition: (s) => s.age === 40 && !s.flags.aging40,
+            { id: 'aging_40', mode: ['normal'], weight: 100, condition: (s) => s.age >= 40 && !s.flags.aging40,
                 title: '【不惑】初老の兆し', text: '「四十、五十は化け物」と言われる戦国時代。ふとした瞬間に息切れを感じるようになり、確実に肉体の衰えが始まっていることを悟る。だが、積み重ねた経験は確かな知恵となっている。',
                 choices: [
                     { text: '老いを受け入れ、頭脳で戦う覚悟を決める', condition: () => true, hint: '知略上昇・体力減少', effect: (s) => { s.flags.aging40 = true; s.strategy += 20; return { hp: -10, log: '無理な無茶は控え、経験と知恵を武器にしてこれからの乱世を渡り歩くことにした。' }; } }
                 ] },
-            { id: 'inherit_50', mode: ['normal'], weight: 100, condition: (s) => s.age === 50 && s.flags.hasChild && !s.flags.inherit50,
+            { id: 'inherit_50', mode: ['normal'], weight: 100, condition: (s) => s.age >= 50 && s.flags.hasChild && !s.flags.inherit50,
                 title: '【家督】次世代への継承', text: '立派に成長した子供から「そろそろ家督を譲り、楽隠居されてはいかがか」と打診された。ここで一線を退けば、安全に大往生を迎えられるかもしれないが…。',
                 choices: [
                     { text: '家督を譲り、現役を退く', condition: () => true, hint: '即座に大往生クリア', effect: (s) => { 
@@ -1569,6 +1573,7 @@
 
             if (state.classInfo.id === 'monk') state.virtue += 30;
             if (state.classInfo.id === 'ninja') { state.strategy += 20; state.luck += 20; }
+            if (state.classInfo.id === 'kuge') { state.strategy += 20; state.virtue += 10; }
 
             if (window.activeHeirlooms && window.activeHeirlooms.length > 0) {
                 window.activeHeirlooms.forEach(hl => {
@@ -1732,8 +1737,8 @@
             const availableEvents = pool.filter(e => { if (e.condition && !e.condition(state)) return false; return true; });
             if (availableEvents.length === 0) availableEvents.push(EVENTS[0]);
 
-            const genpukuEv = availableEvents.find(e => e.id === 'genpuku');
-            if (genpukuEv) { presentEventChoices(genpukuEv); saveCurrentRun(); return; }
+            const priorityEv = ['genpuku', 'aging_40', 'inherit_50'].map(id => availableEvents.find(e => e.id === id)).find(Boolean);
+            if (priorityEv) { presentEventChoices(priorityEv); saveCurrentRun(); return; }
 
             const totalW = availableEvents.reduce((s, e) => s + e.weight, 0);
             let r = Math.random() * totalW;
@@ -1754,7 +1759,7 @@
                     case 'daimyo': pool = [ { text: '他国の油断ならぬ大名と密かに書状を交わし、薄氷を踏むような同盟の腹を探り合った。', strategy: 3 }, { text: '大勢の供を連れて鷹狩りに出かけ、領民たちに圧倒的な力と威光を見せつけた。', valor: 1, hp: 2 }, { text: '金に糸目をつけず豪勢な茶会を開き、腹の読めない家臣たちとの結束を無理矢理固めた。', money: -20, virtue: 3 } ]; break;
                     case 'kuge': pool = [ { text: '美しい庭園で花鳥風月を愛でて和歌を詠み、戦乱とは無縁の雅な一日を過ごした。', virtue: 2, hp: 2 }, { text: '格式高い朝廷の儀式に重い装束で参列し、公卿としての体裁を必死に保った。', money: 5 }, { text: '武家から胡散臭い献上品を受け取り、扇で顔を隠しながら優雅に微笑んだ。', money: 10, karma: 1 } ]; break;
                     case 'ninja': pool = [ { text: '闇夜に紛れて屋根裏を這い、他国の危険な情勢を探り歩いた。', strategy: 4, hp: -2 }, { text: '指から血が滲むほど手裏剣と体術の修行に明け暮れた。', valor: 3, hp: -3 }, { text: '即効性のある新たな毒の調合を人体で試し、裏の知識を深めた。', strategy: 2, karma: 1 } ]; break;
-                    case 'monk': pool = [ { text: '破れた笠を被り、雨の日も風の日も諸国を托鉢して回って民の平穏を祈り続けた。', virtue: 5, money: 5 }, { text: '悪臭漂う病に苦しむ者を熱心に看病し、涙を流して深く感謝された。', virtue: 4, hp: -1 }, { text: '静寂の寺でただひたすらに経典を書き写し、己の波立つ心と向き合った。', strategy: 2, hp: 4 } ]; break;
+                    case 'monk': pool = [ { text: '破れた笠を被り、雨の日も風の日も諸国を托鉢して回って民の平穏を祈り続けた。', virtue: 5, money: 10 }, { text: '悪臭漂う病に苦しむ者を熱心に看病し、涙を流して深く感謝された。', virtue: 4, hp: -1 }, { text: '静寂の寺でただひたすらに経典を書き写し、己の波立つ心と向き合った。', strategy: 2, hp: 4 } ]; break;
                     case 'bandit': pool = [ { text: '暗い街道を通りかかる丸腰の商人を容赦なく襲い、荷をすべて奪い取った。', money: 15, karma: 3, hp: -2 }, { text: '血塗られた盗品を怪しげな闇市で売り捌き、手軽に日銭を得た。', money: 10, karma: 2 }, { text: '薄暗いアジトで下品な手下たちと豪快に酒盛りをし、英気を養った。', hp: 5, money: -5 } ]; break;
                     case 'ronin': pool = [ { text: '雨漏りのする長屋で傘張りなどのみすぼらしい内職をし、細々と日銭を稼いだ。', money: 3, hp: -1 }, { text: '町道場の師範代として剣術を教え、幾ばくかのありがたい謝礼を得た。', money: 5, valor: 1 }, { text: '町を荒らす辻斬りを一刀の元に退治し、奉行所から褒美をもらったが、返り血を浴びた。', money: 10, valor: 3, virtue: 2, hp: -5 } ]; break;
                     default: pool = [{ text: '特に何も起こらない、静かで平穏な一年だった。', money: 1 }];
@@ -1776,6 +1781,7 @@
             let tag = [];
             if (hpDiff !== 0) tag.push(`体力${hpDiff > 0 ? '+' : ''}${hpDiff}`);
             if (moneyDiff !== 0) tag.push(`銭${moneyDiff > 0 ? '+' : ''}${moneyDiff}`);
+            [['valor','武功'],['karma','悪逆'],['strategy','知略'],['virtue','人徳'],['luck','運']].forEach(([k,label]) => { if (item[k]) tag.push(`${label}${item[k] > 0 ? '+' : ''}${item[k]}`); });
             const statStr = tag.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tag.join(', ')})</span>` : '';
             
             let tagHeader = `<span class="font-bold text-gray-500">【${state.age}歳】</span>`;
@@ -1827,6 +1833,7 @@
             isWaitingForChoice = false; choicesContainer.classList.add('hidden'); choicesContainer.classList.remove('flex'); choicesContainer.innerHTML = '';
 
             try {
+                const beforeStats = { valor: state.valor, karma: state.karma, strategy: state.strategy, virtue: state.virtue, luck: state.luck };
                 const res = choice.effect(state);
                 const hpChg = res.hp || 0; const moneyChg = res.money || 0;
                 state.health += hpChg; state.money += moneyChg;
@@ -1838,6 +1845,7 @@
                 let tags = [];
                 if (hpChg !== 0 && hpChg > -900) tags.push(`体力${hpChg > 0 ? '+' : ''}${hpChg}`);
                 if (moneyChg !== 0) tags.push(`銭${moneyChg > 0 ? '+' : ''}${moneyChg}`);
+                [['valor','武功'],['karma','悪逆'],['strategy','知略'],['virtue','人徳'],['luck','運']].forEach(([k,label]) => { const d = state[k] - beforeStats[k]; if (d !== 0) tags.push(`${label}${d > 0 ? '+' : ''}${d}`); });
                 const statTag = tags.length > 0 ? `<span class="text-[10px] text-gray-500 ml-1">(${tags.join(', ')})</span>` : '';
 
                 addLog(`<span class="font-bold text-gray-500 mr-1">┗ 決断:</span><em class="text-gray-300">${choice.text.replace(/【.*?】/g, '')}</em><br>${res.log}${statTag}`, hpChg <= -25);
@@ -1862,6 +1870,10 @@
             const maxHp = 150 + window.currentReincarnationCount;
             if (uiMaxHealth) uiMaxHealth.innerText = `/ ${maxHp}`;
             if (uiHealth) { if (state.health > maxHp) { uiHealth.className = "text-xl font-black text-gold drop-shadow-[0_0_8px_rgba(197,160,89,0.8)]"; } else { uiHealth.className = "text-xl font-black text-white"; } }
+            const hbar = document.getElementById('ui-health-bar');
+            if (hbar) { const pct = Math.max(0, Math.min(100, (state.health / maxHp) * 100)); hbar.style.width = pct + '%'; hbar.style.backgroundColor = state.health <= 30 ? '#B02A1E' : (pct < 50 ? '#B8860B' : '#6B8E23'); hbar.className = 'h-full transition-all duration-500' + (state.health <= 30 ? ' animate-pulse' : ''); }
+            const ageRem = document.getElementById('ui-age-remaining');
+            if (ageRem) { ageRem.innerText = state.age < 60 ? `大往生まで あと${60 - state.age}年` : '大往生の境地'; }
             if (uiValor) uiValor.innerText = state.valor; if (uiKarma) uiKarma.innerText = state.karma; if (uiStrategy) uiStrategy.innerText = state.strategy; if (uiVirtue) uiVirtue.innerText = state.virtue; if (uiLuck) uiLuck.innerText = state.luck;
             if (state.faction) { uiFaction.innerText = state.faction.name; uiFaction.style.backgroundColor = state.faction.color; }
 
@@ -1912,7 +1924,7 @@
                 state.health = 0; state.lastDamageEvent = '天寿'; state.deathCause = 'oldage'; 
                 addLog(`<span class="text-gold font-bold">過酷な戦乱を生き抜き、真の天寿（${absoluteMaxAge}歳）を全うして静かに目を閉じた……。</span>`); 
             }
-            else if (state.age >= randomDeathStart && state.deathCause !== 'oldage' && Math.random() < (state.age - (randomDeathStart - 1)) * 0.08) { 
+            else if (state.age >= randomDeathStart && state.deathCause !== 'oldage' && Math.random() < ((state.age - (randomDeathStart - 1)) * 0.08) * Math.max(0.5, 1 - state.luck * 0.003)) { 
                 state.health = 0; state.lastDamageEvent = '老衰'; state.deathCause = 'oldage'; 
                 addLog(`<span class="text-gray-400 font-bold">長き風雪に耐えた老躯が限界を迎え、静かに眠りについた。</span>`); 
             }
