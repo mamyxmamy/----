@@ -1873,7 +1873,7 @@
             const hbar = document.getElementById('ui-health-bar');
             if (hbar) { const pct = Math.max(0, Math.min(100, (state.health / maxHp) * 100)); hbar.style.width = pct + '%'; hbar.style.backgroundColor = state.health <= 30 ? '#B02A1E' : (pct < 50 ? '#B8860B' : '#6B8E23'); hbar.className = 'h-full transition-all duration-500' + (state.health <= 30 ? ' animate-pulse' : ''); }
             const ageRem = document.getElementById('ui-age-remaining');
-            if (ageRem) { ageRem.innerText = state.age < 60 ? `大往生まで あと${60 - state.age}年` : '大往生の境地'; }
+            if (ageRem) { const lifeLimit = 70 + Math.floor((window.greatDeathCount || 0) / 10) * 5; ageRem.innerText = state.age < 60 ? `あと${60 - state.age}年で大往生認定（限界${lifeLimit}歳）` : `大往生認定済（限界${lifeLimit}歳）`; }
             if (uiValor) uiValor.innerText = state.valor; if (uiKarma) uiKarma.innerText = state.karma; if (uiStrategy) uiStrategy.innerText = state.strategy; if (uiVirtue) uiVirtue.innerText = state.virtue; if (uiLuck) uiLuck.innerText = state.luck;
             if (state.faction) { uiFaction.innerText = state.faction.name; uiFaction.style.backgroundColor = state.faction.color; }
 
